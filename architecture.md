@@ -1,8 +1,8 @@
 # Equipement Ouarzazate - Technical Architecture Documentation
 
 **Project**: Equipement Ouarzazate E-Commerce Platform  
-**Version**: 1.0.0  
-**Last Updated**: January 13, 2026  
+**Version**: 1.0.1  
+**Last Updated**: January 14, 2026  
 **Status**: Active Development (Frontend Complete, Backend Planning)  
 **Document Owner**: Development Team
 
@@ -4481,6 +4481,22 @@ npm run test:coverage    # Coverage report
 - [Lucia Auth Docs](https://lucia-auth.com)
 - [Vercel Docs](https://vercel.com/docs)
 - [Zod Docs](https://zod.dev)
+
+---
+
+## Changelog
+
+### Version 1.0.1 (January 14, 2026)
+
+- **Data Corrections**: Applied client verification updates (founding year 1970→1975, slogan, business hours with lunch break, WhatsApp number)
+- **Partner Data**: Corrected 6 partner categories, renamed OLAP→LAP
+- **Function Update**: `isBusinessOpen()` in `contact.ts` now handles lunch break (13:00-14:30)
+
+### Version 1.0.0 (January 13, 2026)
+
+- Initial architecture documentation
+- Complete frontend implementation documented
+- Backend architecture planned and specified
 
 ---
 

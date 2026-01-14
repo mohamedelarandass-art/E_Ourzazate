@@ -421,13 +421,13 @@
 
     /**
    * Header Heights - Responsive System
-   * Desktop: 80px normal, 64px scrolled
-   * Mobile: 64px normal, 56px scrolled
+   * Desktop: 64px normal, 56px scrolled (shallower for premium feel)
+   * Mobile: 56px normal, 48px scrolled
    */
-    --header-height: 80px;
-    --header-height-scrolled: 64px;
-    --header-height-mobile: 64px;
-    --header-height-mobile-scrolled: 56px;
+    --header-height: 64px;
+    --header-height-scrolled: 56px;
+    --header-height-mobile: 56px;
+    --header-height-mobile-scrolled: 48px;
 
     /**
    * Sidebar (Admin)

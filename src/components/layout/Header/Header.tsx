@@ -9,7 +9,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -32,13 +32,35 @@ export function Header() {
     const pathname = usePathname();
     const { resolvedTheme, toggleTheme, mounted } = useThemeContext();
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isHidden, setIsHidden] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const lastScrollY = useRef(0);
 
     // Handle scroll effect
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
+            const currentScrollY = window.scrollY;
+
+            // Determine if page is scrolled (for visual changes)
+            setIsScrolled(currentScrollY > 20);
+
+            // Hide/show based on scroll direction
+            // Only hide if scrolled down more than 50px and not at top
+            if (currentScrollY > 50) {
+                if (currentScrollY > lastScrollY.current) {
+                    // Scrolling down - hide navbar
+                    setIsHidden(true);
+                } else {
+                    // Scrolling up - show navbar immediately
+                    setIsHidden(false);
+                }
+            } else {
+                // Near top - always show
+                setIsHidden(false);
+            }
+
+            lastScrollY.current = currentScrollY;
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -68,7 +90,7 @@ export function Header() {
     };
 
     return (
-        <header className={cn(styles.header, isScrolled && styles.scrolled)}>
+        <header className={cn(styles.header, isScrolled && styles.scrolled, isHidden && styles.hidden)}>
             <div className={cn(styles.container, 'container')}>
                 {/* Logo */}
                 <Link href="/" className={styles.logo}>

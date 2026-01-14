@@ -101,26 +101,8 @@ export const partners: Partner[] = [
     name: 'VitrA',
     category: 'Sanitaire et céramique',
     logo: '/images/real/partners-processed/vitra.png'
-  },
-  // New partners added from client verification (2026-01-14)
-  {
-    id: 'icat-international',
-    name: 'ICAT International',
-    category: 'Ventilation, Climatisation, Filtration',
-    logo: '/images/real/partners-processed/icat-international.png'
-  },
-  {
-    id: 'bitulife',
-    name: 'BITULIFE',
-    category: 'Étanchéité',
-    logo: '/images/real/partners-processed/bitulife.png'
-  },
-  {
-    id: 'milwaukee',
-    name: 'MILWAUKEE',
-    category: 'Outillage',
-    logo: '/images/real/partners-processed/milwaukee.png'
   }
+  // Note: ICAT International, BITULIFE, MILWAUKEE logos pending from client
 ];
 
 export const partnerCategories = [
@@ -136,13 +118,11 @@ export const partnerCategories = [
   'Matériel électrique',
   'Sanitaire et céramique',
   'Sanitaire et robinetterie',
-  'Équipement produit métallurgie',
-  'Ventilation, Climatisation, Filtration',
-  'Étanchéité',
-  'Outillage'
+  'Équipement produit métallurgie'
 ] as const;
 
 export type PartnerCategory = typeof partnerCategories[number];
 
 export default partners;
+
 
