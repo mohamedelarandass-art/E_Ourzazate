@@ -1,0 +1,260 @@
+.footer {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+}
+
+:global([data-theme="dark"]) .footer {
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+}
+
+.main {
+    padding: var(--spacing-16) 0;
+}
+
+.grid {
+    display: grid;
+    gap: var(--spacing-10);
+}
+
+@media (min-width: 640px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid {
+        grid-template-columns: 2fr repeat(3, 1fr) 1.5fr;
+        gap: var(--spacing-8);
+    }
+}
+
+/* Brand Section */
+.brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+}
+
+.logoText {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: inherit;
+}
+
+.logoTagline {
+    font-size: var(--font-size-sm);
+    color: var(--color-wood);
+    margin-top: var(--spacing-1);
+}
+
+.description {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    opacity: 0.8;
+    max-width: 300px;
+}
+
+.socials {
+    display: flex;
+    gap: var(--spacing-3);
+    margin-top: var(--spacing-2);
+}
+
+.socialLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: inherit;
+    transition: var(--transition-fast);
+}
+
+.socialLink:hover {
+    background-color: var(--color-wood);
+    color: #FFFFFF;
+}
+
+/* Navigation Sections */
+.navSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.navTitle {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wide);
+    color: inherit;
+    margin: 0;
+}
+
+.navList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+}
+
+.navLink {
+    font-size: var(--font-size-sm);
+    color: inherit;
+    opacity: 0.7;
+    transition: opacity var(--duration-200);
+}
+
+.navLink:hover {
+    opacity: 1;
+}
+
+/* Contact Section */
+.contact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.contactList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+}
+
+.contactItem {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+    font-size: var(--font-size-sm);
+    opacity: 0.8;
+}
+
+.contactItem svg {
+    flex-shrink: 0;
+    color: var(--color-wood);
+    margin-top: 2px;
+}
+
+.contactItem a {
+    color: inherit;
+    transition: opacity var(--duration-200);
+}
+
+.contactItem a:hover {
+    opacity: 1;
+}
+
+/* Bottom Bar */
+.bottom {
+    padding: var(--spacing-6) 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .bottom {
+    border-top-color: var(--color-border);
+}
+
+.bottomContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-2);
+    text-align: center;
+}
+
+@media (min-width: 640px) {
+    .bottomContent {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.copyright {
+    font-size: var(--font-size-sm);
+    opacity: 0.7;
+    margin: 0;
+}
+
+.legalText {
+    font-size: var(--font-size-xs);
+    opacity: 0.5;
+    margin: 0;
+    color: inherit;
+    transition: opacity var(--duration-200);
+}
+
+.legalText:hover {
+    opacity: 0.8;
+}
+
+.expertise {
+    font-size: var(--font-size-sm);
+    color: var(--color-wood);
+    font-weight: var(--font-weight-medium);
+    margin: 0;
+}
+
+/* ===========================================================================
+   Mobile Responsive Fixes (< 640px)
+   =========================================================================== */
+
+@media (max-width: 639px) {
+    .main {
+        padding: var(--spacing-12) 0;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-8);
+        text-align: center;
+    }
+
+    .brand {
+        align-items: center;
+    }
+
+    .description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .socials {
+        justify-content: center;
+    }
+
+    .navSection {
+        align-items: center;
+    }
+
+    .navList {
+        align-items: center;
+    }
+
+    .contact {
+        align-items: center;
+    }
+
+    .contactList {
+        align-items: center;
+    }
+
+    .contactItem {
+        justify-content: center;
+        text-align: center;
+        flex-wrap: wrap;
+    }
+
+    .bottomContent {
+        gap: var(--spacing-3);
+    }
+}

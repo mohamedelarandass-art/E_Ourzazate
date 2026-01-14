@@ -1,0 +1,18 @@
+/**
+ * Styles Index
+ * 
+ * Main entry point that imports all modular CSS files.
+ * This file is imported by globals.css.
+ * 
+ * @module styles/index
+ */
+
+/* Order matters - base styles first */
+@import './reset.css';
+@import './variables.css';
+@import './dark-mode.css';
+@import './typography.css';
+@import './utilities.css';
+@import './buttons.css';
+@import './forms.css';
+@import './animations.css';

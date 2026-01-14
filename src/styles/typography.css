@@ -1,0 +1,255 @@
+/**
+ * Typography Styles
+ * 
+ * Heading and body text styles using Playfair Display and Inter.
+ * 
+ * @module styles/typography
+ */
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-family: var(--font-heading);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-4);
+}
+
+h1,
+.h1 {
+    font-size: var(--font-size-hero);
+    line-height: 1.1;
+}
+
+h2,
+.h2 {
+    font-size: var(--font-size-display);
+    line-height: 1.2;
+}
+
+h3,
+.h3 {
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-semibold);
+}
+
+h4,
+.h4 {
+    font-size: var(--font-size-subtitle);
+    font-weight: var(--font-weight-semibold);
+}
+
+h5,
+.h5 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+}
+
+h6,
+.h6 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Body */
+body {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+}
+
+p {
+    margin-bottom: var(--spacing-4);
+    color: var(--color-text-secondary);
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+/* Special text */
+.text-lead {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-secondary);
+}
+
+.text-overline {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-widest);
+    color: var(--color-wood);
+    margin-bottom: var(--spacing-2);
+    display: block;
+}
+
+.text-caption {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+}
+
+blockquote {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-xl);
+    font-style: italic;
+    padding-left: var(--spacing-6);
+    border-left: 4px solid var(--color-wood);
+    margin: var(--spacing-8) 0;
+}
+
+code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: var(--spacing-0-5) var(--spacing-1-5);
+    background-color: var(--color-background-alt);
+    border-radius: var(--radius-default);
+}
+
+/* Text colors */
+.text-primary {
+    color: var(--color-text-primary);
+}
+
+.text-secondary {
+    color: var(--color-text-secondary);
+}
+
+.text-tertiary {
+    color: var(--color-text-tertiary);
+}
+
+.text-wood {
+    color: var(--color-wood);
+}
+
+.text-success {
+    color: var(--color-success);
+}
+
+.text-error {
+    color: var(--color-error);
+}
+
+/* Alignment */
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* Weights */
+.font-light {
+    font-weight: var(--font-weight-light);
+}
+
+.font-normal {
+    font-weight: var(--font-weight-normal);
+}
+
+.font-medium {
+    font-weight: var(--font-weight-medium);
+}
+
+.font-semibold {
+    font-weight: var(--font-weight-semibold);
+}
+
+.font-bold {
+    font-weight: var(--font-weight-bold);
+}
+
+/* Links */
+a {
+    color: var(--color-wood);
+    text-decoration: none;
+    transition: var(--transition-colors);
+}
+
+a:hover {
+    color: var(--color-wood-dark);
+}
+
+.link-animated {
+    position: relative;
+}
+
+.link-animated::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-wood);
+    transition: width var(--duration-300) var(--ease-out);
+}
+
+.link-animated:hover::after {
+    width: 100%;
+}
+
+/* Truncation */
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Divider */
+hr {
+    border: none;
+    height: 1px;
+    background-color: var(--color-border);
+    margin: var(--spacing-8) 0;
+}
+
+.divider-accent {
+    background-color: var(--color-wood);
+    height: 3px;
+    width: 60px;
+}
+
+/* Arabic support */
+.text-arabic,
+[lang="ar"] {
+    font-family: var(--font-arabic);
+    direction: rtl;
+    text-align: right;
+}

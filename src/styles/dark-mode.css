@@ -1,0 +1,224 @@
+/**
+ * Dark Mode Styles
+ * 
+ * This file contains all dark mode overrides using the [data-theme="dark"] selector.
+ * The theme is toggled via JavaScript and stored in localStorage.
+ * 
+ * Color philosophy for dark mode:
+ * - Darker backgrounds with slightly elevated surfaces
+ * - Inverted text colors (light on dark)
+ * - Preserved accent colors (wood tone remains warm)
+ * - Reduced shadow intensity
+ * 
+ * @module styles/dark-mode
+ */
+
+/* ==========================================================================
+   Dark Mode Color Overrides
+   ========================================================================== */
+
+[data-theme="dark"] {
+    /**
+   * Primary Colors
+   */
+    --color-primary: #F5F5F5;
+    --color-primary-light: #E0E0E0;
+    --color-primary-dark: #FFFFFF;
+
+    /**
+   * Background Colors
+   */
+    --color-background: #121212;
+    --color-background-alt: #0A0A0A;
+    --color-surface: #1E1E1E;
+    --color-surface-hover: #2A2A2A;
+
+    /**
+   * Accent Colors
+   */
+    --color-accent: #3D3529;
+    --color-accent-light: #4A4237;
+    --color-accent-dark: #2E2720;
+
+    /**
+   * Text Colors
+   */
+    --color-text-primary: #F5F5F5;
+    --color-text-secondary: #A8A8A8;
+    --color-text-tertiary: #6B6B6B;
+    --color-text-inverse: #1A1A1A;
+
+    /**
+   * Border Colors
+   */
+    --color-border: #2D2D2D;
+    --color-border-light: #252525;
+    --color-border-dark: #404040;
+
+    /**
+   * Status Colors (slightly muted for dark mode)
+   */
+    --color-success: #22C55E;
+    --color-success-light: #1A3D2A;
+    --color-warning: #F59E0B;
+    --color-warning-light: #3D3015;
+    --color-error: #EF4444;
+    --color-error-light: #3D1A1A;
+    --color-info: #3B82F6;
+    --color-info-light: #1A2A3D;
+
+    /**
+   * Overlay Colors
+   */
+    --color-overlay: rgba(0, 0, 0, 0.7);
+    --color-overlay-light: rgba(0, 0, 0, 0.5);
+
+    /**
+   * Shadows (reduced intensity for dark mode)
+   */
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.4);
+    --shadow-default: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+
+    /**
+   * Elevation Shadows (for dark mode)
+   */
+    --elevation-1: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.25);
+    --elevation-2: 0 4px 6px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.25);
+    --elevation-3: 0 10px 20px rgba(0, 0, 0, 0.4), 0 3px 6px rgba(0, 0, 0, 0.25);
+    --elevation-4: 0 15px 25px rgba(0, 0, 0, 0.45), 0 5px 10px rgba(0, 0, 0, 0.25);
+    --shadow-card-hover: 0 25px 50px -12px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(196, 167, 125, 0.3);
+}
+
+/* ==========================================================================
+   System Preference Detection
+   ========================================================================== */
+
+/**
+ * Apply dark mode based on system preference when no explicit theme is set.
+ * This provides automatic dark mode for first-time visitors.
+ */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        /**
+     * Primary Colors
+     */
+        --color-primary: #F5F5F5;
+        --color-primary-light: #E0E0E0;
+        --color-primary-dark: #FFFFFF;
+
+        /**
+     * Background Colors
+     */
+        --color-background: #121212;
+        --color-background-alt: #0A0A0A;
+        --color-surface: #1E1E1E;
+        --color-surface-hover: #2A2A2A;
+
+        /**
+     * Accent Colors
+     */
+        --color-accent: #3D3529;
+        --color-accent-light: #4A4237;
+        --color-accent-dark: #2E2720;
+
+        /**
+     * Text Colors
+     */
+        --color-text-primary: #F5F5F5;
+        --color-text-secondary: #A8A8A8;
+        --color-text-tertiary: #6B6B6B;
+        --color-text-inverse: #1A1A1A;
+
+        /**
+     * Border Colors
+     */
+        --color-border: #2D2D2D;
+        --color-border-light: #252525;
+        --color-border-dark: #404040;
+
+        /**
+     * Status Colors
+     */
+        --color-success-light: #1A3D2A;
+        --color-warning-light: #3D3015;
+        --color-error-light: #3D1A1A;
+        --color-info-light: #1A2A3D;
+
+        /**
+     * Overlay Colors
+     */
+        --color-overlay: rgba(0, 0, 0, 0.7);
+        --color-overlay-light: rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* ==========================================================================
+   Dark Mode Specific Adjustments
+   ========================================================================== */
+
+/**
+ * Scrollbar in dark mode
+ */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: var(--color-background);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: var(--color-accent);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-wood);
+}
+
+/**
+ * Selection in dark mode
+ */
+[data-theme="dark"] ::selection {
+    background-color: var(--color-wood);
+    color: var(--color-background);
+}
+
+/**
+ * Images - slightly reduce brightness in dark mode
+ */
+[data-theme="dark"] img:not([data-no-dark-adjust]) {
+    filter: brightness(0.95);
+}
+
+/**
+ * Placeholder text
+ */
+[data-theme="dark"] ::placeholder {
+    color: var(--color-text-tertiary);
+}
+
+/**
+ * HR elements
+ */
+[data-theme="dark"] hr {
+    border-color: var(--color-border);
+}
+
+/**
+ * Code blocks
+ */
+[data-theme="dark"] code,
+[data-theme="dark"] pre {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+}
+
+/**
+ * Focus visible outline for dark mode
+ */
+[data-theme="dark"] :focus-visible {
+    outline-color: var(--color-wood);
+}

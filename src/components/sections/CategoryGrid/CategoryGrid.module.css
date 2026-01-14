@@ -1,0 +1,167 @@
+/**
+ * CategoryGrid Section - Premium Bento Layout Styles
+ * 
+ * Features:
+ * - Asymmetric Bento grid layout
+ * - Staggered entrance animations
+ * - Premium section header
+ * - Responsive design
+ */
+
+/* ===========================================================================
+   Section Container
+   =========================================================================== */
+
+.section {
+    padding: var(--spacing-20) 0;
+    background-color: var(--color-background-alt);
+    overflow: hidden;
+}
+
+/* ===========================================================================
+   Section Header
+   =========================================================================== */
+
+.header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto var(--spacing-12);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+.section.visible .header {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.eyebrow {
+    display: inline-block;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-wood);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wider);
+    margin-bottom: var(--spacing-3);
+    position: relative;
+}
+
+.eyebrow::before,
+.eyebrow::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-wood));
+}
+
+.eyebrow::before {
+    right: calc(100% + var(--spacing-3));
+    background: linear-gradient(90deg, transparent, var(--color-wood));
+}
+
+.eyebrow::after {
+    left: calc(100% + var(--spacing-3));
+    background: linear-gradient(90deg, var(--color-wood), transparent);
+}
+
+.title {
+    font-family: var(--font-heading);
+    font-size: clamp(var(--font-size-2xl), 4vw, var(--font-size-4xl));
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--spacing-4);
+}
+
+.description {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: var(--line-height-relaxed);
+}
+
+/* ===========================================================================
+   Bento Grid Layout
+   =========================================================================== */
+
+.grid {
+    display: grid;
+    gap: var(--spacing-5);
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(280px, auto);
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 640px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Desktop: 3 columns with Bento layout */
+@media (min-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, minmax(280px, 1fr));
+    }
+}
+
+/* ===========================================================================
+   Card Animations
+   =========================================================================== */
+
+.card {
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.section.visible .card {
+    animation: cardFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===========================================================================
+   Responsive Adjustments
+   =========================================================================== */
+
+@media (max-width: 639px) {
+    .section {
+        padding: var(--spacing-12) 0;
+    }
+
+    .header {
+        margin-bottom: var(--spacing-8);
+    }
+
+    .eyebrow::before,
+    .eyebrow::after {
+        display: none;
+    }
+
+    .grid {
+        gap: var(--spacing-4);
+    }
+}
+
+@media (min-width: 1280px) {
+    .section {
+        padding: var(--spacing-24) 0;
+    }
+
+    .grid {
+        gap: var(--spacing-6);
+    }
+}

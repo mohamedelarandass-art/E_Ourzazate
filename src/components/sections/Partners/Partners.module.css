@@ -1,0 +1,403 @@
+/**
+ * Partners Section Styles
+ * 
+ * Infinite scrolling carousel with grayscale-to-color logo effects.
+ * Premium design with smooth CSS animations.
+ * 
+ * @module components/sections/Partners
+ */
+
+/* ==========================================================================
+   Section Container
+   ========================================================================== */
+
+.partners {
+    position: relative;
+    padding: var(--spacing-20) 0;
+    background-color: var(--color-surface);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity var(--duration-500) var(--ease-out),
+        transform var(--duration-500) var(--ease-out);
+}
+
+.partners[data-visible="true"] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Background gradient decoration */
+.backgroundGradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            transparent 0%,
+            rgba(196, 167, 125, 0.03) 50%,
+            transparent 100%);
+    pointer-events: none;
+}
+
+:global([data-theme="dark"]) .backgroundGradient {
+    background: linear-gradient(180deg,
+            transparent 0%,
+            rgba(196, 167, 125, 0.05) 50%,
+            transparent 100%);
+}
+
+/* Container */
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--spacing-6);
+}
+
+/* ==========================================================================
+   Section Header
+   ========================================================================== */
+
+.header {
+    text-align: center;
+    margin-bottom: var(--spacing-12);
+}
+
+.iconBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: var(--spacing-4);
+    background: linear-gradient(135deg,
+            var(--color-wood-light) 0%,
+            var(--color-wood) 100%);
+    border-radius: var(--radius-xl);
+    box-shadow:
+        0 8px 24px rgba(196, 167, 125, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.headerIcon {
+    color: var(--color-text-inverse);
+}
+
+.title {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-display);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--spacing-4);
+    line-height: var(--line-height-tight);
+}
+
+.subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: var(--line-height-relaxed);
+}
+
+/* ==========================================================================
+   Carousel
+   ========================================================================== */
+
+.carouselContainer {
+    position: relative;
+    width: 100%;
+    margin-bottom: var(--spacing-8);
+}
+
+/* Edge fade overlays - positioned at section level */
+.fadeLeft,
+.fadeRight {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.fadeLeft {
+    left: 0;
+    background: linear-gradient(to right,
+            var(--color-surface) 0%,
+            transparent 100%);
+}
+
+.fadeRight {
+    right: 0;
+    background: linear-gradient(to left,
+            var(--color-surface) 0%,
+            transparent 100%);
+}
+
+/* Carousel row */
+.carouselRow {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+    padding: var(--spacing-4) 0;
+    width: max-content;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.carouselRow[data-direction="left"] {
+    animation-name: scrollLeft;
+}
+
+.carouselRow[data-direction="right"] {
+    animation-name: scrollRight;
+}
+
+/* Scroll animations */
+@keyframes scrollLeft {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes scrollRight {
+    0% {
+        transform: translateX(-50%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* ==========================================================================
+   Logo Wrapper
+   ========================================================================== */
+
+.logoWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 160px;
+    height: 90px;
+    padding: var(--spacing-4) var(--spacing-6);
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition:
+        transform var(--duration-300) var(--ease-out),
+        box-shadow var(--duration-300) var(--ease-out),
+        border-color var(--duration-300) var(--ease-out);
+    cursor: pointer;
+}
+
+:global([data-theme="dark"]) .logoWrapper {
+    background: rgba(30, 30, 30, 0.6);
+    border-color: var(--color-border);
+}
+
+.logoWrapper:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow:
+        0 12px 32px rgba(196, 167, 125, 0.15),
+        0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: var(--color-wood-light);
+}
+
+:global([data-theme="dark"]) .logoWrapper:hover {
+    box-shadow:
+        0 12px 32px rgba(196, 167, 125, 0.1),
+        0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   Logo Styles
+   ========================================================================== */
+
+.logo {
+    max-width: 120px;
+    max-height: 60px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    transition: transform var(--duration-300) var(--ease-out);
+}
+
+.logoWrapper:hover .logo {
+    transform: scale(1.05);
+}
+
+/* Logo name overlay */
+.logoOverlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: var(--spacing-2);
+    background: linear-gradient(180deg,
+            transparent 40%,
+            rgba(0, 0, 0, 0.6) 100%);
+    border-radius: var(--radius-lg);
+    opacity: 0;
+    transition: opacity var(--duration-300) var(--ease-out);
+}
+
+.logoWrapper:hover .logoOverlay {
+    opacity: 1;
+}
+
+.logoName {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: #fff;
+    text-align: center;
+    padding: 0 var(--spacing-2);
+}
+
+/* ==========================================================================
+   Stats Badge
+   ========================================================================== */
+
+.statsBadge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-3);
+    padding: var(--spacing-4) var(--spacing-8);
+    background: linear-gradient(135deg,
+            rgba(196, 167, 125, 0.1) 0%,
+            rgba(196, 167, 125, 0.05) 100%);
+    border: 1px solid rgba(196, 167, 125, 0.2);
+    border-radius: var(--radius-full);
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.statsNumber {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-wood);
+}
+
+.statsLabel {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
+@media (max-width: 640px) {
+    .partners {
+        padding: var(--spacing-16) 0;
+    }
+
+    .title {
+        font-size: var(--font-size-title);
+    }
+
+    .subtitle {
+        font-size: var(--font-size-base);
+    }
+
+    .logoWrapper {
+        min-width: 130px;
+        height: 75px;
+        padding: var(--spacing-3) var(--spacing-4);
+    }
+
+    .logo {
+        max-width: 100px;
+        max-height: 50px;
+    }
+
+    .fadeLeft,
+    .fadeRight {
+        width: 60px;
+    }
+
+    .carouselRow {
+        gap: var(--spacing-4);
+    }
+
+    .statsBadge {
+        flex-direction: column;
+        gap: var(--spacing-1);
+        padding: var(--spacing-3) var(--spacing-6);
+    }
+}
+
+@media (min-width: 768px) {
+    .partners {
+        padding: var(--spacing-24) 0;
+    }
+
+    .carouselRow {
+        gap: var(--spacing-10);
+    }
+
+    .logoWrapper {
+        min-width: 180px;
+        height: 100px;
+    }
+
+    .logo {
+        max-width: 140px;
+        max-height: 70px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .partners {
+        padding: var(--spacing-28) 0;
+    }
+
+    .header {
+        margin-bottom: var(--spacing-16);
+    }
+
+    .fadeLeft,
+    .fadeRight {
+        width: 150px;
+    }
+}
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .partners {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .carouselRow {
+        animation: none;
+    }
+
+    .logoWrapper {
+        transition: none;
+    }
+
+    .logoWrapper:hover {
+        transform: none;
+    }
+
+    .logo {
+        filter: none;
+        transition: none;
+    }
+}

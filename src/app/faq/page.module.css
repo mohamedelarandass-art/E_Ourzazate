@@ -1,0 +1,417 @@
+/**
+ * FAQ Page Styles
+ * 
+ * Premium FAQ page design with category tabs and accordion styling.
+ * 
+ * @module app/faq
+ */
+
+/* ==========================================================================
+   Page Layout
+   ========================================================================== */
+
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex: 1;
+    padding: var(--spacing-8) var(--spacing-6);
+    max-width: var(--container-7xl);
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ==========================================================================
+   Breadcrumb
+   ========================================================================== */
+
+.breadcrumb {
+    margin-bottom: var(--spacing-8);
+}
+
+.breadcrumbList {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+}
+
+.breadcrumbItem {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumbLink {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    transition: color var(--duration-200);
+}
+
+.breadcrumbLink:hover {
+    color: var(--color-wood);
+}
+
+.breadcrumbSeparator {
+    color: var(--color-text-tertiary);
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumbCurrent {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+
+.hero {
+    text-align: center;
+    margin-bottom: var(--spacing-12);
+    padding-bottom: var(--spacing-8);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.heroTitle {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-display);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--spacing-4);
+    line-height: var(--line-height-tight);
+}
+
+.heroSubtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ==========================================================================
+   Content Container
+   ========================================================================== */
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-10);
+}
+
+/* ==========================================================================
+   Category Tabs
+   ========================================================================== */
+
+.categoryTabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-3);
+    justify-content: center;
+    padding: var(--spacing-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+}
+
+.categoryTab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-3) var(--spacing-5);
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.categoryTab:hover {
+    color: var(--color-text-primary);
+    background: var(--color-surface-hover);
+}
+
+.categoryTab:focus-visible {
+    outline: 2px solid var(--color-wood);
+    outline-offset: 2px;
+}
+
+.categoryTabActive {
+    color: var(--color-text-inverse);
+    background: linear-gradient(135deg, var(--color-wood-light) 0%, var(--color-wood) 100%);
+    border-color: var(--color-wood);
+}
+
+.categoryTabActive:hover {
+    color: var(--color-text-inverse);
+    background: linear-gradient(135deg, var(--color-wood) 0%, var(--color-wood-dark) 100%);
+}
+
+/* ==========================================================================
+   FAQ Sections
+   ========================================================================== */
+
+.faqSections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-10);
+}
+
+.faqSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+}
+
+.sectionIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--color-wood-light) 0%, var(--color-wood) 100%);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-inverse);
+    flex-shrink: 0;
+}
+
+.sectionTitle {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+/* ==========================================================================
+   Accordion Overrides
+   ========================================================================== */
+
+.accordion {
+    box-shadow: var(--shadow-sm);
+}
+
+.answerText {
+    margin: 0;
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+}
+
+/* ==========================================================================
+   CTA Section
+   ========================================================================== */
+
+.ctaSection {
+    margin-top: var(--spacing-8);
+    background: linear-gradient(135deg, var(--color-wood-light) 0%, var(--color-wood) 50%, var(--color-wood-dark) 100%);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-12) var(--spacing-6);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.ctaSection::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.ctaContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-4);
+}
+
+.ctaIcon {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: var(--spacing-2);
+}
+
+.ctaTitle {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-inverse);
+    margin: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.ctaSubtitle {
+    font-size: var(--font-size-lg);
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    max-width: 450px;
+}
+
+.ctaButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+    justify-content: center;
+    margin-top: var(--spacing-4);
+}
+
+.ctaWhatsApp {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-4) var(--spacing-6);
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: #fff;
+    background: var(--color-whatsapp);
+    border-radius: var(--radius-lg);
+    transition: var(--transition-fast);
+    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
+}
+
+.ctaWhatsApp:hover {
+    background: var(--color-whatsapp-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+}
+
+.ctaContact {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-4) var(--spacing-6);
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-wood-dark);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: var(--radius-lg);
+    transition: var(--transition-fast);
+}
+
+.ctaContact:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (min-width: 768px) {
+    .main {
+        padding: var(--spacing-12) var(--spacing-8);
+    }
+
+    .hero {
+        margin-bottom: var(--spacing-16);
+    }
+
+    .ctaSection {
+        padding: var(--spacing-16) var(--spacing-8);
+    }
+}
+
+@media (min-width: 1024px) {
+    .main {
+        padding: var(--spacing-16) var(--spacing-12);
+    }
+
+    .categoryTabs {
+        gap: var(--spacing-4);
+    }
+
+    .categoryTab {
+        padding: var(--spacing-3) var(--spacing-6);
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 639px) {
+    .categoryTabs {
+        padding: var(--spacing-3);
+    }
+
+    .categoryTab {
+        flex: 1;
+        min-width: calc(50% - var(--spacing-2));
+        justify-content: center;
+        padding: var(--spacing-3) var(--spacing-3);
+        font-size: var(--font-size-xs);
+    }
+
+    .categoryTab span {
+        display: none;
+    }
+
+    .ctaButtons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .ctaWhatsApp,
+    .ctaContact {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 640px) {
+    .categoryTab span {
+        display: inline;
+    }
+}
+
+/* ==========================================================================
+   Dark Mode
+   ========================================================================== */
+
+:global([data-theme="dark"]) .categoryTabs {
+    background: var(--color-surface);
+}
+
+:global([data-theme="dark"]) .categoryTab:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+:global([data-theme="dark"]) .ctaSection {
+    background: linear-gradient(135deg, var(--color-wood-dark) 0%, var(--color-wood) 50%, var(--color-wood-light) 100%);
+}
+
+:global([data-theme="dark"]) .ctaContact {
+    color: var(--color-text-primary);
+    background: var(--color-surface);
+}
+
+:global([data-theme="dark"]) .ctaContact:hover {
+    background: var(--color-surface-hover);
+}

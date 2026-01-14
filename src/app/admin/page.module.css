@@ -1,0 +1,599 @@
+/**
+ * Admin Dashboard Page Styles
+ * 
+ * Premium dashboard design with gold accents,
+ * glassmorphism effects, and smooth animations.
+ */
+
+/* ========================================
+   CONTAINER & LAYOUT
+   ======================================== */
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-background);
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Background gradient overlay */
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50vh;
+    background: linear-gradient(135deg,
+            var(--color-wood) 0%,
+            var(--color-wood-dark) 100%);
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(var(--color-background-rgb), 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.headerContent {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.branding {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.brandName {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    line-height: 1.2;
+}
+
+.adminBadge {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-wood);
+    background: linear-gradient(135deg,
+            rgba(196, 167, 125, 0.1),
+            rgba(139, 115, 85, 0.15));
+    padding: 0.375rem 0.875rem;
+    border-radius: 6px;
+    border: 1px solid rgba(196, 167, 125, 0.2);
+    letter-spacing: 0.025em;
+}
+
+.backButton {
+    flex-shrink: 0;
+}
+
+/* ========================================
+   MAIN CONTENT
+   ======================================== */
+
+.main {
+    flex: 1;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* ========================================
+   WELCOME SECTION
+   ======================================== */
+
+.welcome {
+    text-align: center;
+    padding: 3rem 2rem;
+    margin-bottom: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.welcomeGlow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle,
+            rgba(196, 167, 125, 0.08) 0%,
+            transparent 70%);
+    pointer-events: none;
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+.welcomeTitle {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    background: linear-gradient(135deg,
+            var(--color-text),
+            var(--color-wood));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.welcomeText {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ========================================
+   SECTIONS
+   ======================================== */
+
+.features,
+.quickAccess {
+    margin-bottom: 4rem;
+}
+
+.sectionTitle {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sectionTitle::before {
+    content: '';
+    width: 4px;
+    height: 28px;
+    background: linear-gradient(180deg,
+            var(--color-wood),
+            var(--color-wood-dark));
+    border-radius: 2px;
+}
+
+/* ========================================
+   FEATURE CARDS GRID
+   ======================================== */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    position: relative;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: not-allowed;
+    overflow: hidden;
+}
+
+/* Disabled state styling */
+.card[aria-disabled="true"] {
+    opacity: 0.7;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+            transparent,
+            rgba(196, 167, 125, 0.03));
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card:hover {
+    border-color: rgba(196, 167, 125, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.cardIcon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg,
+            rgba(196, 167, 125, 0.1),
+            rgba(139, 115, 85, 0.05));
+    border-radius: 12px;
+    color: var(--color-wood);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover .cardIcon {
+    transform: scale(1.05);
+    background: linear-gradient(135deg,
+            rgba(196, 167, 125, 0.15),
+            rgba(139, 115, 85, 0.1));
+}
+
+.cardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.cardDescription {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.comingSoonBadge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-wood-dark);
+    background: rgba(196, 167, 125, 0.15);
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid rgba(196, 167, 125, 0.3);
+    margin-top: auto;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ========================================
+   QUICK ACCESS LINKS
+   ======================================== */
+
+.quickLinks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.quickLink {
+    position: relative;
+    display: block;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.quickLink::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+            rgba(196, 167, 125, 0.05),
+            transparent);
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.quickLink:hover {
+    border-color: var(--color-wood);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.quickLink:hover::after {
+    opacity: 1;
+}
+
+.quickLinkContent {
+    position: relative;
+    z-index: 1;
+}
+
+.quickLinkTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.quickLink:hover .quickLinkTitle {
+    color: var(--color-wood);
+}
+
+.quickLinkIcon {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.quickLink:hover .quickLinkIcon {
+    transform: translateX(2px) translateY(-2px);
+}
+
+.quickLinkDescription {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.footer {
+    margin-top: auto;
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
+}
+
+.footerText {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+/* ========================================
+   DARK MODE
+   ======================================== */
+
+[data-theme="dark"] .header {
+    background: rgba(26, 26, 26, 0.9);
+}
+
+[data-theme="dark"] .adminBadge {
+    background: linear-gradient(135deg,
+            rgba(196, 167, 125, 0.15),
+            rgba(139, 115, 85, 0.2));
+    border-color: rgba(196, 167, 125, 0.3);
+}
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .quickLink {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .card:hover,
+[data-theme="dark"] .quickLink:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(196, 167, 125, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .cardIcon {
+    background: linear-gradient(135deg,
+            rgba(196, 167, 125, 0.15),
+            rgba(139, 115, 85, 0.1));
+}
+
+[data-theme="dark"] .card:hover .cardIcon {
+    background: linear-gradient(135deg,
+            rgba(196, 167, 125, 0.2),
+            rgba(139, 115, 85, 0.15));
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+    .headerContent {
+        padding: 1.25rem 1.5rem;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .brandName {
+        font-size: 1.25rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .adminBadge {
+        font-size: 0.8125rem;
+    }
+
+    .main {
+        padding: 2rem 1.5rem;
+    }
+
+    .welcome {
+        padding: 2rem 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .welcomeTitle {
+        font-size: 1.875rem;
+    }
+
+    .welcomeText {
+        font-size: 1rem;
+    }
+
+    .sectionTitle {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .quickLinks {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+}
+
+/* Mobile (640px and below) */
+@media (max-width: 640px) {
+    .headerContent {
+        padding: 1rem;
+    }
+
+    .brandName {
+        font-size: 1.125rem;
+    }
+
+    .main {
+        padding: 1.5rem 1rem;
+    }
+
+    .welcome {
+        padding: 1.5rem 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .welcomeTitle {
+        font-size: 1.5rem;
+    }
+
+    .welcomeText {
+        font-size: 0.9375rem;
+    }
+
+    .sectionTitle {
+        font-size: 1.25rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    .cardIcon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .cardTitle {
+        font-size: 1.125rem;
+    }
+
+    .quickLink {
+        padding: 1.5rem;
+    }
+
+    .quickLinkTitle {
+        font-size: 1rem;
+    }
+
+    .footer {
+        padding: 1.5rem 1rem;
+    }
+
+    .footerText {
+        font-size: 0.8125rem;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .card,
+    .quickLink,
+    .cardIcon,
+    .quickLinkIcon,
+    .welcomeGlow {
+        transition: none;
+        animation: none;
+    }
+
+    .card:hover,
+    .quickLink:hover {
+        transform: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+
+    .card,
+    .quickLink {
+        border-width: 2px;
+    }
+
+    .adminBadge,
+    .comingSoonBadge {
+        border-width: 2px;
+    }
+}
