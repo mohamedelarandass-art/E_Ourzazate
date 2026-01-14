@@ -20,7 +20,7 @@ export interface Statistic {
  * Year the company was founded
  * Used to calculate years of experience dynamically
  */
-export const FOUNDING_YEAR = 1970;
+export const FOUNDING_YEAR = 1975;
 
 /**
  * Calculate current years of experience

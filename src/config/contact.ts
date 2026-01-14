@@ -47,12 +47,12 @@ export const contactConfig = {
     /**
      * WhatsApp number (without + prefix for wa.me links)
      */
-    whatsapp: '212524882156',
+    whatsapp: '212662425703',
 
     /**
      * WhatsApp number formatted for display
      */
-    whatsappDisplay: '05.24.88.21.56',
+    whatsappDisplay: '06.62.42.57.03',
 
     /**
      * Primary email address
@@ -145,14 +145,14 @@ export const contactConfig = {
      */
     hours: {
         /**
-         * Weekday hours (Monday - Friday)
+         * Weekday hours (Monday - Saturday)
          */
-        weekdays: 'Lun - Ven: 9h00 - 19h00',
+        weekdays: 'Lun - Sam: 8h30 - 13h00 / 14h30 - 18h30',
 
         /**
-         * Saturday hours
+         * Saturday hours (same as weekdays)
          */
-        saturday: 'Sam: 9h00 - 18h00',
+        saturday: 'Sam: 8h30 - 13h00 / 14h30 - 18h30',
 
         /**
          * Sunday hours (closed)
@@ -162,24 +162,24 @@ export const contactConfig = {
         /**
          * Full hours text for display
          */
-        full: 'Lun - Ven: 9h00 - 19h00 | Sam: 9h00 - 18h00 | Dim: Fermé',
+        full: 'Lun - Sam: 8h30 - 13h00 / 14h30 - 18h30 | Dim: Fermé',
 
         /**
          * Compact hours text
          */
-        compact: 'Lun - Sam: 9h - 19h',
+        compact: 'Lun - Sam: 8h30 - 18h30',
 
         /**
          * Structured hours data for detailed display
          */
         structured: [
-            { day: 'Lundi', open: '09:00', close: '19:00', isClosed: false },
-            { day: 'Mardi', open: '09:00', close: '19:00', isClosed: false },
-            { day: 'Mercredi', open: '09:00', close: '19:00', isClosed: false },
-            { day: 'Jeudi', open: '09:00', close: '19:00', isClosed: false },
-            { day: 'Vendredi', open: '09:00', close: '19:00', isClosed: false },
-            { day: 'Samedi', open: '09:00', close: '18:00', isClosed: false },
-            { day: 'Dimanche', open: '', close: '', isClosed: true },
+            { day: 'Lundi', open: '08:30', close: '18:30', lunchStart: '13:00', lunchEnd: '14:30', isClosed: false },
+            { day: 'Mardi', open: '08:30', close: '18:30', lunchStart: '13:00', lunchEnd: '14:30', isClosed: false },
+            { day: 'Mercredi', open: '08:30', close: '18:30', lunchStart: '13:00', lunchEnd: '14:30', isClosed: false },
+            { day: 'Jeudi', open: '08:30', close: '18:30', lunchStart: '13:00', lunchEnd: '14:30', isClosed: false },
+            { day: 'Vendredi', open: '08:30', close: '18:30', lunchStart: '13:00', lunchEnd: '14:30', isClosed: false },
+            { day: 'Samedi', open: '08:30', close: '18:30', lunchStart: '13:00', lunchEnd: '14:30', isClosed: false },
+            { day: 'Dimanche', open: '', close: '', lunchStart: '', lunchEnd: '', isClosed: true },
         ],
     },
 
@@ -200,7 +200,7 @@ export const contactConfig = {
         /**
          * WhatsApp direct link
          */
-        whatsapp: 'https://wa.me/212524882156',
+        whatsapp: 'https://wa.me/212662425703',
 
         /**
          * YouTube channel (optional)
@@ -270,6 +270,7 @@ export function getEmailLink(subject?: string): string {
 /**
  * Check if the business is currently open
  * Note: This is a simplified version that doesn't account for holidays
+ * Updated to account for lunch break (13:00 - 14:30)
  * 
  * @returns Whether the business is open right now
  */
@@ -283,15 +284,15 @@ export function isBusinessOpen(): boolean {
     // Closed on Sunday
     if (day === 0) return false;
 
-    // Saturday: 9:00 - 18:00
-    if (day === 6) {
-        const open = 9 * 60; // 9:00
-        const close = 18 * 60; // 18:00
-        return currentTime >= open && currentTime < close;
-    }
+    // Monday to Saturday: 8:30 - 13:00 and 14:30 - 18:30
+    const morningOpen = 8 * 60 + 30;  // 8:30
+    const morningClose = 13 * 60;      // 13:00
+    const afternoonOpen = 14 * 60 + 30; // 14:30
+    const afternoonClose = 18 * 60 + 30; // 18:30
 
-    // Weekdays: 9:00 - 19:00
-    const open = 9 * 60; // 9:00
-    const close = 19 * 60; // 19:00
-    return currentTime >= open && currentTime < close;
+    // Check if within morning hours or afternoon hours
+    const isMorningOpen = currentTime >= morningOpen && currentTime < morningClose;
+    const isAfternoonOpen = currentTime >= afternoonOpen && currentTime < afternoonClose;
+
+    return isMorningOpen || isAfternoonOpen;
 }

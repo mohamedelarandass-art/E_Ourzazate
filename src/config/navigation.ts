@@ -229,12 +229,12 @@ export const socialLinks = [
     },
     {
         label: 'Instagram',
-        href: 'https://instagram.com/equipement.ouarzazate',
+        href: 'https://instagram.com/equipementouarzazate',
         icon: 'Instagram',
     },
     {
         label: 'WhatsApp',
-        href: 'https://wa.me/212600000000',
+        href: 'https://wa.me/212662425703',
         icon: 'MessageCircle',
     },
 ] as const;

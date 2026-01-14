@@ -26,8 +26,8 @@ export const companyInfo = {
     // Identité
     name: 'Equipement Ouarzazate',
     legalName: 'EQUIPEMENT OUARZAZATE SARL',
-    slogan: 'Des Matériaux Fiables Pour Bâtir Vos Rêves',
-    foundingYear: 1970,
+    slogan: 'Votre partenaire en matériaux de construction depuis 1975',
+    foundingYear: 1975,
 
     // Informations légales
     legal: {

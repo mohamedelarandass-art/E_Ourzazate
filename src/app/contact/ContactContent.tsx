@@ -292,7 +292,7 @@ export function ContactContent() {
                                 <div className={styles.imagePlaceholderContent}>
                                     <MapPin size={48} />
                                     <span>Equipement Ouarzazate</span>
-                                    <span className={styles.imagePlaceholderSub}>Votre partenaire depuis 1970</span>
+                                    <span className={styles.imagePlaceholderSub}>Votre partenaire depuis 1975</span>
                                 </div>
                             </div>
 
@@ -304,12 +304,16 @@ export function ContactContent() {
                                 </div>
                                 <div className={styles.hoursContent}>
                                     <div className={styles.hoursRow}>
-                                        <span>Lun - Ven</span>
-                                        <span>09:00 - 19:00</span>
+                                        <span>Lun - Sam</span>
+                                        <span>08:30 - 13:00</span>
                                     </div>
                                     <div className={styles.hoursRow}>
-                                        <span>Samedi</span>
-                                        <span>09:00 - 18:00</span>
+                                        <span>Pause</span>
+                                        <span>13:00 - 14:30</span>
+                                    </div>
+                                    <div className={styles.hoursRow}>
+                                        <span>Reprise</span>
+                                        <span>14:30 - 18:30</span>
                                     </div>
                                     <div className={styles.hoursRow}>
                                         <span>Dimanche</span>
