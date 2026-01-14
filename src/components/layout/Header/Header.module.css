@@ -329,3 +329,25 @@
         /* Automatically 56px on mobile when scrolled */
     }
 }
+
+/* ===========================================================================
+   Dark Mode Support
+   =========================================================================== */
+
+:global([data-theme="dark"]) .header {
+    background-color: rgba(30, 30, 30, 0.8);
+}
+
+:global([data-theme="dark"]) .scrolled {
+    background-color: rgba(30, 30, 30, 0.95);
+}
+
+@media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme="light"])) .header {
+        background-color: rgba(30, 30, 30, 0.8);
+    }
+
+    :global(:root:not([data-theme="light"])) .scrolled {
+        background-color: rgba(30, 30, 30, 0.95);
+    }
+}

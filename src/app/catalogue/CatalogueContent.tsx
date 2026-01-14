@@ -3,8 +3,9 @@
  * 
  * Main content area with:
  * - Breadcrumb navigation
+ * - View toggle (1 or 2 columns on mobile)
  * - Active filter chips (removable)
- * - Responsive product grid
+ * - Responsive product grid with Load More
  * - Empty state handling
  * 
  * @module app/catalogue/CatalogueContent
@@ -12,10 +13,13 @@
 
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { ChevronRight, X, PackageX, Star, Sparkles, ArrowUpAZ, ArrowDownAZ, Clock } from 'lucide-react';
+import {
+    ChevronRight, X, PackageX, Star, Sparkles,
+    ArrowUpAZ, ArrowDownAZ, LayoutGrid, LayoutList, Loader2
+} from 'lucide-react';
 import { ProductCard } from '@/components';
 import type { Product, Category } from '@/types';
 import styles from './page.module.css';
@@ -26,6 +30,9 @@ interface CatalogueContentProps {
 }
 
 type SortOption = 'newest' | 'name-asc' | 'name-desc';
+type ViewMode = 'single' | 'double';
+
+const PRODUCTS_PER_PAGE = 10;
 
 export function CatalogueContent({ products, categories }: CatalogueContentProps) {
     const router = useRouter();
@@ -36,6 +43,11 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
     const showFeatured = searchParams.get('featured') === 'true';
     const showNew = searchParams.get('new') === 'true';
     const sortBy = (searchParams.get('sort') as SortOption) || 'newest';
+    const viewMode = (searchParams.get('view') as ViewMode) || 'single';
+
+    // Local state for displayed products count
+    const [displayCount, setDisplayCount] = useState(PRODUCTS_PER_PAGE);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Get category details
     const selectedCategory = categories.find(c => c.slug === categorySlug);
@@ -79,10 +91,38 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
         return result;
     }, [products, categorySlug, showFeatured, showNew, sortBy]);
 
+    // Products to display (with Load More)
+    const displayedProducts = useMemo(() => {
+        return filteredProducts.slice(0, displayCount);
+    }, [filteredProducts, displayCount]);
+
+    // Check if there are more products to load
+    const hasMore = displayCount < filteredProducts.length;
+    const remainingCount = filteredProducts.length - displayCount;
+
+    // Load more products
+    const handleLoadMore = useCallback(() => {
+        setIsLoading(true);
+        // Simulate a small delay for smooth UX
+        setTimeout(() => {
+            setDisplayCount(prev => Math.min(prev + PRODUCTS_PER_PAGE, filteredProducts.length));
+            setIsLoading(false);
+        }, 300);
+    }, [filteredProducts.length]);
+
+    // Toggle view mode
+    const toggleViewMode = useCallback((mode: ViewMode) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('view', mode);
+        router.push(`/catalogue?${params.toString()}`, { scroll: false });
+    }, [router, searchParams]);
+
     // Remove a specific filter
     const removeFilter = (filterKey: string) => {
         const params = new URLSearchParams(searchParams.toString());
         params.delete(filterKey);
+        // Reset display count when filters change
+        setDisplayCount(PRODUCTS_PER_PAGE);
         router.push(`/catalogue${params.toString() ? `?${params.toString()}` : ''}`, { scroll: false });
     };
 
@@ -127,6 +167,11 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
     // Page title
     const pageTitle = selectedCategory ? selectedCategory.name : 'Tous les produits';
 
+    // Grid class based on view mode
+    const gridClass = viewMode === 'double'
+        ? `${styles.productsGrid} ${styles.productsGridDouble}`
+        : styles.productsGrid;
+
     return (
         <div className={styles.content}>
             {/* Breadcrumb */}
@@ -148,14 +193,36 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
                 )}
             </nav>
 
-            {/* Page Header */}
+            {/* Page Header with View Toggle */}
             <header className={styles.contentHeader}>
-                <h1 className={styles.pageTitle}>{pageTitle}</h1>
-                <p className={styles.productCount}>
-                    <span className={styles.countNumber}>{filteredProducts.length}</span>
-                    {' '}
-                    {filteredProducts.length === 1 ? 'produit' : 'produits'}
-                </p>
+                <div className={styles.headerLeft}>
+                    <h1 className={styles.pageTitle}>{pageTitle}</h1>
+                    <p className={styles.productCount}>
+                        <span className={styles.countNumber}>{filteredProducts.length}</span>
+                        {' '}
+                        {filteredProducts.length === 1 ? 'produit' : 'produits'}
+                    </p>
+                </div>
+
+                {/* View Toggle - Visible on mobile */}
+                <div className={styles.viewToggle}>
+                    <button
+                        className={`${styles.viewButton} ${viewMode === 'single' ? styles.viewButtonActive : ''}`}
+                        onClick={() => toggleViewMode('single')}
+                        aria-label="Vue une colonne"
+                        aria-pressed={viewMode === 'single'}
+                    >
+                        <LayoutList size={18} />
+                    </button>
+                    <button
+                        className={`${styles.viewButton} ${viewMode === 'double' ? styles.viewButtonActive : ''}`}
+                        onClick={() => toggleViewMode('double')}
+                        aria-label="Vue deux colonnes"
+                        aria-pressed={viewMode === 'double'}
+                    >
+                        <LayoutGrid size={18} />
+                    </button>
+                </div>
             </header>
 
             {/* Active Filters Chips */}
@@ -178,17 +245,45 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
 
             {/* Products Grid or Empty State */}
             {filteredProducts.length > 0 ? (
-                <div className={styles.productsGrid}>
-                    {filteredProducts.map((product, index) => (
-                        <div
-                            key={product.id}
-                            className={styles.productItem}
-                            style={{ animationDelay: `${index * 60}ms` }}
-                        >
-                            <ProductCard product={product} />
-                        </div>
-                    ))}
-                </div>
+                <>
+                    <div className={gridClass}>
+                        {displayedProducts.map((product, index) => (
+                            <div
+                                key={product.id}
+                                className={styles.productItem}
+                                style={{ animationDelay: `${Math.min(index, 9) * 60}ms` }}
+                            >
+                                <ProductCard product={product} />
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Load More Section */}
+                    <div className={styles.loadMoreSection}>
+                        <p className={styles.loadMoreCount}>
+                            {displayedProducts.length} sur {filteredProducts.length} produits affichés
+                        </p>
+
+                        {hasMore && (
+                            <button
+                                className={styles.loadMoreButton}
+                                onClick={handleLoadMore}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+                                    <>
+                                        <Loader2 size={18} className={styles.loadMoreSpinner} />
+                                        Chargement...
+                                    </>
+                                ) : (
+                                    <>
+                                        Voir plus ({remainingCount} restant{remainingCount > 1 ? 's' : ''})
+                                    </>
+                                )}
+                            </button>
+                        )}
+                    </div>
+                </>
             ) : (
                 <div className={styles.emptyState}>
                     <div className={styles.emptyIcon}>
@@ -202,15 +297,6 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
                     <Link href="/catalogue" className={styles.emptyButton}>
                         Voir tous les produits
                     </Link>
-                </div>
-            )}
-
-            {/* Infinite Scroll Indicator (placeholder for future) */}
-            {filteredProducts.length > 0 && (
-                <div className={styles.loadMoreIndicator}>
-                    <span className={styles.indicatorText}>
-                        {filteredProducts.length} sur {filteredProducts.length} produits affichés
-                    </span>
                 </div>
             )}
         </div>

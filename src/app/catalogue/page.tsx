@@ -62,7 +62,7 @@ export default function CataloguePage() {
 
             <main className={styles.main}>
                 <div className={styles.catalogueLayout}>
-                    {/* Left Sidebar */}
+                    {/* Left Sidebar - Desktop only */}
                     <aside className={styles.sidebarWrapper}>
                         <Suspense fallback={<div className={styles.sidebarSkeleton}>Chargement...</div>}>
                             <CatalogueSidebar categories={categories} />
@@ -79,6 +79,11 @@ export default function CataloguePage() {
                         </Suspense>
                     </section>
                 </div>
+
+                {/* Mobile Filter Button - Rendered at page level to avoid sidebarWrapper hiding */}
+                <Suspense fallback={null}>
+                    <CatalogueSidebar categories={categories} mobileOnly />
+                </Suspense>
             </main>
 
             {/* Footer */}
@@ -86,3 +91,4 @@ export default function CataloguePage() {
         </div>
     );
 }
+
