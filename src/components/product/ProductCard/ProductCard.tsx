@@ -17,7 +17,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { MessageCircle, Eye, ArrowRight, Sparkles, Star } from 'lucide-react';
+import { MessageCircle, Eye, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getProductWhatsAppUrl } from '@/lib/whatsapp';
 import { productBlur } from '@/data';
@@ -81,13 +81,11 @@ export function ProductCard({ product, className }: ProductCardProps) {
                 <div className={styles.badges}>
                     {product.isNew && (
                         <span className={styles.badgeNew}>
-                            <Sparkles size={12} />
                             Nouveau
                         </span>
                     )}
                     {product.isFeatured && (
                         <span className={styles.badgeFeatured}>
-                            <Star size={12} />
                             Vedette
                         </span>
                     )}

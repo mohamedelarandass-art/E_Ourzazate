@@ -1,7 +1,7 @@
 # Equipement Ouarzazate - Technical Architecture Documentation
 
 **Project**: Equipement Ouarzazate E-Commerce Platform  
-**Version**: 1.0.1  
+**Version**: 1.0.2  
 **Last Updated**: January 14, 2026  
 **Status**: Active Development (Frontend Complete, Backend Planning)  
 **Document Owner**: Development Team
@@ -4485,6 +4485,13 @@ npm run test:coverage    # Coverage report
 ---
 
 ## Changelog
+
+### Version 1.0.2 (January 14, 2026)
+
+- **Header UX Enhancement**: Reduced header heights for shallower appearance (Desktop: 64px/56px, Mobile: 56px/48px)
+- **Glassmorphism**: Added transparent `backdrop-filter: blur(12px)` effect to navbar with dark mode support
+- **Smart Scroll Behavior**: Navbar hides on scroll-down, immediately reappears on scroll-up
+- **Files Modified**: `Header.tsx`, `Header.module.css`, `variables.css`
 
 ### Version 1.0.1 (January 14, 2026)
 

@@ -114,7 +114,7 @@ export function CatalogueSidebar({ categories, mobileOnly = false }: CatalogueSi
                 )}
 
                 {/* Mobile Drawer Sidebar */}
-                <div className={`${styles.sidebar} ${styles.mobileSidebar} ${isMobileOpen ? styles.sidebarOpen : ''}`}>
+                <div className={`${styles.mobileSidebar} ${isMobileOpen ? styles.sidebarOpen : ''}`}>
                     {/* Mobile Close Button */}
                     <button
                         className={styles.mobileCloseButton}

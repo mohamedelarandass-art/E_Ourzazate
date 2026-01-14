@@ -37,7 +37,7 @@ export default function Home() {
         <Statistics />
 
         {/* Featured Products Section */}
-        <FeaturedProducts limit={6} />
+        <FeaturedProducts limit={3} />
 
         {/* Partners Section - Trusted brands */}
         <Partners />
