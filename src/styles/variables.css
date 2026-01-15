@@ -5,8 +5,9 @@
  * Variables are organized into logical groups for maintainability.
  * 
  * Design Philosophy:
- * - Premium boutique aesthetic (inspired by high-end furniture stores)
- * - Warm, earthy tones with no orange
+ * - Professional construction/materials business aesthetic
+ * - Warm bronze and emerald accents
+ * - Clean, trustworthy appearance for B2B audience
  * - Generous whitespace
  * - Subtle shadows
  * - Smooth transitions
@@ -47,34 +48,45 @@
    * Accent Colors
    * Used for subtle highlights and decorative elements
    */
-    --color-accent: #D4C4B0;
-    /* Subtle accents, decorative */
-    --color-accent-light: #E8DED0;
+    --color-accent: #E8DFD3;
+    /* Subtle accents, decorative - warm cream */
+    --color-accent-light: #F5F0E8;
     /* Lighter accent */
-    --color-accent-dark: #B8A890;
+    --color-accent-dark: #CFC4B5;
     /* Darker accent */
 
     /**
-   * Wood Tone
+   * Bronze Tone (Primary Accent)
    * Warm accent color for highlights and interactive elements
    */
-    --color-wood: #C4A77D;
-    /* Warm highlights, buttons */
-    --color-wood-light: #D4BC9A;
-    /* Lighter wood tone */
-    --color-wood-dark: #A08660;
-    /* Darker wood tone */
+    --color-wood: #b08d57;
+    /* Primary bronze accent */
+    --color-wood-light: #c9a66b;
+    /* Lighter bronze */
+    --color-wood-dark: #8a6d42;
+    /* Darker bronze */
 
     /**
-   * WhatsApp Brand Color
-   * Used for CTA buttons and WhatsApp-related actions
+   * Emerald (Secondary Accent)
+   * Used for CTAs, success states, and action buttons
    */
-    --color-whatsapp: #25D366;
-    /* WhatsApp green */
-    --color-whatsapp-hover: #20BD5A;
-    /* WhatsApp hover state */
-    --color-whatsapp-dark: #128C7E;
-    /* WhatsApp dark variant */
+    --color-emerald: #059669;
+    /* Primary emerald */
+    --color-emerald-light: #10b981;
+    /* Lighter emerald */
+    --color-emerald-dark: #047857;
+    /* Darker emerald */
+
+    /**
+   * WhatsApp / CTA Color
+   * Using emerald for consistency with design system
+   */
+    --color-whatsapp: #059669;
+    /* Emerald (matches design) */
+    --color-whatsapp-hover: #047857;
+    /* Darker on hover */
+    --color-whatsapp-dark: #065f46;
+    /* Dark variant */
 
     /**
    * Text Colors
@@ -104,20 +116,20 @@
    * Status Colors
    * Used for feedback states
    */
-    --color-success: #22C55E;
-    /* Success, positive */
-    --color-success-light: #DCFCE7;
+    --color-success: #059669;
+    /* Success - using emerald */
+    --color-success-light: #D1FAE5;
     /* Success background */
-    --color-warning: #F59E0B;
-    /* Warning, caution */
+    --color-warning: #D97706;
+    /* Warning - muted amber */
     --color-warning-light: #FEF3C7;
     /* Warning background */
-    --color-error: #EF4444;
-    /* Error, destructive */
+    --color-error: #DC2626;
+    /* Error - slightly muted red */
     --color-error-light: #FEE2E2;
     /* Error background */
-    --color-info: #3B82F6;
-    /* Info, neutral */
+    --color-info: #2563EB;
+    /* Info - deeper blue */
     --color-info-light: #DBEAFE;
     /* Info background */
 
@@ -346,7 +358,7 @@
     --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
     --shadow-none: 0 0 #0000;
     --shadow-card-hover: 0 25px 50px -12px rgba(0, 0, 0, 0.12),
-        0 0 0 1px rgba(196, 167, 125, 0.2);
+        0 0 0 1px rgba(176, 141, 87, 0.2);
 
     /**
    * Elevation Shadows (for cards and surfaces)
