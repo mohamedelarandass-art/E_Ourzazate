@@ -1,14 +1,16 @@
 /**
- * Hero Section - Premium Design
+ * Hero Section - Premium Editorial Design
  * 
- * Main hero banner for the homepage with immersive visuals.
+ * Editorial Minimalism with Industrial Soul
+ * Core emotion: Trust through quiet confidence
+ * 
  * Features:
- * - Split layout: content left, showcase image right
- * - Luxury bathroom/kitchen background images
- * - Glassmorphism elements
- * - Floating geometric patterns
- * - Enhanced trust indicators
- * - Micro-animations
+ * - Centered layout with dramatic dark overlay
+ * - Single abstract material background (marble texture)
+ * - Serif headline with heritage message
+ * - Single primary CTA (catalogue) + subtle text link
+ * - Inline trust stats (no cards)
+ * - Refined entrance animations
  * 
  * @module components/sections/Hero
  */
@@ -18,10 +20,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, MessageCircle, Award, Grid3X3, Package, Sparkles } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 import { siteConfig } from '@/config';
 import { getWhatsAppUrl } from '@/lib/whatsapp';
-import { getBlurPlaceholder, productShowcaseBlur } from '@/data';
 import { Button } from '@/components/ui';
 import styles from './Hero.module.css';
 
@@ -30,55 +31,25 @@ export interface HeroProps {
 }
 
 /**
- * Background images for hero slideshow effect
+ * Trust statistics for display
  */
-const heroBackgrounds = [
+const stats = [
     {
-        src: '/images/hero/hero-bathroom.webp',
-        alt: 'Salle de bain luxueuse moderne',
-    },
-    {
-        src: '/images/hero/hero-kitchen.webp',
-        alt: 'Cuisine premium moderne',
-    },
-];
-
-/**
- * Trust indicators with icons and data
- */
-const trustIndicators = [
-    {
-        icon: Award,
         value: '50+',
-        label: "Années d'Expérience",
-        suffix: '',
+        label: 'années',
     },
     {
-        icon: Grid3X3,
         value: '6',
-        label: 'Catégories',
-        suffix: '',
+        label: 'catégories',
     },
     {
-        icon: Package,
         value: '1000+',
-        label: 'Produits',
-        suffix: '',
+        label: 'produits',
     },
 ];
 
 export function Hero({ className }: HeroProps) {
-    const [currentBgIndex, setCurrentBgIndex] = useState(0);
     const [isLoaded, setIsLoaded] = useState(false);
-
-    // Background image rotation effect
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentBgIndex((prev) => (prev + 1) % heroBackgrounds.length);
-        }, 8000); // Change every 8 seconds
-
-        return () => clearInterval(timer);
-    }, []);
 
     // Initial load animation trigger
     useEffect(() => {
@@ -86,163 +57,107 @@ export function Hero({ className }: HeroProps) {
         return () => clearTimeout(timer);
     }, []);
 
+    // Handle scroll indicator click
+    const handleScrollClick = () => {
+        window.scrollTo({
+            top: window.innerHeight,
+            behavior: 'smooth',
+        });
+    };
+
     return (
         <section className={`${styles.hero} ${className || ''} ${isLoaded ? styles.loaded : ''}`}>
-            {/* Background Images with Crossfade */}
+            {/* Background Image */}
             <div className={styles.backgroundContainer} aria-hidden="true">
-                {heroBackgrounds.map((bg, index) => (
-                    <div
-                        key={bg.src}
-                        className={`${styles.backgroundImage} ${index === currentBgIndex ? styles.active : ''
-                            }`}
-                    >
-                        <Image
-                            src={bg.src}
-                            alt={bg.alt}
-                            fill
-                            priority={index === 0}
-                            quality={75}
-                            placeholder="blur"
-                            blurDataURL={getBlurPlaceholder(bg.src)}
-                            sizes="100vw"
-                            style={{ objectFit: 'cover' }}
-                        />
-                    </div>
-                ))}
-                {/* Gradient Overlay */}
+                <Image
+                    src="/images/hero/hero-material-texture.png"
+                    alt=""
+                    fill
+                    priority
+                    quality={85}
+                    sizes="100vw"
+                    style={{ objectFit: 'cover' }}
+                    className={styles.backgroundImage}
+                />
+                {/* Dark Gradient Overlay */}
                 <div className={styles.gradientOverlay} />
             </div>
 
-            {/* Floating Geometric Patterns */}
+            {/* Subtle Floating Patterns */}
             <div className={styles.patterns} aria-hidden="true">
                 <div className={styles.pattern1} />
                 <div className={styles.pattern2} />
-                <div className={styles.pattern3} />
-                <div className={styles.patternGrid} />
             </div>
 
-            {/* Main Content */}
+            {/* Main Content - Centered */}
             <div className={`container ${styles.container}`}>
-                <div className={styles.grid}>
-                    {/* Left Side - Content */}
-                    <div className={styles.content}>
-                        {/* Excellence Badge */}
-                        <div className={styles.badge}>
-                            <Sparkles size={16} className={styles.badgeIcon} />
-                            <span>Excellence Depuis {siteConfig.establishedYear}</span>
-                        </div>
+                <div className={styles.content}>
+                    {/* Gold Accent Line */}
+                    <div className={styles.accentLine} />
 
-                        {/* Title */}
-                        <h1 className={styles.title}>
-                            <span className={styles.titleLine1}>Votre Partenaire en</span>
-                            <span className={styles.titleLine2}>
-                                Matériaux de{' '}
-                                <span className={styles.highlight}>Construction</span>
-                            </span>
-                        </h1>
+                    {/* Headline */}
+                    <h1 className={styles.title}>
+                        <span className={styles.headline}>
+                            L'excellence des matériaux,
+                        </span>
+                        <span className={styles.headlineAccent}>
+                            depuis {siteConfig.establishedYear}.
+                        </span>
+                    </h1>
 
-                        {/* Subtitle */}
-                        <p className={styles.subtitle}>
-                            Fournisseur de matériaux haut de gamme et solutions sur mesure
-                            pour des projets d'exception au Maroc depuis plus de{' '}
-                            <strong>{siteConfig.yearsOfExperience} ans</strong>.
-                        </p>
+                    {/* Subtitle */}
+                    <p className={styles.subtitle}>
+                        Fournisseur de référence au Maroc pour vos projets d'exception.
+                    </p>
 
-                        {/* CTA Buttons */}
-                        <div className={styles.actions}>
-                            <Link href="/catalogue" className={styles.primaryCta}>
-                                <Button
-                                    variant="primary"
-                                    size="lg"
-                                    rightIcon={<ArrowRight size={20} />}
-                                    className={styles.ctaButton}
-                                >
-                                    Explorer le Catalogue
-                                </Button>
-                            </Link>
-                            <a
-                                href={getWhatsAppUrl()}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.whatsappCta}
+                    {/* CTAs */}
+                    <div className={styles.actions}>
+                        <Link href="/catalogue" className={styles.primaryCta}>
+                            <Button
+                                variant="primary"
+                                size="lg"
+                                rightIcon={<ArrowRight size={20} />}
+                                className={styles.ctaButton}
                             >
-                                <Button
-                                    variant="whatsapp"
-                                    size="lg"
-                                    leftIcon={<MessageCircle size={20} />}
-                                    className={styles.ctaButton}
-                                >
-                                    Contactez-nous
-                                </Button>
-                            </a>
-                        </div>
-
-                        {/* Trust Indicators */}
-                        <div className={styles.trust}>
-                            {trustIndicators.map((indicator, index) => (
-                                <div
-                                    key={indicator.label}
-                                    className={styles.trustItem}
-                                    style={{ animationDelay: `${0.6 + index * 0.1}s` }}
-                                >
-                                    <div className={styles.trustIcon}>
-                                        <indicator.icon size={24} />
-                                    </div>
-                                    <div className={styles.trustContent}>
-                                        <span className={styles.trustNumber}>
-                                            {indicator.value}
-                                            {indicator.suffix}
-                                        </span>
-                                        <span className={styles.trustLabel}>
-                                            {indicator.label}
-                                        </span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                                Explorer le Catalogue
+                            </Button>
+                        </Link>
+                        <a
+                            href={getWhatsAppUrl()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.secondaryLink}
+                        >
+                            Une question ? Contactez-nous →
+                        </a>
                     </div>
 
-                    {/* Right Side - Product Showcase */}
-                    <div className={styles.showcase}>
-                        <div className={styles.showcaseCard}>
-                            {/* Glassmorphism Frame */}
-                            <div className={styles.showcaseFrame}>
-                                <Image
-                                    src="/images/hero/product-showcase.webp"
-                                    alt="Collection de matériaux premium"
-                                    width={500}
-                                    height={500}
-                                    quality={75}
-                                    placeholder="blur"
-                                    blurDataURL={productShowcaseBlur}
-                                    className={styles.showcaseImage}
-                                    priority
-                                />
+                    {/* Trust Stats - Inline */}
+                    <div className={styles.stats}>
+                        {stats.map((stat, index) => (
+                            <div key={stat.label} className={styles.statGroup}>
+                                <div className={styles.stat}>
+                                    <span className={styles.statNumber}>{stat.value}</span>
+                                    <span className={styles.statLabel}>{stat.label}</span>
+                                </div>
+                                {index < stats.length - 1 && (
+                                    <div className={styles.statDivider} />
+                                )}
                             </div>
-                            {/* Floating Badge */}
-                            <div className={styles.showcaseBadge}>
-                                <span className={styles.showcaseBadgeText}>Collection Premium</span>
-                            </div>
-                        </div>
-                        {/* Decorative Elements */}
-                        <div className={styles.showcaseDecor1} aria-hidden="true" />
-                        <div className={styles.showcaseDecor2} aria-hidden="true" />
+                        ))}
                     </div>
                 </div>
             </div>
 
-            {/* Background Dots Indicator */}
-            <div className={styles.bgIndicator} aria-hidden="true">
-                {heroBackgrounds.map((_, index) => (
-                    <button
-                        key={index}
-                        type="button"
-                        className={`${styles.bgDot} ${index === currentBgIndex ? styles.activeDot : ''}`}
-                        onClick={() => setCurrentBgIndex(index)}
-                        aria-label={`Afficher l'image ${index + 1}`}
-                    />
-                ))}
-            </div>
+            {/* Scroll Indicator */}
+            <button
+                type="button"
+                className={styles.scrollIndicator}
+                onClick={handleScrollClick}
+                aria-label="Défiler vers le bas"
+            >
+                <ChevronDown size={28} />
+            </button>
         </section>
     );
 }
