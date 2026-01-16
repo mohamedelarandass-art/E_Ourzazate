@@ -56,7 +56,8 @@ html {
  */
 body {
   min-height: 100vh;
-  min-height: 100dvh; /* Dynamic viewport height for mobile */
+  min-height: 100dvh;
+  /* Dynamic viewport height for mobile */
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -203,6 +204,7 @@ table {
  * Reduced motion for users who prefer it.
  */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -236,7 +238,7 @@ table {
  * Show focus outline for keyboard navigation.
  */
 :focus-visible {
-  outline: 2px solid var(--color-wood, #C4A77D);
+  outline: 2px solid var(--color-wood, #b08d57);
   outline-offset: 2px;
 }
 
@@ -248,7 +250,7 @@ table {
  * Custom selection color.
  */
 ::selection {
-  background-color: var(--color-wood, #C4A77D);
+  background-color: var(--color-wood, #b08d57);
   color: var(--color-background, #FAFAFA);
 }
 
@@ -274,5 +276,5 @@ table {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-wood, #C4A77D);
+  background: var(--color-wood, #b08d57);
 }

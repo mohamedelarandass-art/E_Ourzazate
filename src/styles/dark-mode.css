@@ -7,7 +7,7 @@
  * Color philosophy for dark mode:
  * - Darker backgrounds with slightly elevated surfaces
  * - Inverted text colors (light on dark)
- * - Preserved accent colors (wood tone remains warm)
+ * - Preserved accent colors (bronze and emerald remain vibrant)
  * - Reduced shadow intensity
  * 
  * @module styles/dark-mode
@@ -56,16 +56,30 @@
     --color-border-dark: #404040;
 
     /**
-   * Status Colors (slightly muted for dark mode)
+   * Status Colors (slightly adjusted for dark mode)
    */
-    --color-success: #22C55E;
-    --color-success-light: #1A3D2A;
+    --color-success: #10b981;
+    --color-success-light: #064e3b;
     --color-warning: #F59E0B;
     --color-warning-light: #3D3015;
     --color-error: #EF4444;
     --color-error-light: #3D1A1A;
     --color-info: #3B82F6;
     --color-info-light: #1A2A3D;
+
+    /**
+   * Emerald accent for dark mode
+   */
+    --color-emerald: #10b981;
+    --color-emerald-light: #34d399;
+    --color-emerald-dark: #059669;
+
+    /**
+   * Bronze accent (slightly lighter for dark backgrounds)
+   */
+    --color-wood: #c9a66b;
+    --color-wood-light: #d4b87e;
+    --color-wood-dark: #b08d57;
 
     /**
    * Overlay Colors
@@ -93,7 +107,7 @@
     --elevation-3: 0 10px 20px rgba(0, 0, 0, 0.4), 0 3px 6px rgba(0, 0, 0, 0.25);
     --elevation-4: 0 15px 25px rgba(0, 0, 0, 0.45), 0 5px 10px rgba(0, 0, 0, 0.25);
     --shadow-card-hover: 0 25px 50px -12px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(196, 167, 125, 0.3);
+        0 0 0 1px rgba(176, 141, 87, 0.3);
 }
 
 /* ==========================================================================

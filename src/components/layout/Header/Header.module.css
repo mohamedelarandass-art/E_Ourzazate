@@ -237,27 +237,78 @@
     color: var(--color-text-primary);
 }
 
-/* Mobile Menu */
+/* ===========================================================================
+   Mobile Menu - Portal-based (Rendered outside header for iOS Safari fix)
+   
+   IMPORTANT: The mobile menu is rendered via React Portal to document.body.
+   This fixes iOS Safari's transform + fixed positioning stacking context bug.
+   When a parent element has a CSS transform, fixed-positioned children
+   behave incorrectly on WebKit browsers.
+   =========================================================================== */
+
+/* Backdrop Overlay */
+.mobileMenuBackdrop {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-modal) - 1);
+    background-color: rgba(0, 0, 0, 0);
+    pointer-events: none;
+    transition: background-color var(--duration-300) var(--ease-in-out);
+    /* iOS Safari: ensure backdrop is touchable */
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobileMenuBackdropOpen {
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+}
+
+/* Mobile Menu Panel */
 .mobileMenu {
     position: fixed;
     top: var(--header-height);
-    /* Automatically adjusts: 80px desktop, 64px mobile */
     left: 0;
     right: 0;
     bottom: 0;
     z-index: var(--z-modal);
+    display: flex;
+    flex-direction: column;
     background-color: var(--color-surface);
+    /* 
+     * iOS Safari fix: Use visibility + opacity in addition to transform
+     * for smoother rendering and to ensure the element is properly hidden
+     */
+    visibility: hidden;
+    opacity: 0;
     transform: translateX(100%);
-    transition: transform var(--duration-300) var(--ease-in-out);
+    transition:
+        transform var(--duration-300) var(--ease-in-out),
+        opacity var(--duration-300) var(--ease-in-out),
+        visibility var(--duration-300) var(--ease-in-out);
     overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    /* iOS Safari: smooth scrolling and momentum */
+    -webkit-overflow-scrolling: touch;
+    /* iOS Safari: safe area for notched devices */
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* When header is scrolled (smaller height) */
+.mobileMenuScrolled {
+    top: var(--header-height-scrolled);
 }
 
 .mobileMenuOpen {
+    visibility: visible;
+    opacity: 1;
     transform: translateX(0);
 }
 
+/* Mobile Navigation */
 .mobileNav {
     padding: var(--spacing-4);
+    flex: 1;
 }
 
 .mobileNavList {
@@ -272,15 +323,44 @@
     font-weight: var(--font-weight-medium);
     color: var(--color-text-primary);
     border-bottom: 1px solid var(--color-border);
+    text-decoration: none;
+    transition: color var(--duration-200) var(--ease-in-out),
+        background-color var(--duration-200) var(--ease-in-out);
+    /* iOS Safari: ensure touch targets are properly sized */
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobileNavLink:hover,
+.mobileNavLink:focus {
+    color: var(--color-wood);
+    background-color: var(--color-surface-hover);
+}
+
+.mobileNavLink:active {
+    background-color: var(--color-accent-light);
 }
 
 .mobileNavLink.active {
     color: var(--color-wood);
+    font-weight: var(--font-weight-semibold);
 }
 
+/* Mobile Actions (WhatsApp button) */
 .mobileActions {
     padding: var(--spacing-4);
+    padding-bottom: calc(var(--spacing-4) + env(safe-area-inset-bottom, 0));
     margin-top: auto;
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+}
+
+/* Menu Button Active State */
+.menuButtonActive {
+    color: var(--color-wood);
+    background-color: var(--color-surface-hover);
 }
 
 /* ===========================================================================
@@ -317,17 +397,6 @@
         min-width: 44px;
         min-height: 44px;
     }
-
-    .mobileMenu {
-        top: var(--header-height);
-        /* Automatically 64px on mobile */
-    }
-
-    .scrolled+.mobileMenu,
-    .scrolled~.mobileMenu {
-        top: var(--header-height-scrolled);
-        /* Automatically 56px on mobile when scrolled */
-    }
 }
 
 /* ===========================================================================
@@ -342,6 +411,15 @@
     background-color: rgba(30, 30, 30, 0.95);
 }
 
+:global([data-theme="dark"]) .mobileMenuBackdropOpen {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+:global([data-theme="dark"]) .mobileMenu {
+    background-color: var(--color-surface);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
 @media (prefers-color-scheme: dark) {
     :global(:root:not([data-theme="light"])) .header {
         background-color: rgba(30, 30, 30, 0.8);
@@ -349,5 +427,14 @@
 
     :global(:root:not([data-theme="light"])) .scrolled {
         background-color: rgba(30, 30, 30, 0.95);
+    }
+
+    :global(:root:not([data-theme="light"])) .mobileMenuBackdropOpen {
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    :global(:root:not([data-theme="light"])) .mobileMenu {
+        background-color: var(--color-surface);
+        box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
     }
 }

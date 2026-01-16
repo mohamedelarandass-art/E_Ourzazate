@@ -58,7 +58,7 @@
     width: 800px;
     height: 600px;
     background: radial-gradient(ellipse,
-            rgba(196, 167, 125, 0.15) 0%,
+            rgba(176, 141, 87, 0.15) 0%,
             transparent 70%);
     pointer-events: none;
 }
@@ -102,7 +102,7 @@
 .statusDot {
     width: 8px;
     height: 8px;
-    background-color: #22c55e;
+    background-color: #059669;
     border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
 }
@@ -141,14 +141,14 @@
     align-items: center;
     gap: var(--spacing-4);
     padding: var(--spacing-5) var(--spacing-8);
-    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
     color: white;
     border-radius: var(--radius-2xl);
     text-decoration: none;
     font-weight: var(--font-weight-semibold);
     box-shadow:
-        0 4px 14px rgba(37, 211, 102, 0.35),
-        0 8px 30px rgba(37, 211, 102, 0.2);
+        0 4px 14px rgba(5, 150, 105, 0.35),
+        0 8px 30px rgba(5, 150, 105, 0.2);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
@@ -175,8 +175,8 @@
 .megaWhatsApp:hover {
     transform: translateY(-4px) scale(1.02);
     box-shadow:
-        0 8px 25px rgba(37, 211, 102, 0.45),
-        0 16px 50px rgba(37, 211, 102, 0.25);
+        0 8px 25px rgba(5, 150, 105, 0.45),
+        0 16px 50px rgba(5, 150, 105, 0.25);
 }
 
 .megaWhatsApp:hover::before {
@@ -336,7 +336,7 @@
     justify-content: center;
     width: 44px;
     height: 44px;
-    background: linear-gradient(135deg, rgba(196, 167, 125, 0.12) 0%, rgba(196, 167, 125, 0.06) 100%);
+    background: linear-gradient(135deg, rgba(176, 141, 87, 0.12) 0%, rgba(176, 141, 87, 0.06) 100%);
     border-radius: var(--radius-lg);
     color: var(--color-wood);
     flex-shrink: 0;
@@ -485,8 +485,8 @@
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg,
-            rgba(196, 167, 125, 0.1) 0%,
-            rgba(196, 167, 125, 0.05) 100%);
+            rgba(176, 141, 87, 0.1) 0%,
+            rgba(176, 141, 87, 0.05) 100%);
 }
 
 .imagePlaceholderContent {
@@ -657,7 +657,7 @@
 .select:focus {
     outline: none;
     border-color: var(--color-wood);
-    box-shadow: 0 0 0 3px rgba(196, 167, 125, 0.12);
+    box-shadow: 0 0 0 3px rgba(176, 141, 87, 0.12);
 }
 
 /* Textarea */
@@ -697,7 +697,7 @@
 .textarea:focus {
     outline: none;
     border-color: var(--color-wood);
-    box-shadow: 0 0 0 3px rgba(196, 167, 125, 0.12);
+    box-shadow: 0 0 0 3px rgba(176, 141, 87, 0.12);
 }
 
 .textareaError {

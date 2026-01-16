@@ -126,7 +126,7 @@
     background-color: var(--color-whatsapp-hover);
     border-color: var(--color-whatsapp-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
 }
 
 .whatsapp:active:not(:disabled) {
