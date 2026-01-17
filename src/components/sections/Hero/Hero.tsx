@@ -1,23 +1,26 @@
 /**
  * Hero Section - Premium Editorial Design
  * 
- * Editorial Minimalism with Industrial Soul
- * Core emotion: Trust through quiet confidence
+ * Design Direction: "Editorial Minimalism with Industrial Soul"
+ * Core Emotion: Trust through heritage, quality, and simplicity
  * 
  * Features:
- * - Centered layout with dramatic dark overlay
- * - Single abstract material background (marble texture)
+ * - Centered layout with responsive spacing
+ * - Abstract material background (marble texture)
+ * - Mode-aware styling (light/dark)
  * - Serif headline with heritage message
- * - Single primary CTA (catalogue) + subtle text link
- * - Inline trust stats (no cards)
- * - Refined entrance animations
+ * - Single primary CTA + subtle secondary link
+ * - Inline trust stats
+ * - Scroll indicator (guaranteed visible via flex layout)
+ * - Staggered entrance animations
+ * - Full accessibility support
  * 
  * @module components/sections/Hero
  */
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, ChevronDown } from 'lucide-react';
@@ -26,49 +29,57 @@ import { getWhatsAppUrl } from '@/lib/whatsapp';
 import { Button } from '@/components/ui';
 import styles from './Hero.module.css';
 
+/* -------------------------------------------------------------------------- */
+/*                                   Types                                    */
+/* -------------------------------------------------------------------------- */
+
 export interface HeroProps {
+    /** Additional CSS class names */
     className?: string;
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                   Data                                     */
+/* -------------------------------------------------------------------------- */
+
 /**
- * Trust statistics for display
+ * Trust statistics displayed inline at the bottom of the hero
  */
-const stats = [
-    {
-        value: '50+',
-        label: 'années',
-    },
-    {
-        value: '6',
-        label: 'catégories',
-    },
-    {
-        value: '1000+',
-        label: 'produits',
-    },
-];
+const trustStats = [
+    { value: '50+', label: 'années' },
+    { value: '6', label: 'catégories' },
+    { value: '1000+', label: 'produits' },
+] as const;
+
+/* -------------------------------------------------------------------------- */
+/*                                 Component                                  */
+/* -------------------------------------------------------------------------- */
 
 export function Hero({ className }: HeroProps) {
+    // Animation trigger state
     const [isLoaded, setIsLoaded] = useState(false);
 
-    // Initial load animation trigger
+    // Trigger entrance animations after mount
     useEffect(() => {
         const timer = setTimeout(() => setIsLoaded(true), 100);
         return () => clearTimeout(timer);
     }, []);
 
     // Handle scroll indicator click
-    const handleScrollClick = () => {
+    const handleScrollClick = useCallback(() => {
         window.scrollTo({
             top: window.innerHeight,
             behavior: 'smooth',
         });
-    };
+    }, []);
 
     return (
-        <section className={`${styles.hero} ${className || ''} ${isLoaded ? styles.loaded : ''}`}>
-            {/* Background Image */}
-            <div className={styles.backgroundContainer} aria-hidden="true">
+        <section
+            className={`${styles.hero} ${className || ''} ${isLoaded ? styles.loaded : ''}`}
+            aria-label="Section d'accueil"
+        >
+            {/* Background Layer */}
+            <div className={styles.background} aria-hidden="true">
                 <Image
                     src="/images/hero/hero-material-texture.png"
                     alt=""
@@ -76,28 +87,26 @@ export function Hero({ className }: HeroProps) {
                     priority
                     quality={85}
                     sizes="100vw"
-                    style={{ objectFit: 'cover' }}
                     className={styles.backgroundImage}
                 />
-                {/* Dark Gradient Overlay */}
-                <div className={styles.gradientOverlay} />
+                <div className={styles.overlay} />
             </div>
 
-            {/* Subtle Floating Patterns */}
-            <div className={styles.patterns} aria-hidden="true">
-                <div className={styles.pattern1} />
-                <div className={styles.pattern2} />
+            {/* Decorative Floating Elements */}
+            <div className={styles.decorations} aria-hidden="true">
+                <div className={styles.decorSquare} />
+                <div className={styles.decorCircle} />
             </div>
 
-            {/* Main Content - Centered */}
-            <div className={`container ${styles.container}`}>
+            {/* Main Content */}
+            <div className={styles.container}>
                 <div className={styles.content}>
                     {/* Gold Accent Line */}
-                    <div className={styles.accentLine} />
+                    <div className={styles.accentLine} aria-hidden="true" />
 
                     {/* Headline */}
-                    <h1 className={styles.title}>
-                        <span className={styles.headline}>
+                    <h1 className={styles.headline}>
+                        <span className={styles.headlineMain}>
                             L'excellence des matériaux,
                         </span>
                         <span className={styles.headlineAccent}>
@@ -110,7 +119,7 @@ export function Hero({ className }: HeroProps) {
                         Fournisseur de référence au Maroc pour vos projets d'exception.
                     </p>
 
-                    {/* CTAs */}
+                    {/* Call to Actions */}
                     <div className={styles.actions}>
                         <Link href="/catalogue" className={styles.primaryCta}>
                             <Button
@@ -122,42 +131,44 @@ export function Hero({ className }: HeroProps) {
                                 Explorer le Catalogue
                             </Button>
                         </Link>
+
                         <a
                             href={getWhatsAppUrl()}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={styles.secondaryLink}
+                            className={styles.secondaryCta}
                         >
-                            Une question ? Contactez-nous →
+                            Une question ? Contactez-nous
+                            <span className={styles.ctaArrow}>→</span>
                         </a>
                     </div>
 
-                    {/* Trust Stats - Inline */}
+                    {/* Trust Stats */}
                     <div className={styles.stats}>
-                        {stats.map((stat, index) => (
-                            <div key={stat.label} className={styles.statGroup}>
-                                <div className={styles.stat}>
-                                    <span className={styles.statNumber}>{stat.value}</span>
-                                    <span className={styles.statLabel}>{stat.label}</span>
-                                </div>
-                                {index < stats.length - 1 && (
-                                    <div className={styles.statDivider} />
+                        {trustStats.map((stat, index) => (
+                            <div key={stat.label} className={styles.statItem}>
+                                <span className={styles.statValue}>{stat.value}</span>
+                                <span className={styles.statLabel}>{stat.label}</span>
+                                {index < trustStats.length - 1 && (
+                                    <span className={styles.statDivider} aria-hidden="true" />
                                 )}
                             </div>
                         ))}
                     </div>
                 </div>
-            </div>
 
-            {/* Scroll Indicator */}
-            <button
-                type="button"
-                className={styles.scrollIndicator}
-                onClick={handleScrollClick}
-                aria-label="Défiler vers le bas"
-            >
-                <ChevronDown size={28} />
-            </button>
+                {/* Scroll Indicator - Inside container for guaranteed visibility */}
+                <button
+                    type="button"
+                    className={styles.scrollIndicator}
+                    onClick={handleScrollClick}
+                    aria-label="Défiler vers le contenu"
+                >
+                    <ChevronDown size={24} strokeWidth={1.5} />
+                </button>
+            </div>
         </section>
     );
 }
+
+export default Hero;

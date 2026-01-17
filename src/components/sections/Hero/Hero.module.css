@@ -1,258 +1,283 @@
 /**
- * Hero Section - Premium Editorial Styles (Refined)
+ * Hero Section - Premium Editorial Styles
  * 
- * Design Direction: Editorial Minimalism with Industrial Soul
- * Core Emotion: Trust through quiet confidence
+ * Design Direction: "Editorial Minimalism with Industrial Soul"
  * 
- * Refinements applied:
- * - Lighter gradient overlay to reveal marble texture
- * - Properly gold CTA button with dark text
- * - Fixed scroll indicator visibility
- * - Improved secondary link contrast
- * - Better vertical rhythm and spacing
- * - Mobile vertical centering
+ * Structure:
+ * 1. Container & Layout — Flexbox for guaranteed scroll indicator visibility
+ * 2. Background & Overlay — Mode-aware gradients
+ * 3. Decorative Elements — Subtle floating shapes
+ * 4. Typography — Serif headline, mode-aware colors
+ * 5. Call to Actions — Gold primary, subtle secondary
+ * 6. Trust Stats — Inline with dividers, mode-aware container
+ * 7. Scroll Indicator — Flex-positioned, always visible
+ * 8. Animations — Staggered entrance
+ * 9. Responsive — Mobile-first with breakpoints
+ * 10. Accessibility — Reduced motion, high contrast
  */
 
-/* ===========================================================================
-   Container & Layout
-   =========================================================================== */
+/* =============================================================================
+   1. CONTAINER & LAYOUT
+   Uses flexbox column to guarantee scroll indicator stays in viewport
+   ============================================================================= */
 
 .hero {
     position: relative;
     min-height: 100vh;
     min-height: 100svh;
-    /* Safe viewport for mobile */
+    /* iOS safe area */
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
-    background-color: #0D0D0D;
+    background-color: var(--color-background);
 }
 
 .container {
     position: relative;
     z-index: 10;
-    width: 100%;
-    padding: var(--spacing-8) var(--spacing-4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: var(--spacing-16) var(--spacing-4) var(--spacing-8);
 }
 
 .content {
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    max-width: 900px;
+    width: 100%;
 }
 
-/* ===========================================================================
-   Background Image & Overlay
-   - Refined: Lighter overlay to reveal marble texture
-   =========================================================================== */
+/* =============================================================================
+   2. BACKGROUND & OVERLAY
+   Mode-aware overlays: light mode reveals marble, dark mode adds drama
+   ============================================================================= */
 
-.backgroundContainer {
+.background {
     position: absolute;
     inset: 0;
     z-index: 1;
 }
 
 .backgroundImage {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
-    opacity: 0.7;
-    transform: scale(1.05);
-    transition: transform 25s ease-out, opacity 1.2s ease-out;
+    opacity: 0.85;
+    transform: scale(1.02);
+    transition: transform 20s ease-out, opacity 1s ease-out;
 }
 
 .hero.loaded .backgroundImage {
     transform: scale(1);
-    opacity: 0.65;
+    opacity: 0.75;
 }
 
-/* Refined gradient: Much lighter to reveal the beautiful marble */
-.gradientOverlay {
+/* Light mode: Subtle white overlay, marble visible */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(250, 250, 250, 0.1) 0%,
+            rgba(250, 250, 250, 0.3) 40%,
+            rgba(250, 250, 250, 0.6) 70%,
+            rgba(250, 250, 250, 0.85) 100%);
+}
+
+/* Dark mode: Dramatic dark overlay */
+[data-theme="dark"] .overlay {
+    background: linear-gradient(180deg,
+            rgba(15, 15, 15, 0.15) 0%,
+            rgba(15, 15, 15, 0.35) 40%,
+            rgba(15, 15, 15, 0.6) 70%,
+            rgba(15, 15, 15, 0.85) 100%);
+}
+
+[data-theme="dark"] .backgroundImage {
+    opacity: 0.6;
+}
+
+[data-theme="dark"] .hero.loaded .backgroundImage {
+    opacity: 0.55;
+}
+
+/* =============================================================================
+   3. DECORATIVE ELEMENTS
+   Subtle floating shapes for visual interest
+   ============================================================================= */
+
+.decorations {
     position: absolute;
     inset: 0;
     z-index: 2;
-    background: linear-gradient(180deg,
-            rgba(13, 13, 13, 0.25) 0%,
-            rgba(13, 13, 13, 0.35) 30%,
-            rgba(13, 13, 13, 0.55) 60%,
-            rgba(13, 13, 13, 0.75) 100%);
-}
-
-/* ===========================================================================
-   Floating Patterns (Subtle)
-   =========================================================================== */
-
-.patterns {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
     pointer-events: none;
     overflow: hidden;
 }
 
-.pattern1 {
+.decorSquare {
     position: absolute;
-    top: 10%;
-    right: 15%;
-    width: 200px;
-    height: 200px;
+    top: 12%;
+    right: 18%;
+    width: 160px;
+    height: 160px;
     border: 1px solid var(--color-wood);
-    opacity: 0.1;
+    opacity: 0.07;
     transform: rotate(45deg);
-    animation: floatPattern1 25s ease-in-out infinite;
+    animation: floatSquare 30s ease-in-out infinite;
 }
 
-.pattern2 {
+.decorCircle {
     position: absolute;
-    bottom: 20%;
+    bottom: 25%;
     left: 10%;
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     border: 1px solid var(--color-wood);
-    opacity: 0.08;
-    animation: floatPattern2 30s ease-in-out infinite;
+    opacity: 0.05;
+    animation: floatCircle 35s ease-in-out infinite;
 }
 
-@keyframes floatPattern1 {
+@keyframes floatSquare {
 
     0%,
     100% {
         transform: rotate(45deg) translate(0, 0);
     }
 
-    25% {
-        transform: rotate(48deg) translate(15px, -8px);
-    }
-
     50% {
-        transform: rotate(42deg) translate(8px, 15px);
-    }
-
-    75% {
-        transform: rotate(47deg) translate(-10px, 5px);
+        transform: rotate(48deg) translate(8px, -5px);
     }
 }
 
-@keyframes floatPattern2 {
+@keyframes floatCircle {
 
     0%,
     100% {
         transform: scale(1) translate(0, 0);
     }
 
-    33% {
-        transform: scale(1.03) translate(10px, 8px);
-    }
-
-    66% {
-        transform: scale(0.97) translate(-8px, -10px);
+    50% {
+        transform: scale(1.03) translate(6px, 4px);
     }
 }
 
-/* ===========================================================================
-   Gold Accent Line
-   =========================================================================== */
+/* Hide decorations on mobile */
+@media (max-width: 767px) {
+    .decorations {
+        display: none;
+    }
+}
 
+/* =============================================================================
+   4. TYPOGRAPHY
+   Mode-aware headline colors for optimal contrast
+   ============================================================================= */
+
+/* Gold accent line */
 .accentLine {
-    width: 60px;
+    width: 50px;
     height: 2px;
-    background: linear-gradient(90deg, var(--color-wood) 0%, var(--color-wood-light) 100%);
-    margin-bottom: var(--spacing-8);
+    background: linear-gradient(90deg, var(--color-wood), var(--color-wood-light));
+    margin-bottom: var(--spacing-6);
     opacity: 0;
     transform: scaleX(0);
 }
 
 .hero.loaded .accentLine {
-    animation: accentReveal 0.8s ease-out 0.1s forwards;
+    animation: revealLine 0.7s ease-out 0.1s forwards;
 }
 
-@keyframes accentReveal {
+@keyframes revealLine {
     to {
         opacity: 1;
         transform: scaleX(1);
     }
 }
 
-/* ===========================================================================
-   Headline Typography
-   =========================================================================== */
-
-.title {
+/* Headline */
+.headline {
     font-family: var(--font-heading);
-    font-size: clamp(2.25rem, 5vw + 1rem, 4.5rem);
+    font-size: clamp(2rem, 5vw + 1rem, 4.25rem);
     font-weight: var(--font-weight-bold);
     line-height: 1.15;
-    margin: 0 0 var(--spacing-6);
-    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    margin: 0 0 var(--spacing-5);
 }
 
-.headline,
+.headlineMain,
 .headlineAccent {
     display: block;
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(25px);
 }
 
-.headline {
+/* Light mode: Dark headline for contrast */
+.headlineMain {
+    color: var(--color-primary-dark);
+}
+
+/* Dark mode: White headline */
+[data-theme="dark"] .headlineMain {
     color: #FFFFFF;
-    margin-bottom: var(--spacing-2);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
+/* Accent line (gold, italic) */
 .headlineAccent {
-    color: var(--color-wood-light);
+    color: var(--color-wood);
     font-style: italic;
-    text-shadow: 0 2px 15px rgba(176, 141, 87, 0.3);
 }
 
-.hero.loaded .headline {
-    animation: fadeInUp 0.7s ease-out 0.2s forwards;
+[data-theme="dark"] .headlineAccent {
+    color: var(--color-wood-light);
+    text-shadow: 0 2px 10px rgba(176, 141, 87, 0.25);
+}
+
+.hero.loaded .headlineMain {
+    animation: fadeInUp 0.65s ease-out 0.2s forwards;
 }
 
 .hero.loaded .headlineAccent {
-    animation: fadeInUp 0.7s ease-out 0.35s forwards;
+    animation: fadeInUp 0.65s ease-out 0.35s forwards;
 }
 
-/* ===========================================================================
-   Subtitle
-   =========================================================================== */
-
+/* Subtitle */
 .subtitle {
     font-family: var(--font-body);
-    font-size: clamp(1rem, 2vw + 0.25rem, 1.25rem);
+    font-size: clamp(0.95rem, 1.5vw + 0.25rem, 1.2rem);
     font-weight: var(--font-weight-normal);
     line-height: var(--line-height-relaxed);
-    color: rgba(255, 255, 255, 0.85);
-    margin: 0 0 var(--spacing-10);
-    max-width: 550px;
+    color: var(--color-text-secondary);
+    max-width: 500px;
+    margin: 0 0 var(--spacing-8);
     opacity: 0;
     transform: translateY(20px);
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .subtitle {
+    color: rgba(255, 255, 255, 0.75);
 }
 
 .hero.loaded .subtitle {
     animation: fadeInUp 0.6s ease-out 0.5s forwards;
 }
 
-/* ===========================================================================
-   CTA Actions
-   =========================================================================== */
+/* =============================================================================
+   5. CALL TO ACTIONS
+   Gold primary button, subtle secondary text link
+   ============================================================================= */
 
 .actions {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--spacing-5);
-    margin-bottom: var(--spacing-12);
+    gap: var(--spacing-4);
+    margin-bottom: var(--spacing-10);
     opacity: 0;
     transform: translateY(20px);
 }
@@ -261,19 +286,19 @@
     animation: fadeInUp 0.6s ease-out 0.65s forwards;
 }
 
-/* Primary CTA - TRUE Gold Button with Dark Text */
+/* Primary CTA - Gold Button */
 .primaryCta {
     text-decoration: none;
 }
 
 .ctaButton {
-    /* Gold gradient background */
+    /* Gold gradient */
     background: linear-gradient(135deg,
             #C9A66B 0%,
-            #b08d57 40%,
-            #D4B87A 60%,
+            #b08d57 45%,
+            #D4B87A 55%,
             #b08d57 100%) !important;
-    background-size: 300% 100% !important;
+    background-size: 250% 100% !important;
 
     /* Dark text for contrast */
     color: #1A1A1A !important;
@@ -282,147 +307,210 @@
     border: none !important;
     font-weight: var(--font-weight-bold) !important;
     font-size: var(--font-size-base) !important;
-    padding: var(--spacing-4) var(--spacing-10) !important;
+    padding: var(--spacing-4) var(--spacing-8) !important;
     border-radius: var(--radius-xl) !important;
 
-    /* Premium shadow */
+    /* Shadow */
     box-shadow:
-        0 4px 20px rgba(176, 141, 87, 0.4),
-        0 2px 8px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+        0 4px 16px rgba(176, 141, 87, 0.3),
+        0 2px 6px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
 
-    /* Animation */
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    /* Transition */
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .ctaButton:hover {
     background-position: 100% 0 !important;
-    transform: translateY(-3px) scale(1.02);
+    transform: translateY(-2px) scale(1.02);
     box-shadow:
-        0 8px 30px rgba(176, 141, 87, 0.5),
-        0 4px 12px rgba(0, 0, 0, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+        0 8px 24px rgba(176, 141, 87, 0.4),
+        0 4px 10px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
 .ctaButton:active {
-    transform: translateY(-1px) scale(1.01);
+    transform: translateY(0) scale(1);
 }
 
 .ctaButton:focus-visible {
-    outline: 2px solid #FFFFFF;
+    outline: 2px solid var(--color-wood);
     outline-offset: 3px;
 }
 
-/* Secondary Link - Improved Contrast */
-.secondaryLink {
+/* Secondary CTA - Text Link */
+.secondaryCta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1);
     font-family: var(--font-body);
     font-size: var(--font-size-sm);
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--color-text-secondary);
     text-decoration: none;
-    transition: all 0.3s ease;
-    padding: var(--spacing-2) var(--spacing-4);
-    border-bottom: 1px solid transparent;
+    padding: var(--spacing-2) var(--spacing-3);
+    border-radius: var(--radius-md);
+    transition: all 0.25s ease;
 }
 
-.secondaryLink:hover {
-    color: var(--color-wood-light);
-    border-bottom-color: var(--color-wood-light);
+.secondaryCta:hover {
+    color: var(--color-wood);
 }
 
-.secondaryLink:focus-visible {
-    outline: 2px solid var(--color-wood-light);
+.secondaryCta:hover .ctaArrow {
+    transform: translateX(4px);
+}
+
+.secondaryCta:focus-visible {
+    outline: 2px solid var(--color-wood);
     outline-offset: 2px;
-    border-radius: var(--radius-sm);
 }
 
-/* ===========================================================================
-   Trust Stats - Inline (Moved up, better spacing)
-   =========================================================================== */
+[data-theme="dark"] .secondaryCta {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+[data-theme="dark"] .secondaryCta:hover {
+    color: var(--color-wood-light);
+}
+
+.ctaArrow {
+    display: inline-block;
+    margin-left: var(--spacing-1);
+    transition: transform 0.25s ease;
+}
+
+/* =============================================================================
+   6. TRUST STATS
+   Inline layout with dividers, mode-aware container styling
+   ============================================================================= */
 
 .stats {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0;
+    padding: var(--spacing-4) var(--spacing-6);
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-2xl);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
     opacity: 0;
     transform: translateY(20px);
-    padding: var(--spacing-6) 0;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: var(--radius-2xl);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
 }
 
 .hero.loaded .stats {
     animation: fadeInUp 0.6s ease-out 0.8s forwards;
 }
 
-.statGroup {
-    display: flex;
-    align-items: center;
+[data-theme="dark"] .stats {
+    background: rgba(30, 30, 30, 0.6);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-.stat {
+.statItem {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 var(--spacing-8);
+    padding: 0 var(--spacing-6);
+    position: relative;
 }
 
-.statNumber {
+.statValue {
     font-family: var(--font-heading);
-    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+    font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem);
     font-weight: var(--font-weight-bold);
-    color: #FFFFFF;
+    color: var(--color-text-primary);
     line-height: 1;
-    margin-bottom: var(--spacing-1);
+}
+
+[data-theme="dark"] .statValue {
+    color: #FFFFFF;
 }
 
 .statLabel {
     font-family: var(--font-body);
-    font-size: var(--font-size-xs);
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.7rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-tertiary);
     text-transform: uppercase;
-    letter-spacing: var(--letter-spacing-wider);
+    letter-spacing: 0.08em;
+    margin-top: var(--spacing-1);
+}
+
+[data-theme="dark"] .statLabel {
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .statDivider {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
     width: 1px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.2);
+    height: 32px;
+    background: var(--color-border);
 }
 
-/* ===========================================================================
-   Scroll Indicator - FIXED visibility
-   =========================================================================== */
+[data-theme="dark"] .statDivider {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* =============================================================================
+   7. SCROLL INDICATOR
+   Positioned via flex (not absolute) to guarantee visibility
+   ============================================================================= */
 
 .scrollIndicator {
-    position: absolute;
-    bottom: var(--spacing-10);
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 44px;
+    height: 44px;
+    margin-top: auto;
+    /* Push to bottom of flex container */
+    margin-bottom: var(--spacing-4);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--color-border);
     border-radius: 50%;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--color-text-secondary);
     cursor: pointer;
-    z-index: 20;
     opacity: 0;
     transition: all 0.3s ease;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .hero.loaded .scrollIndicator {
-    animation: fadeIn 0.5s ease-out 1.2s forwards;
+    animation: fadeIn 0.5s ease-out 1s forwards, bounce 2s ease-in-out 2s infinite;
 }
 
-/* Separate animation for the pulse after appearing */
+.scrollIndicator:hover {
+    background: var(--color-wood);
+    border-color: var(--color-wood);
+    color: #FFFFFF;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(176, 141, 87, 0.35);
+}
+
+.scrollIndicator:focus-visible {
+    outline: 2px solid var(--color-wood);
+    outline-offset: 3px;
+}
+
+[data-theme="dark"] .scrollIndicator {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] .scrollIndicator:hover {
+    background: var(--color-wood);
+    border-color: var(--color-wood);
+    color: #1A1A1A;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -433,42 +521,21 @@
     }
 }
 
-/* Continuous pulse after the element is visible */
-.scrollIndicator {
-    animation: none;
-}
-
-.hero.loaded .scrollIndicator {
-    animation: fadeIn 0.5s ease-out 1.2s forwards, gentleBounce 2s ease-in-out 2s infinite;
-}
-
-.scrollIndicator:hover {
-    border-color: var(--color-wood);
-    color: var(--color-wood);
-    background: rgba(176, 141, 87, 0.15);
-    transform: translateX(-50%) scale(1.1);
-}
-
-.scrollIndicator:focus-visible {
-    outline: 2px solid var(--color-wood-light);
-    outline-offset: 2px;
-}
-
-@keyframes gentleBounce {
+@keyframes bounce {
 
     0%,
     100% {
-        transform: translateX(-50%) translateY(0);
+        transform: translateY(0);
     }
 
     50% {
-        transform: translateX(-50%) translateY(8px);
+        transform: translateY(6px);
     }
 }
 
-/* ===========================================================================
-   Entrance Animations
-   =========================================================================== */
+/* =============================================================================
+   8. ENTRANCE ANIMATIONS
+   ============================================================================= */
 
 @keyframes fadeInUp {
     from {
@@ -482,68 +549,32 @@
     }
 }
 
-/* ===========================================================================
-   Dark Mode Adjustments
-   (Hero is already dark, subtle refinements)
-   =========================================================================== */
-
-[data-theme="dark"] .hero {
-    background-color: #080808;
-}
-
-[data-theme="dark"] .gradientOverlay {
-    background: linear-gradient(180deg,
-            rgba(8, 8, 8, 0.2) 0%,
-            rgba(8, 8, 8, 0.35) 30%,
-            rgba(8, 8, 8, 0.55) 60%,
-            rgba(8, 8, 8, 0.75) 100%);
-}
-
-[data-theme="dark"] .backgroundImage {
-    opacity: 0.6;
-}
-
-[data-theme="dark"] .hero.loaded .backgroundImage {
-    opacity: 0.55;
-}
-
-/* ===========================================================================
-   Responsive Adjustments
-   =========================================================================== */
+/* =============================================================================
+   9. RESPONSIVE DESIGN
+   ============================================================================= */
 
 /* Mobile */
 @media (max-width: 767px) {
-    .hero {
-        min-height: 100svh;
-    }
-
     .container {
-        padding: var(--spacing-4);
-        padding-top: calc(var(--header-height) + var(--spacing-8));
-    }
-
-    .content {
-        padding-bottom: var(--spacing-16);
+        padding: calc(var(--header-height-mobile) + var(--spacing-6)) var(--spacing-4) var(--spacing-6);
     }
 
     .accentLine {
         width: 40px;
-        margin-bottom: var(--spacing-6);
+        margin-bottom: var(--spacing-5);
     }
 
-    .title {
-        font-size: clamp(1.75rem, 9vw, 2.5rem);
+    .headline {
+        font-size: clamp(1.75rem, 8vw, 2.25rem);
     }
 
     .subtitle {
         font-size: var(--font-size-sm);
-        margin-bottom: var(--spacing-8);
-        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: var(--spacing-6);
     }
 
     .actions {
         width: 100%;
-        gap: var(--spacing-4);
         margin-bottom: var(--spacing-8);
     }
 
@@ -555,48 +586,42 @@
         width: 100%;
         justify-content: center;
         padding: var(--spacing-4) var(--spacing-6) !important;
-        font-size: var(--font-size-sm) !important;
     }
 
     .stats {
-        padding: var(--spacing-4) var(--spacing-2);
-        border-radius: var(--radius-xl);
+        padding: var(--spacing-3) var(--spacing-2);
     }
 
-    .stat {
+    .statItem {
         padding: 0 var(--spacing-3);
     }
 
-    .statNumber {
+    .statValue {
         font-size: var(--font-size-xl);
     }
 
     .statLabel {
-        font-size: 0.65rem;
+        font-size: 0.6rem;
     }
 
     .statDivider {
-        height: 28px;
+        height: 24px;
     }
 
     .scrollIndicator {
-        bottom: var(--spacing-6);
         width: 40px;
         height: 40px;
-    }
-
-    .patterns {
-        opacity: 0.5;
+        margin-bottom: var(--spacing-3);
     }
 }
 
 /* Small mobile */
 @media (max-width: 374px) {
-    .stat {
+    .statItem {
         padding: 0 var(--spacing-2);
     }
 
-    .statNumber {
+    .statValue {
         font-size: var(--font-size-lg);
     }
 }
@@ -604,62 +629,53 @@
 /* Tablet */
 @media (min-width: 768px) and (max-width: 1023px) {
     .container {
-        padding: var(--spacing-12) var(--spacing-6);
+        padding: var(--spacing-12) var(--spacing-6) var(--spacing-8);
     }
 
-    .title {
-        font-size: clamp(2rem, 6vw, 3.5rem);
-    }
-
-    .stat {
-        padding: 0 var(--spacing-6);
+    .statItem {
+        padding: 0 var(--spacing-5);
     }
 }
 
-/* Large screens */
+/* Large desktop */
 @media (min-width: 1280px) {
     .container {
-        padding: var(--spacing-16) var(--spacing-8);
+        padding: var(--spacing-20) var(--spacing-8) var(--spacing-10);
     }
 
-    .stat {
-        padding: 0 var(--spacing-10);
+    .statItem {
+        padding: 0 var(--spacing-8);
     }
 
     .statDivider {
-        height: 50px;
-    }
-
-    .scrollIndicator {
-        width: 52px;
-        height: 52px;
+        height: 40px;
     }
 }
 
-/* Very large screens */
+/* Extra large */
 @media (min-width: 1536px) {
     .content {
         max-width: 1000px;
     }
-
-    .title {
-        font-size: 4.5rem;
-    }
 }
+
+/* =============================================================================
+   10. ACCESSIBILITY
+   ============================================================================= */
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .backgroundImage {
-        transform: scale(1);
-        transition: opacity 0.5s ease-out;
+        transform: none;
+        transition: opacity 0.5s ease;
     }
 
     .hero.loaded .backgroundImage {
-        transform: scale(1);
+        transform: none;
     }
 
     .hero.loaded .accentLine,
-    .hero.loaded .headline,
+    .hero.loaded .headlineMain,
     .hero.loaded .headlineAccent,
     .hero.loaded .subtitle,
     .hero.loaded .actions,
@@ -667,26 +683,27 @@
     .hero.loaded .scrollIndicator {
         animation: none !important;
         opacity: 1;
-        transform: translateY(0);
+        transform: none;
     }
 
-    .hero.loaded .accentLine {
-        transform: scaleX(1);
-    }
-
-    .hero.loaded .scrollIndicator {
-        transform: translateX(-50%);
-    }
-
-    .pattern1,
-    .pattern2 {
+    .decorSquare,
+    .decorCircle {
         animation: none;
+    }
+
+    .scrollIndicator {
+        animation: none !important;
     }
 }
 
-/* High contrast mode support */
+/* High contrast */
 @media (prefers-contrast: high) {
-    .headline {
+    .headlineMain {
+        color: #000000;
+    }
+
+    [data-theme="dark"] .headlineMain {
+        color: #FFFFFF;
         text-shadow: none;
     }
 
@@ -694,16 +711,23 @@
         text-shadow: none;
     }
 
-    .gradientOverlay {
-        background: rgba(0, 0, 0, 0.7);
-    }
-
     .subtitle {
+        color: var(--color-text-primary);
+    }
+
+    [data-theme="dark"] .subtitle {
         color: #FFFFFF;
     }
 
-    .secondaryLink {
-        color: #FFFFFF;
+    .secondaryCta {
         text-decoration: underline;
+    }
+
+    .overlay {
+        background: rgba(255, 255, 255, 0.7);
+    }
+
+    [data-theme="dark"] .overlay {
+        background: rgba(0, 0, 0, 0.75);
     }
 }
