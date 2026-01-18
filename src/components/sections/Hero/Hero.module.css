@@ -43,7 +43,8 @@
     width: 100%;
     max-width: var(--container-max);
     margin: 0 auto;
-    padding: var(--spacing-16) var(--spacing-4) var(--spacing-8);
+    /* Reduced padding to leave room for scroll indicator */
+    padding: var(--spacing-12) var(--spacing-4) var(--spacing-20);
 }
 
 .content {
@@ -458,83 +459,7 @@
 }
 
 /* =============================================================================
-   7. SCROLL INDICATOR
-   Positioned via flex (not absolute) to guarantee visibility
-   ============================================================================= */
-
-.scrollIndicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    margin-top: auto;
-    /* Push to bottom of flex container */
-    margin-bottom: var(--spacing-4);
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid var(--color-border);
-    border-radius: 50%;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    opacity: 0;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.hero.loaded .scrollIndicator {
-    animation: fadeIn 0.5s ease-out 1s forwards, bounce 2s ease-in-out 2s infinite;
-}
-
-.scrollIndicator:hover {
-    background: var(--color-wood);
-    border-color: var(--color-wood);
-    color: #FFFFFF;
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(176, 141, 87, 0.35);
-}
-
-.scrollIndicator:focus-visible {
-    outline: 2px solid var(--color-wood);
-    outline-offset: 3px;
-}
-
-[data-theme="dark"] .scrollIndicator {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.7);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-}
-
-[data-theme="dark"] .scrollIndicator:hover {
-    background: var(--color-wood);
-    border-color: var(--color-wood);
-    color: #1A1A1A;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(6px);
-    }
-}
-
-/* =============================================================================
-   8. ENTRANCE ANIMATIONS
+   7. ENTRANCE ANIMATIONS
    ============================================================================= */
 
 @keyframes fadeInUp {
@@ -550,13 +475,13 @@
 }
 
 /* =============================================================================
-   9. RESPONSIVE DESIGN
+   8. RESPONSIVE DESIGN
    ============================================================================= */
 
 /* Mobile */
 @media (max-width: 767px) {
     .container {
-        padding: calc(var(--header-height-mobile) + var(--spacing-6)) var(--spacing-4) var(--spacing-6);
+        padding: calc(var(--header-height-mobile) + var(--spacing-6)) var(--spacing-4) var(--spacing-8);
     }
 
     .accentLine {
@@ -606,12 +531,6 @@
 
     .statDivider {
         height: 24px;
-    }
-
-    .scrollIndicator {
-        width: 40px;
-        height: 40px;
-        margin-bottom: var(--spacing-3);
     }
 }
 

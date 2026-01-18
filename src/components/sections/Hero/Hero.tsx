@@ -11,7 +11,6 @@
  * - Serif headline with heritage message
  * - Single primary CTA + subtle secondary link
  * - Inline trust stats
- * - Scroll indicator (guaranteed visible via flex layout)
  * - Staggered entrance animations
  * - Full accessibility support
  * 
@@ -20,10 +19,10 @@
 
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { siteConfig } from '@/config';
 import { getWhatsAppUrl } from '@/lib/whatsapp';
 import { Button } from '@/components/ui';
@@ -63,14 +62,6 @@ export function Hero({ className }: HeroProps) {
     useEffect(() => {
         const timer = setTimeout(() => setIsLoaded(true), 100);
         return () => clearTimeout(timer);
-    }, []);
-
-    // Handle scroll indicator click
-    const handleScrollClick = useCallback(() => {
-        window.scrollTo({
-            top: window.innerHeight,
-            behavior: 'smooth',
-        });
     }, []);
 
     return (
@@ -156,19 +147,10 @@ export function Hero({ className }: HeroProps) {
                         ))}
                     </div>
                 </div>
-
-                {/* Scroll Indicator - Inside container for guaranteed visibility */}
-                <button
-                    type="button"
-                    className={styles.scrollIndicator}
-                    onClick={handleScrollClick}
-                    aria-label="Défiler vers le contenu"
-                >
-                    <ChevronDown size={24} strokeWidth={1.5} />
-                </button>
             </div>
         </section>
     );
 }
 
 export default Hero;
+
