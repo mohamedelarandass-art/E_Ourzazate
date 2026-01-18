@@ -83,12 +83,6 @@ export function Hero({ className }: HeroProps) {
                 <div className={styles.overlay} />
             </div>
 
-            {/* Decorative Floating Elements */}
-            <div className={styles.decorations} aria-hidden="true">
-                <div className={styles.decorSquare} />
-                <div className={styles.decorCircle} />
-            </div>
-
             {/* Main Content */}
             <div className={styles.container}>
                 <div className={styles.content}>

@@ -66,7 +66,29 @@
     border-radius: var(--radius-2xl);
     padding: var(--spacing-5);
     box-shadow: var(--elevation-2);
-    /* No max-height or scroll - content fits naturally */
+    /* Scrollable when viewport is short */
+    max-height: calc(100vh - var(--header-height) - var(--spacing-8));
+    overflow-y: auto;
+    /* Custom scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: var(--radius-full);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-border-dark);
 }
 
 /* Sidebar Title */
@@ -98,8 +120,8 @@
 
 .filterSectionTitle {
     font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
     text-transform: uppercase;
     letter-spacing: var(--letter-spacing-wide);
     margin: 0 0 var(--spacing-2);
@@ -153,6 +175,7 @@
             var(--color-wood) 0%,
             var(--color-wood-dark) 100%);
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(196, 167, 125, 0.4);
 }
 
 /* ===========================================================================
@@ -178,14 +201,15 @@
 .radioLabel {
     display: flex;
     align-items: center;
-    gap: var(--spacing-1-5);
+    gap: var(--spacing-2);
     font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
     color: var(--color-text-primary);
     cursor: pointer;
-    padding: var(--spacing-1-5) var(--spacing-2);
+    padding: var(--spacing-2) var(--spacing-3);
     margin: 0;
     border-radius: var(--radius-lg);
-    transition: background-color var(--duration-150) var(--ease-out);
+    transition: all var(--duration-150) var(--ease-out);
     background-color: var(--color-background);
     border: 1px solid var(--color-border-light);
 }
@@ -194,6 +218,13 @@
 .radioLabel:hover {
     background-color: var(--color-background-alt);
     border-color: var(--color-border);
+}
+
+/* Selected label state */
+.checkboxLabel:has(.checkboxInput:checked),
+.radioLabel:has(.radioInput:checked) {
+    background-color: rgba(196, 167, 125, 0.08);
+    border-color: rgba(196, 167, 125, 0.3);
 }
 
 .checkboxInput,
@@ -209,8 +240,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     flex-shrink: 0;
     border: 2px solid var(--color-border-dark);
     background-color: var(--color-surface);
@@ -218,7 +249,7 @@
 }
 
 .checkboxCustom {
-    border-radius: var(--radius-default);
+    border-radius: var(--radius-md);
 }
 
 .radioCustom {
@@ -229,6 +260,7 @@
 .radioInput:checked+.radioCustom {
     background-color: var(--color-wood);
     border-color: var(--color-wood);
+    box-shadow: 0 2px 6px rgba(176, 141, 87, 0.3);
 }
 
 .checkboxInput:focus-visible+.checkboxCustom,
@@ -255,6 +287,13 @@
 .filterIcon {
     color: var(--color-text-tertiary);
     flex-shrink: 0;
+    transition: color var(--duration-150) var(--ease-out);
+}
+
+/* Filter icon color when checked */
+.checkboxLabel:has(.checkboxInput:checked) .filterIcon,
+.radioLabel:has(.radioInput:checked) .filterIcon {
+    color: var(--color-wood);
 }
 
 /* ===========================================================================
@@ -269,6 +308,7 @@
     border-top: 1px solid var(--color-border-light);
 }
 
+/* Issue C Fix: Changed from gold to emerald for action-oriented psychology */
 .applyButton {
     display: flex;
     align-items: center;
@@ -278,19 +318,20 @@
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
     color: white;
+    /* Emerald gradient - action color, matches WhatsApp CTA */
     background: linear-gradient(135deg,
-            var(--color-wood-light) 0%,
-            var(--color-wood) 100%);
+            #10b981 0%,
+            #059669 100%);
     border: none;
     border-radius: var(--radius-lg);
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(196, 167, 125, 0.25);
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
     transition: all var(--duration-200) var(--ease-out);
 }
 
 .applyButton:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(196, 167, 125, 0.4);
+    box-shadow: 0 6px 16px rgba(5, 150, 105, 0.4);
 }
 
 .applyButton:active {
@@ -323,11 +364,14 @@
    Mobile Sidebar
    =========================================================================== */
 
+/* P0 Fix #3: Repositioned FAB to left side to avoid "Voir plus" overlap */
 .mobileFilterButton {
     display: none;
     position: fixed;
-    bottom: calc(var(--spacing-6) + 60px);
-    right: var(--spacing-4);
+    /* Move to bottom-left to avoid overlap with centered "Voir plus" button */
+    bottom: var(--spacing-6);
+    left: var(--spacing-4);
+    right: auto;
     z-index: 9999;
     align-items: center;
     gap: var(--spacing-2);
@@ -341,14 +385,26 @@
     border: none;
     border-radius: var(--radius-full);
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(196, 167, 125, 0.5),
-        0 2px 8px rgba(0, 0, 0, 0.2);
+    /* Enhanced shadow for better separation from content */
+    box-shadow:
+        0 4px 20px rgba(196, 167, 125, 0.5),
+        0 2px 8px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
     transition: all var(--duration-200) var(--ease-out);
+    /* Glassmorphism backdrop for visual separation */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .mobileFilterButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(196, 167, 125, 0.5);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow:
+        0 6px 24px rgba(196, 167, 125, 0.55),
+        0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.mobileFilterButton:active {
+    transform: translateY(0) scale(0.98);
 }
 
 .filterBadge {

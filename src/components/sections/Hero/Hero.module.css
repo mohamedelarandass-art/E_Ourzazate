@@ -1,31 +1,27 @@
 /**
- * Hero Section - Premium Editorial Styles
+ * Hero Section - Premium Editorial Styles (Polished)
  * 
  * Design Direction: "Editorial Minimalism with Industrial Soul"
  * 
  * Structure:
- * 1. Container & Layout — Flexbox for guaranteed scroll indicator visibility
+ * 1. Container & Layout — Centered flexbox with optimized spacing
  * 2. Background & Overlay — Mode-aware gradients
- * 3. Decorative Elements — Subtle floating shapes
- * 4. Typography — Serif headline, mode-aware colors
- * 5. Call to Actions — Gold primary, subtle secondary
- * 6. Trust Stats — Inline with dividers, mode-aware container
- * 7. Scroll Indicator — Flex-positioned, always visible
- * 8. Animations — Staggered entrance
- * 9. Responsive — Mobile-first with breakpoints
- * 10. Accessibility — Reduced motion, high contrast
+ * 3. Typography — Serif headline, mode-aware colors
+ * 4. Call to Actions — Gold primary, animated secondary link
+ * 5. Trust Stats — Inline with dividers, enhanced shadows
+ * 6. Animations — Staggered entrance
+ * 7. Responsive — Mobile-first with better vertical centering
+ * 8. Accessibility — Reduced motion, high contrast
  */
 
 /* =============================================================================
    1. CONTAINER & LAYOUT
-   Uses flexbox column to guarantee scroll indicator stays in viewport
    ============================================================================= */
 
 .hero {
     position: relative;
     min-height: 100vh;
     min-height: 100svh;
-    /* iOS safe area */
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -43,8 +39,7 @@
     width: 100%;
     max-width: var(--container-max);
     margin: 0 auto;
-    /* Reduced padding to leave room for scroll indicator */
-    padding: var(--spacing-12) var(--spacing-4) var(--spacing-20);
+    padding: var(--spacing-12) var(--spacing-4) var(--spacing-16);
 }
 
 .content {
@@ -58,7 +53,6 @@
 
 /* =============================================================================
    2. BACKGROUND & OVERLAY
-   Mode-aware overlays: light mode reveals marble, dark mode adds drama
    ============================================================================= */
 
 .background {
@@ -108,76 +102,7 @@
 }
 
 /* =============================================================================
-   3. DECORATIVE ELEMENTS
-   Subtle floating shapes for visual interest
-   ============================================================================= */
-
-.decorations {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.decorSquare {
-    position: absolute;
-    top: 12%;
-    right: 18%;
-    width: 160px;
-    height: 160px;
-    border: 1px solid var(--color-wood);
-    opacity: 0.07;
-    transform: rotate(45deg);
-    animation: floatSquare 30s ease-in-out infinite;
-}
-
-.decorCircle {
-    position: absolute;
-    bottom: 25%;
-    left: 10%;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 1px solid var(--color-wood);
-    opacity: 0.05;
-    animation: floatCircle 35s ease-in-out infinite;
-}
-
-@keyframes floatSquare {
-
-    0%,
-    100% {
-        transform: rotate(45deg) translate(0, 0);
-    }
-
-    50% {
-        transform: rotate(48deg) translate(8px, -5px);
-    }
-}
-
-@keyframes floatCircle {
-
-    0%,
-    100% {
-        transform: scale(1) translate(0, 0);
-    }
-
-    50% {
-        transform: scale(1.03) translate(6px, 4px);
-    }
-}
-
-/* Hide decorations on mobile */
-@media (max-width: 767px) {
-    .decorations {
-        display: none;
-    }
-}
-
-/* =============================================================================
-   4. TYPOGRAPHY
-   Mode-aware headline colors for optimal contrast
+   3. TYPOGRAPHY
    ============================================================================= */
 
 /* Gold accent line */
@@ -228,7 +153,7 @@
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Accent line (gold, italic) */
+/* Accent (gold, italic) */
 .headlineAccent {
     color: var(--color-wood);
     font-style: italic;
@@ -269,8 +194,7 @@
 }
 
 /* =============================================================================
-   5. CALL TO ACTIONS
-   Gold primary button, subtle secondary text link
+   4. CALL TO ACTIONS
    ============================================================================= */
 
 .actions {
@@ -293,31 +217,22 @@
 }
 
 .ctaButton {
-    /* Gold gradient */
     background: linear-gradient(135deg,
             #C9A66B 0%,
             #b08d57 45%,
             #D4B87A 55%,
             #b08d57 100%) !important;
     background-size: 250% 100% !important;
-
-    /* Dark text for contrast */
     color: #1A1A1A !important;
-
-    /* Styling */
     border: none !important;
     font-weight: var(--font-weight-bold) !important;
     font-size: var(--font-size-base) !important;
     padding: var(--spacing-4) var(--spacing-8) !important;
     border-radius: var(--radius-xl) !important;
-
-    /* Shadow */
     box-shadow:
         0 4px 16px rgba(176, 141, 87, 0.3),
         0 2px 6px rgba(0, 0, 0, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-
-    /* Transition */
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
@@ -339,7 +254,7 @@
     outline-offset: 3px;
 }
 
-/* Secondary CTA - Text Link */
+/* Secondary CTA - Text Link with Animated Arrow */
 .secondaryCta {
     display: inline-flex;
     align-items: center;
@@ -350,15 +265,11 @@
     text-decoration: none;
     padding: var(--spacing-2) var(--spacing-3);
     border-radius: var(--radius-md);
-    transition: all 0.25s ease;
+    transition: color 0.25s ease;
 }
 
 .secondaryCta:hover {
     color: var(--color-wood);
-}
-
-.secondaryCta:hover .ctaArrow {
-    transform: translateX(4px);
 }
 
 .secondaryCta:focus-visible {
@@ -374,15 +285,20 @@
     color: var(--color-wood-light);
 }
 
+/* Animated arrow on hover */
 .ctaArrow {
     display: inline-block;
     margin-left: var(--spacing-1);
-    transition: transform 0.25s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.secondaryCta:hover .ctaArrow {
+    transform: translateX(5px);
 }
 
 /* =============================================================================
-   6. TRUST STATS
-   Inline layout with dividers, mode-aware container styling
+   5. TRUST STATS
+   Enhanced shadow for better separation
    ============================================================================= */
 
 .stats {
@@ -390,12 +306,15 @@
     justify-content: center;
     align-items: center;
     padding: var(--spacing-4) var(--spacing-6);
-    background: rgba(255, 255, 255, 0.85);
-    border: 1px solid var(--color-border-light);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: var(--radius-2xl);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /* Enhanced shadow for better separation from marble */
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.04);
     opacity: 0;
     transform: translateY(20px);
 }
@@ -405,9 +324,9 @@
 }
 
 [data-theme="dark"] .stats {
-    background: rgba(30, 30, 30, 0.6);
+    background: rgba(30, 30, 30, 0.65);
     border-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .statItem {
@@ -459,7 +378,7 @@
 }
 
 /* =============================================================================
-   7. ENTRANCE ANIMATIONS
+   6. ENTRANCE ANIMATIONS
    ============================================================================= */
 
 @keyframes fadeInUp {
@@ -475,13 +394,15 @@
 }
 
 /* =============================================================================
-   8. RESPONSIVE DESIGN
+   7. RESPONSIVE DESIGN
    ============================================================================= */
 
-/* Mobile */
+/* Mobile - Improved vertical centering */
 @media (max-width: 767px) {
     .container {
-        padding: calc(var(--header-height-mobile) + var(--spacing-6)) var(--spacing-4) var(--spacing-8);
+        /* Better vertical distribution - centered with equal spacing */
+        padding: calc(var(--header-height-mobile) + var(--spacing-8)) var(--spacing-4) var(--spacing-10);
+        justify-content: center;
     }
 
     .accentLine {
@@ -500,7 +421,7 @@
 
     .actions {
         width: 100%;
-        margin-bottom: var(--spacing-8);
+        margin-bottom: var(--spacing-6);
     }
 
     .primaryCta {
@@ -514,7 +435,7 @@
     }
 
     .stats {
-        padding: var(--spacing-3) var(--spacing-2);
+        padding: var(--spacing-3) var(--spacing-3);
     }
 
     .statItem {
@@ -548,7 +469,7 @@
 /* Tablet */
 @media (min-width: 768px) and (max-width: 1023px) {
     .container {
-        padding: var(--spacing-12) var(--spacing-6) var(--spacing-8);
+        padding: var(--spacing-12) var(--spacing-6) var(--spacing-12);
     }
 
     .statItem {
@@ -559,7 +480,7 @@
 /* Large desktop */
 @media (min-width: 1280px) {
     .container {
-        padding: var(--spacing-20) var(--spacing-8) var(--spacing-10);
+        padding: var(--spacing-16) var(--spacing-8) var(--spacing-16);
     }
 
     .statItem {
@@ -579,7 +500,7 @@
 }
 
 /* =============================================================================
-   10. ACCESSIBILITY
+   8. ACCESSIBILITY
    ============================================================================= */
 
 /* Reduced motion */
@@ -598,20 +519,14 @@
     .hero.loaded .headlineAccent,
     .hero.loaded .subtitle,
     .hero.loaded .actions,
-    .hero.loaded .stats,
-    .hero.loaded .scrollIndicator {
+    .hero.loaded .stats {
         animation: none !important;
         opacity: 1;
         transform: none;
     }
 
-    .decorSquare,
-    .decorCircle {
-        animation: none;
-    }
-
-    .scrollIndicator {
-        animation: none !important;
+    .ctaArrow {
+        transition: none;
     }
 }
 
@@ -649,4 +564,15 @@
     [data-theme="dark"] .overlay {
         background: rgba(0, 0, 0, 0.75);
     }
+}
+
+/* =============================================================================
+   LEGACY CLASSES (kept for backward compatibility but not used)
+   ============================================================================= */
+
+/* These are no longer rendered but kept to prevent CSS errors */
+.decorations,
+.decorSquare,
+.decorCircle {
+    display: none;
 }

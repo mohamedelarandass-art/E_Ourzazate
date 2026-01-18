@@ -253,7 +253,10 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
                                 className={styles.productItem}
                                 style={{ animationDelay: `${Math.min(index, 9) * 60}ms` }}
                             >
-                                <ProductCard product={product} />
+                                <ProductCard
+                                    product={product}
+                                    compact={viewMode === 'double'}
+                                />
                             </div>
                         ))}
                     </div>

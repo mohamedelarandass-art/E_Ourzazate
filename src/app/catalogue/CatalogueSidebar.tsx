@@ -93,11 +93,12 @@ export function CatalogueSidebar({ categories, mobileOnly = false }: CatalogueSi
     if (mobileOnly) {
         return (
             <>
-                {/* Mobile Toggle Button */}
+                {/* Mobile Toggle Button - Now toggles open/closed */}
                 <button
                     className={styles.mobileFilterButton}
-                    onClick={() => setIsMobileOpen(true)}
-                    aria-label="Ouvrir les filtres"
+                    onClick={() => setIsMobileOpen(!isMobileOpen)}
+                    aria-label={isMobileOpen ? "Fermer les filtres" : "Ouvrir les filtres"}
+                    aria-expanded={isMobileOpen}
                 >
                     <Filter size={20} />
                     <span>Filtres</span>

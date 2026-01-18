@@ -55,7 +55,7 @@ export const products: Product[] = [
         description: 'Vasque à poser rectangulaire en céramique blanche. Design moderne et épuré. Dimensions: 60x40cm.',
         categoryId: 'cat-sanitaire',
         images: [
-            { id: 'img-003-1', url: '/images/products/lavabo-vasque-1.jpg', alt: 'Lavabo Vasque Rectangulaire', order: 1, isFeatured: true },
+            { id: 'img-003-1', url: '/images/products/wc-suspendu-1.webp', alt: 'Lavabo Vasque Rectangulaire', order: 1, isFeatured: true },
         ],
         isNew: true,
         isFeatured: false,
@@ -92,7 +92,7 @@ export const products: Product[] = [
         description: 'Miroir de salle de bain avec éclairage LED intégré et fonction antibuée. Interrupteur tactile, lumière blanche.',
         categoryId: 'cat-meubles-sdb',
         images: [
-            { id: 'img-005-1', url: '/images/products/miroir-led-1.jpg', alt: 'Miroir LED Antibuée', order: 1, isFeatured: true },
+            { id: 'img-005-1', url: '/images/products/meuble-vasque-chene-1.webp', alt: 'Miroir LED Antibuée', order: 1, isFeatured: true },
         ],
         isNew: false,
         isFeatured: true,
@@ -129,7 +129,7 @@ export const products: Product[] = [
         description: 'Carrelage effet marbre blanc Carrara. Finition brillante luxueuse. Rectifié pour joints fins.',
         categoryId: 'cat-carrelage',
         images: [
-            { id: 'img-007-1', url: '/images/products/carrelage-marbre-1.jpg', alt: 'Carrelage Marbre Blanc', order: 1, isFeatured: true },
+            { id: 'img-007-1', url: '/images/products/carrelage-bois-1.webp', alt: 'Carrelage Marbre Blanc', order: 1, isFeatured: true },
         ],
         isNew: true,
         isFeatured: true,
@@ -161,7 +161,7 @@ export const products: Product[] = [
         description: 'Spot LED encastrable pour faux plafond. 7W équivalent 50W halogène. Blanc chaud 3000K. IP44 pour salle de bain.',
         categoryId: 'cat-luminaire',
         images: [
-            { id: 'img-009-1', url: '/images/products/spot-led-1.jpg', alt: 'Spot Encastrable LED', order: 1, isFeatured: true },
+            { id: 'img-009-1', url: '/images/products/lustre-cristal-1.webp', alt: 'Spot Encastrable LED', order: 1, isFeatured: true },
         ],
         isNew: true,
         isFeatured: false,
@@ -181,7 +181,7 @@ export const products: Product[] = [
         description: 'Perceuse-visseuse professionnelle batterie lithium 18V 2Ah. 50Nm couple. 2 vitesses. Livrée en coffret avec 2 batteries.',
         categoryId: 'cat-outillage',
         images: [
-            { id: 'img-012-1', url: '/images/products/perceuse-18v-1.jpg', alt: 'Perceuse Visseuse 18V', order: 1, isFeatured: true },
+            { id: 'img-012-1', url: '/images/products/robinet-cascade-1.webp', alt: 'Perceuse Visseuse 18V', order: 1, isFeatured: true },
         ],
         isNew: false,
         isFeatured: true,
@@ -196,7 +196,7 @@ export const products: Product[] = [
         description: 'Niveau laser auto-nivelant. Projection croix rouge. Portée 15m. Support magnétique inclus.',
         categoryId: 'cat-outillage',
         images: [
-            { id: 'img-013-1', url: '/images/products/niveau-laser-1.jpg', alt: 'Niveau Laser Croix', order: 1, isFeatured: true },
+            { id: 'img-013-1', url: '/images/products/robinet-cascade-1.webp', alt: 'Niveau Laser Croix', order: 1, isFeatured: true },
         ],
         isNew: true,
         isFeatured: false,

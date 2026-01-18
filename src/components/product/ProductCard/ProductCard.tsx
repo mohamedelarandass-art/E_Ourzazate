@@ -28,6 +28,8 @@ import styles from './ProductCard.module.css';
 export interface ProductCardProps {
     product: Product;
     className?: string;
+    /** When true, displays shorter "Prix" text instead of "Demander le Prix" for compact layouts */
+    compact?: boolean;
 }
 
 /**
@@ -42,7 +44,7 @@ const categoryNames: Record<string, string> = {
     'cat-outillage': 'Outillage',
 };
 
-export function ProductCard({ product, className }: ProductCardProps) {
+export function ProductCard({ product, className, compact = false }: ProductCardProps) {
     const [isHovered, setIsHovered] = useState(false);
     const [imageError, setImageError] = useState(false);
     const featuredImage = product.images?.find((img) => img.isFeatured) || product.images?.[0];
@@ -118,14 +120,16 @@ export function ProductCard({ product, className }: ProductCardProps) {
                     <Button
                         variant="whatsapp"
                         size="sm"
-                        leftIcon={<MessageCircle size={16} />}
-                        className={styles.whatsappBtn}
+                        leftIcon={<MessageCircle size={16} className={styles.btnIcon} />}
+                        className={`${styles.whatsappBtn} ${compact ? styles.whatsappBtnCompact : ''}`}
                         onClick={(e) => {
                             e.preventDefault();
                             window.open(getProductWhatsAppUrl(product.name, product.id), '_blank');
                         }}
                     >
-                        Demander le Prix
+                        {/* Full text for desktop, short text for mobile compact */}
+                        <span className={styles.btnTextFull}>Demander le Prix</span>
+                        <span className={styles.btnTextCompact}>Prix</span>
                     </Button>
                     <Link href={`/produit/${product.slug}`}>
                         <Button
