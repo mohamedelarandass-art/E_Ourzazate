@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
     // Enable modern formats - AVIF is smallest, WebP as fallback
     formats: ['image/avif', 'image/webp'],
 
+    // Allowed quality values for next/image
+    qualities: [75, 85],
+
     // Device sizes for srcset generation
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
 

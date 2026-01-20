@@ -74,6 +74,30 @@
     scrollbar-color: var(--color-border) transparent;
 }
 
+/* P2 #6: Scroll indicator - gradient fade at bottom */
+.sidebarScrollIndicator {
+    position: relative;
+}
+
+.sidebarScrollIndicator::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to top,
+            var(--color-surface) 0%,
+            transparent 100%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--duration-200) var(--ease-out);
+}
+
+.sidebarScrollIndicator.hasScroll::after {
+    opacity: 1;
+}
+
 .sidebar::-webkit-scrollbar {
     width: 6px;
 }
@@ -506,7 +530,7 @@
     min-height: 100%;
 }
 
-/* Breadcrumb */
+/* Breadcrumb - P2 #7: Enhanced styling */
 .breadcrumb {
     display: flex;
     align-items: center;
@@ -516,13 +540,46 @@
 }
 
 .breadcrumbLink {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1);
     color: var(--color-text-secondary);
     text-decoration: none;
-    transition: color var(--duration-150) var(--ease-out);
+    padding: var(--spacing-1) var(--spacing-1);
+    margin: calc(-1 * var(--spacing-1));
+    border-radius: var(--radius-sm);
+    transition: all var(--duration-150) var(--ease-out);
+    position: relative;
+}
+
+/* Hover underline effect */
+.breadcrumbLink::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: var(--spacing-1);
+    right: var(--spacing-1);
+    height: 1px;
+    background-color: var(--color-wood);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform var(--duration-200) var(--ease-out);
 }
 
 .breadcrumbLink:hover {
     color: var(--color-wood);
+    background-color: rgba(196, 167, 125, 0.08);
+}
+
+.breadcrumbLink:hover::after {
+    transform: scaleX(1);
+}
+
+/* Home icon styling */
+.breadcrumbHomeIcon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
 }
 
 .breadcrumbSeparator {
@@ -533,6 +590,7 @@
 .breadcrumbCurrent {
     color: var(--color-text-primary);
     font-weight: var(--font-weight-medium);
+    padding: var(--spacing-1);
 }
 
 /* Content Header */
@@ -632,6 +690,29 @@
     }
 }
 
+/* #12: Chip exit animation */
+@keyframes chipOut {
+    from {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-12px) scale(0.9);
+    }
+}
+
+.chipRemoving {
+    animation: chipOut 0.2s ease-out forwards;
+    pointer-events: none;
+}
+
+/* #11: Micro-scale press feedback on chip click */
+.filterChip:active {
+    transform: scale(0.95);
+}
+
 /* ===========================================================================
    Products Grid
    =========================================================================== */
@@ -674,7 +755,7 @@
 }
 
 /* ===========================================================================
-   Empty State
+   Empty State - P2 #9: Enhanced
    =========================================================================== */
 
 .emptyState {
@@ -691,28 +772,40 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 100px;
-    background: var(--color-background-alt);
+    width: 120px;
+    height: 120px;
+    /* Gradient background for more visual interest */
+    background: linear-gradient(135deg,
+            var(--color-background-alt) 0%,
+            rgba(196, 167, 125, 0.1) 100%);
     border-radius: var(--radius-full);
-    margin-bottom: var(--spacing-5);
-    color: var(--color-text-tertiary);
+    margin-bottom: var(--spacing-6);
+    color: var(--color-wood);
+    /* Subtle border */
+    border: 2px solid rgba(196, 167, 125, 0.2);
 }
 
 .emptyTitle {
     font-family: var(--font-heading);
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-semibold);
     color: var(--color-text-primary);
-    margin: 0 0 var(--spacing-2);
+    margin: 0 0 var(--spacing-3);
 }
 
 .emptyText {
     font-size: var(--font-size-base);
     color: var(--color-text-secondary);
-    max-width: 400px;
-    margin: 0 0 var(--spacing-6);
+    max-width: 420px;
+    margin: 0 0 var(--spacing-8);
     line-height: var(--line-height-relaxed);
+}
+
+.emptyActions {
+    display: flex;
+    gap: var(--spacing-3);
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .emptyButton {
@@ -784,6 +877,7 @@
 }
 
 .skeletonImage {
+    position: relative;
     height: 200px;
     background: linear-gradient(90deg,
             var(--color-background-alt) 25%,
@@ -793,8 +887,39 @@
     animation: shimmer 1.5s infinite linear;
 }
 
+/* #13: Skeleton badge placeholders */
+.skeletonBadges {
+    position: absolute;
+    top: var(--spacing-3);
+    left: var(--spacing-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.skeletonBadge {
+    width: 60px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-md);
+    animation: shimmer 1.5s infinite linear;
+}
+
+.skeletonBadge:nth-child(2) {
+    width: 50px;
+}
+
 .skeletonContent {
     padding: var(--spacing-4);
+}
+
+.skeletonCategory {
+    height: 12px;
+    width: 60px;
+    background: var(--color-background-alt);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-2);
+    animation: shimmer 1.5s infinite linear;
 }
 
 .skeletonTitle {
@@ -811,13 +936,31 @@
     width: 100%;
     background: var(--color-background-alt);
     border-radius: var(--radius-lg);
-    margin-bottom: var(--spacing-3);
+    margin-bottom: var(--spacing-2);
     animation: shimmer 1.5s infinite linear;
+}
+
+.skeletonText:last-of-type {
+    width: 80%;
+    margin-bottom: var(--spacing-4);
+}
+
+.skeletonActions {
+    display: flex;
+    gap: var(--spacing-2);
 }
 
 .skeletonButton {
     height: 36px;
-    width: 120px;
+    flex: 1;
+    background: var(--color-background-alt);
+    border-radius: var(--radius-lg);
+    animation: shimmer 1.5s infinite linear;
+}
+
+.skeletonButtonSmall {
+    height: 36px;
+    width: 80px;
     background: var(--color-background-alt);
     border-radius: var(--radius-lg);
     animation: shimmer 1.5s infinite linear;

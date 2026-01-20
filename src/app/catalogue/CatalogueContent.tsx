@@ -18,7 +18,8 @@ import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {
     ChevronRight, X, PackageX, Star, Sparkles,
-    ArrowUpAZ, ArrowDownAZ, LayoutGrid, LayoutList, Loader2
+    ArrowUpAZ, ArrowDownAZ, LayoutGrid, LayoutList, Loader2,
+    Home, Search
 } from 'lucide-react';
 import { ProductCard } from '@/components';
 import type { Product, Category } from '@/types';
@@ -174,9 +175,10 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
 
     return (
         <div className={styles.content}>
-            {/* Breadcrumb */}
+            {/* Breadcrumb - P2 #7: Enhanced with home icon */}
             <nav className={styles.breadcrumb} aria-label="Fil d'Ariane">
                 <Link href="/" className={styles.breadcrumbLink}>
+                    <Home size={14} className={styles.breadcrumbHomeIcon} aria-hidden="true" />
                     Accueil
                 </Link>
                 <ChevronRight size={14} className={styles.breadcrumbSeparator} aria-hidden="true" />
@@ -197,10 +199,25 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
             <header className={styles.contentHeader}>
                 <div className={styles.headerLeft}>
                     <h1 className={styles.pageTitle}>{pageTitle}</h1>
+                    {/* P2 #8: Enhanced product count messaging */}
                     <p className={styles.productCount}>
-                        <span className={styles.countNumber}>{filteredProducts.length}</span>
-                        {' '}
-                        {filteredProducts.length === 1 ? 'produit' : 'produits'}
+                        {selectedCategory ? (
+                            <>
+                                <span className={styles.countNumber}>{filteredProducts.length}</span>
+                                {' '}
+                                {filteredProducts.length === 1
+                                    ? `${selectedCategory.name.toLowerCase()} trouvé`
+                                    : `${selectedCategory.name.toLowerCase()}s trouvés`
+                                }
+                            </>
+                        ) : (
+                            <>
+                                Découvrez notre sélection de{' '}
+                                <span className={styles.countNumber}>{filteredProducts.length}</span>
+                                {' '}
+                                {filteredProducts.length === 1 ? 'produit' : 'produits'}
+                            </>
+                        )}
                     </p>
                 </div>
 
@@ -288,18 +305,35 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
                     </div>
                 </>
             ) : (
+                /* P2 #9: Enhanced empty state */
                 <div className={styles.emptyState}>
                     <div className={styles.emptyIcon}>
-                        <PackageX size={56} strokeWidth={1.2} />
+                        <Search size={56} strokeWidth={1.2} />
                     </div>
-                    <h2 className={styles.emptyTitle}>Aucun produit trouvé</h2>
+                    <h2 className={styles.emptyTitle}>
+                        {selectedCategory
+                            ? `Aucun ${selectedCategory.name.toLowerCase()} disponible`
+                            : 'Aucun produit trouvé'
+                        }
+                    </h2>
                     <p className={styles.emptyText}>
-                        Aucun produit ne correspond à vos critères de recherche.
-                        Essayez de modifier vos filtres ou explorez d'autres catégories.
+                        {selectedCategory ? (
+                            <>
+                                Nous n&apos;avons pas trouvé de {selectedCategory.name.toLowerCase()} correspondant à vos filtres.
+                                Essayez de modifier vos critères ou explorez nos autres catégories.
+                            </>
+                        ) : (
+                            <>
+                                Aucun produit ne correspond à vos critères de recherche.
+                                Découvrez nos luminaires, notre carrelage premium ou nos équipements sanitaires.
+                            </>
+                        )}
                     </p>
-                    <Link href="/catalogue" className={styles.emptyButton}>
-                        Voir tous les produits
-                    </Link>
+                    <div className={styles.emptyActions}>
+                        <Link href="/catalogue" className={styles.emptyButton}>
+                            Voir tous les produits
+                        </Link>
+                    </div>
                 </div>
             )}
         </div>

@@ -85,12 +85,7 @@ export const mainNavItems: NavItem[] = [
                 icon: 'Lamp',
                 description: 'Éclairage intérieur et extérieur',
             },
-            {
-                label: 'Électroménager',
-                href: '/catalogue/electromenager',
-                icon: 'Refrigerator',
-                description: 'Appareils électroménagers',
-            },
+
             {
                 label: 'Outillage',
                 href: '/catalogue/outillage',
@@ -137,7 +132,7 @@ export const footerNavSections = [
             { label: 'Meubles SDB', href: '/catalogue/meubles-sdb' },
             { label: 'Carrelage', href: '/catalogue/carrelage' },
             { label: 'Luminaire', href: '/catalogue/luminaire' },
-            { label: 'Électroménager', href: '/catalogue/electromenager' },
+
             { label: 'Outillage', href: '/catalogue/outillage' },
         ],
     },

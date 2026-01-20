@@ -12,7 +12,7 @@
 
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Filter, Sparkles, Star, ArrowUpAZ, ArrowDownAZ, Clock, X } from 'lucide-react';
 import type { Category } from '@/types';
@@ -44,6 +44,71 @@ export function CatalogueSidebar({ categories, mobileOnly = false }: CatalogueSi
 
     // Mobile sidebar toggle
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+    // #15: Ref for mobile sidebar focus trap
+    const mobileSidebarRef = useRef<HTMLDivElement>(null);
+    const previousActiveElement = useRef<HTMLElement | null>(null);
+
+    // #15: Focus trap and body scroll lock effect
+    useEffect(() => {
+        if (isMobileOpen) {
+            // Store the previously focused element
+            previousActiveElement.current = document.activeElement as HTMLElement;
+
+            // Lock body scroll
+            document.body.style.overflow = 'hidden';
+
+            // Focus the close button when drawer opens
+            const closeButton = mobileSidebarRef.current?.querySelector('button');
+            if (closeButton) {
+                setTimeout(() => closeButton.focus(), 100);
+            }
+
+            // Focus trap handler
+            const handleKeyDown = (e: KeyboardEvent) => {
+                if (e.key === 'Escape') {
+                    setIsMobileOpen(false);
+                    return;
+                }
+
+                if (e.key !== 'Tab') return;
+
+                const sidebar = mobileSidebarRef.current;
+                if (!sidebar) return;
+
+                const focusableElements = sidebar.querySelectorAll<HTMLElement>(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                );
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+
+                if (e.shiftKey) {
+                    // Shift + Tab: wrap to last element
+                    if (document.activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    }
+                } else {
+                    // Tab: wrap to first element
+                    if (document.activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+            };
+
+            document.addEventListener('keydown', handleKeyDown);
+
+            return () => {
+                document.removeEventListener('keydown', handleKeyDown);
+                document.body.style.overflow = '';
+                // Return focus to previous element
+                previousActiveElement.current?.focus();
+            };
+        } else {
+            document.body.style.overflow = '';
+        }
+    }, [isMobileOpen]);
 
     // Check if there are any active filters
     const hasActiveFilters = selectedCategory || showFeatured || showNew || sortBy !== 'newest';
@@ -114,8 +179,14 @@ export function CatalogueSidebar({ categories, mobileOnly = false }: CatalogueSi
                     />
                 )}
 
-                {/* Mobile Drawer Sidebar */}
-                <div className={`${styles.mobileSidebar} ${isMobileOpen ? styles.sidebarOpen : ''}`}>
+                {/* Mobile Drawer Sidebar - #15: Focus trap target */}
+                <div
+                    ref={mobileSidebarRef}
+                    className={`${styles.mobileSidebar} ${isMobileOpen ? styles.sidebarOpen : ''}`}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Filtres et catégories"
+                >
                     {/* Mobile Close Button */}
                     <button
                         className={styles.mobileCloseButton}

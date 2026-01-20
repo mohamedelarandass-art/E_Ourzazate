@@ -32,10 +32,27 @@
         0 0 0 1px rgba(196, 167, 125, 0.2);
 }
 
+/* #14: Focus indicator for keyboard navigation accessibility */
+.card:focus-visible {
+    outline: 2px solid var(--color-wood);
+    outline-offset: 4px;
+    transform: translateY(-4px);
+    box-shadow:
+        0 20px 40px -12px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(196, 167, 125, 0.3);
+}
+
 :global([data-theme="dark"]) .card:hover {
     box-shadow:
         0 25px 50px -12px rgba(0, 0, 0, 0.4),
         0 0 0 1px rgba(196, 167, 125, 0.3);
+}
+
+:global([data-theme="dark"]) .card:focus-visible {
+    outline-color: var(--color-wood-light);
+    box-shadow:
+        0 20px 40px -12px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(196, 167, 125, 0.4);
 }
 
 /* ===========================================================================
@@ -45,8 +62,8 @@
 .imageWrapper {
     position: relative;
     width: 100%;
-    /* 3:2 aspect ratio for consistent image heights */
-    aspect-ratio: 3/2;
+    /* P1 Fix: Consistent 4:3 aspect ratio across all viewports */
+    aspect-ratio: 4/3;
     overflow: hidden;
     background: var(--color-background-alt);
 }
@@ -364,7 +381,8 @@
     }
 
     .imageWrapper {
-        aspect-ratio: 1/1;
+        /* P1 Fix: Keep consistent 4:3 ratio even in compact mode */
+        aspect-ratio: 4/3;
     }
 
     .badges {

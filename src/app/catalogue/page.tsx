@@ -31,18 +31,29 @@ export const metadata: Metadata = {
 };
 
 /**
- * Loading skeleton for products
+ * Loading skeleton for products - #13: Enhanced with badge placeholders
  */
 function ProductsSkeleton() {
     return (
         <div className={styles.skeletonGrid}>
             {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className={styles.skeletonCard}>
-                    <div className={styles.skeletonImage} />
+                    <div className={styles.skeletonImage}>
+                        {/* Badge placeholders */}
+                        <div className={styles.skeletonBadges}>
+                            <div className={styles.skeletonBadge} />
+                            {i % 2 === 0 && <div className={styles.skeletonBadge} />}
+                        </div>
+                    </div>
                     <div className={styles.skeletonContent}>
+                        <div className={styles.skeletonCategory} />
                         <div className={styles.skeletonTitle} />
                         <div className={styles.skeletonText} />
-                        <div className={styles.skeletonButton} />
+                        <div className={styles.skeletonText} />
+                        <div className={styles.skeletonActions}>
+                            <div className={styles.skeletonButton} />
+                            <div className={styles.skeletonButtonSmall} />
+                        </div>
                     </div>
                 </div>
             ))}
