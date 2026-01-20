@@ -52,3 +52,21 @@ export {
 } from './statistics';
 export type { Statistic } from './statistics';
 
+// About Page Data
+export {
+    timeline,
+    values,
+    testimonials,
+    founder,
+    socialProofStats,
+    certifications,
+    heroContent,
+    ctaContent,
+} from './about';
+export type {
+    TimelineItem,
+    Value,
+    Testimonial,
+    FounderInfo,
+} from './about';
+
