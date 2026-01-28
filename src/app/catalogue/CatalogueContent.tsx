@@ -267,20 +267,53 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
                     <motion.div
                         className={gridClass}
                         layout
+                        variants={{
+                            hidden: { opacity: 0 },
+                            visible: {
+                                opacity: 1,
+                                transition: {
+                                    staggerChildren: 0.05,
+                                    delayChildren: 0.1
+                                }
+                            }
+                        }}
+                        initial="hidden"
+                        animate="visible"
                     >
                         <AnimatePresence mode="popLayout">
-                            {displayedProducts.map((product, index) => (
+                            {displayedProducts.map((product) => (
                                 <motion.div
                                     key={product.id}
                                     layout
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.9 }}
-                                    transition={{
-                                        duration: 0.3,
-                                        ease: "easeOut",
-                                        layout: { duration: 0.3 }
+                                    variants={{
+                                        hidden: {
+                                            opacity: 0,
+                                            scale: 0.9,
+                                            y: 20,
+                                            filter: "blur(10px)"
+                                        },
+                                        visible: {
+                                            opacity: 1,
+                                            scale: 1,
+                                            y: 0,
+                                            filter: "blur(0px)",
+                                            transition: {
+                                                type: "spring",
+                                                stiffness: 90,
+                                                damping: 20,
+                                                mass: 1.1
+                                            }
+                                        },
+                                        exit: {
+                                            opacity: 0,
+                                            scale: 0.9,
+                                            filter: "blur(10px)",
+                                            transition: { duration: 0.2 }
+                                        }
                                     }}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="exit"
                                     className={styles.productItem}
                                 >
                                     <ProductCard
