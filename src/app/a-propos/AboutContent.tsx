@@ -4,15 +4,12 @@
  * Client component containing all interactive sections for the À Propos page.
  * 
  * Sections:
- * 1. Hero - Company tagline and heritage message
- * 2. Timeline - Vertical timeline of company history
- * 3. Founder - Founder portrait and quote
- * 4. Values - Core company values (3 cards)
- * 5. Social Proof - Statistics and testimonials
+ * 1. Hero - Company tagline with slogan "Votre Partenaire Qualité"
+ * 2. Timeline - Minimal timeline (pending detailed data from client)
+ * 3. Director Message - Text-centric message from Brahim Amcassou
+ * 4. Values - Core company values (Qualité, Service Client, Innovation)
+ * 5. Projects - Nos Réalisations: 12 prestigious projects
  * 6. CTA - Call to action for catalogue/contact
- * 
- * All mockup data is imported from @/data/about and marked
- * with [MOCKUP] comments for easy replacement.
  * 
  * @module app/a-propos/AboutContent
  */
@@ -24,30 +21,39 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
     Award,
-    MapPin,
     Users,
+    Lightbulb,
     ArrowRight,
     MessageCircle,
     Quote,
     Building2,
     CheckCircle,
     Star,
+    Zap,
+    Building,
+    Construction,
+    ShoppingCart,
     LucideIcon,
+    Heart,
+    Calendar,
 } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { getWhatsAppLink } from '@/config';
 import {
     timeline,
+    timelinePending,
     values,
-    testimonials,
-    founder,
+    projects,
+    projectCategories,
+    director,
     socialProofStats,
     certifications,
     heroContent,
     ctaContent,
     type TimelineItem,
     type Value,
-    type Testimonial,
+    type Project,
+    type ProjectCategory,
 } from '@/data';
 import styles from './page.module.css';
 
@@ -55,13 +61,20 @@ import styles from './page.module.css';
    Icon Mapping
    ========================================================================== */
 
-const iconMap: Record<Value['icon'], LucideIcon> = {
+const valueIconMap: Record<Value['icon'], LucideIcon> = {
     Award,
-    MapPin,
     Users,
-    Shield: Award, // Fallback
-    Heart: Star,   // Fallback
+    Lightbulb,
+    Heart,
     Star,
+    Shield: Award,
+};
+
+const projectCategoryIconMap: Record<ProjectCategory, LucideIcon> = {
+    energie: Zap,
+    hotellerie: Building,
+    infrastructure: Construction,
+    commerce: ShoppingCart,
 };
 
 /* ==========================================================================
@@ -126,11 +139,10 @@ function TimelineItemCard({ item, index, isVisible }: TimelineItemProps) {
 
             {/* Content Card */}
             <div className={styles.timelineCard}>
-                {/* Image Placeholder */}
+                {/* Icon Placeholder */}
                 <div className={styles.timelineImageWrapper}>
                     <div className={styles.timelineImagePlaceholder}>
-                        <Building2 size={32} />
-                        <span>{item.year}</span>
+                        <Calendar size={28} />
                     </div>
                 </div>
 
@@ -154,7 +166,7 @@ interface ValueCardProps {
 }
 
 function ValueCard({ value, index, isVisible }: ValueCardProps) {
-    const Icon = iconMap[value.icon] || Award;
+    const Icon = valueIconMap[value.icon] || Award;
 
     return (
         <article
@@ -181,38 +193,42 @@ function ValueCard({ value, index, isVisible }: ValueCardProps) {
 }
 
 /**
- * Testimonial Card Component
+ * Project Card Component
  */
-interface TestimonialCardProps {
-    testimonial: Testimonial;
+interface ProjectCardProps {
+    project: Project;
     index: number;
     isVisible: boolean;
 }
 
-function TestimonialCard({ testimonial, index, isVisible }: TestimonialCardProps) {
+function ProjectCard({ project, index, isVisible }: ProjectCardProps) {
+    const categoryInfo = projectCategories[project.category];
+    const Icon = projectCategoryIconMap[project.category];
+
     return (
         <article
-            className={styles.testimonialCard}
+            className={styles.projectCard}
             data-visible={isVisible}
-            style={{ animationDelay: `${index * 100}ms` }}
+            data-category={project.category}
+            style={{ animationDelay: `${index * 50}ms` }}
         >
-            <Quote className={styles.testimonialQuoteIcon} size={24} aria-hidden="true" />
-
-            <blockquote className={styles.testimonialQuote}>
-                "{testimonial.quote}"
-            </blockquote>
-
-            <footer className={styles.testimonialFooter}>
-                {/* Avatar Placeholder */}
-                <div className={styles.testimonialAvatar}>
-                    <span>{testimonial.name.charAt(0)}</span>
+            <div className={styles.projectCardInner}>
+                {/* Icon */}
+                <div className={styles.projectIconWrapper}>
+                    <Icon size={20} aria-hidden="true" />
                 </div>
 
-                <div className={styles.testimonialAuthor}>
-                    <cite className={styles.testimonialName}>{testimonial.name}</cite>
-                    <span className={styles.testimonialCompany}>{testimonial.company}</span>
+                {/* Content */}
+                <div className={styles.projectContent}>
+                    <h4 className={styles.projectName}>{project.name}</h4>
+                    {project.description && (
+                        <span className={styles.projectDescription}>{project.description}</span>
+                    )}
                 </div>
-            </footer>
+
+                {/* Category Badge */}
+                <span className={styles.projectCategory}>{categoryInfo.label}</span>
+            </div>
         </article>
     );
 }
@@ -225,10 +241,19 @@ export function AboutContent() {
     // Section visibility states for animations
     const hero = useScrollAnimation(0.1);
     const timelineSection = useScrollAnimation(0.1);
-    const founderSection = useScrollAnimation(0.2);
+    const directorSection = useScrollAnimation(0.2);
     const valuesSection = useScrollAnimation(0.2);
-    const socialProofSection = useScrollAnimation(0.2);
+    const projectsSection = useScrollAnimation(0.15);
     const ctaSection = useScrollAnimation(0.3);
+
+    // Group projects by category for display
+    const projectsByCategory = projects.reduce((acc, project) => {
+        if (!acc[project.category]) {
+            acc[project.category] = [];
+        }
+        acc[project.category].push(project);
+        return acc;
+    }, {} as Record<ProjectCategory, Project[]>);
 
     return (
         <>
@@ -259,6 +284,11 @@ export function AboutContent() {
                     {/* Eyebrow */}
                     <span className={styles.eyebrow}>{heroContent.eyebrow}</span>
 
+                    {/* Slogan */}
+                    <div className={styles.sloganWrapper}>
+                        <span className={styles.slogan}>&quot;{heroContent.slogan}&quot;</span>
+                    </div>
+
                     {/* Gold Accent Line */}
                     <div className={styles.accentLine} aria-hidden="true" />
 
@@ -275,7 +305,7 @@ export function AboutContent() {
             </section>
 
             {/* ============================================
-                SECTION 2: TIMELINE
+                SECTION 2: TIMELINE (Minimal - Pending Data)
             ============================================ */}
             <section
                 ref={timelineSection.ref as React.RefObject<HTMLElement>}
@@ -287,10 +317,10 @@ export function AboutContent() {
                     <header className={styles.sectionHeader}>
                         <span className={styles.eyebrow}>Notre Parcours</span>
                         <h2 id="timeline-title" className={styles.sectionTitle}>
-                            50 ans d'histoire et d'engagement
+                            Une histoire de famille
                         </h2>
                         <p className={styles.sectionSubtitle}>
-                            De notre fondation en 1975 à aujourd'hui, découvrez les moments clés qui ont façonné notre entreprise.
+                            De notre fondation en 1975 par Brahim Amcassou à aujourd&apos;hui, une passion transmise de génération en génération.
                         </p>
                     </header>
 
@@ -311,52 +341,60 @@ export function AboutContent() {
                             ))}
                         </div>
                     </div>
+
+                    {/* Pending Notice */}
+                    {timelinePending && (
+                        <p className={styles.pendingNotice}>
+                            Plus de détails à venir...
+                        </p>
+                    )}
                 </div>
             </section>
 
             {/* ============================================
-                SECTION 3: FOUNDER
+                SECTION 3: MESSAGE DU DIRIGEANT (Text Only)
             ============================================ */}
             <section
-                ref={founderSection.ref as React.RefObject<HTMLElement>}
-                className={styles.founder}
-                aria-labelledby="founder-title"
+                ref={directorSection.ref as React.RefObject<HTMLElement>}
+                className={styles.director}
+                aria-labelledby="director-title"
             >
                 <div className={styles.container}>
-                    <div className={styles.founderGrid} data-visible={founderSection.isVisible}>
-                        {/* Image Column */}
-                        <div className={styles.founderImageColumn}>
-                            <div className={styles.founderImageWrapper}>
-                                {/* Placeholder for founder image */}
-                                <div className={styles.founderImagePlaceholder}>
-                                    <Users size={64} />
-                                    <span>Portrait</span>
-                                </div>
+                    <div className={styles.directorContent} data-visible={directorSection.isVisible}>
+                        {/* Section Header */}
+                        <header className={styles.sectionHeader}>
+                            <span className={styles.eyebrow}>Message du Dirigeant</span>
+                            <h2 id="director-title" className={styles.sectionTitle}>
+                                Un mot de notre directeur
+                            </h2>
+                        </header>
 
-                                {/* Decorative frame */}
-                                <div className={styles.founderImageFrame} aria-hidden="true" />
+                        {/* Message Card */}
+                        <div className={styles.directorMessageCard}>
+                            <Quote className={styles.directorQuoteIcon} size={48} aria-hidden="true" />
+
+                            {/* Message Text */}
+                            <div className={styles.directorMessage}>
+                                {director.message.split('\n\n').map((paragraph, index) => (
+                                    <p key={index}>{paragraph}</p>
+                                ))}
                             </div>
-                        </div>
 
-                        {/* Quote Column */}
-                        <div className={styles.founderQuoteColumn}>
-                            <div className={styles.founderQuoteCard}>
-                                <Quote className={styles.founderQuoteIcon} size={48} aria-hidden="true" />
-
-                                <blockquote className={styles.founderQuote}>
-                                    <p>{founder.quote}</p>
-                                </blockquote>
-
-                                <footer className={styles.founderSignature}>
-                                    <div className={styles.founderSignatureLine} aria-hidden="true" />
-                                    <cite className={styles.founderName}>
-                                        {founder.name}
+                            {/* Signature */}
+                            <footer className={styles.directorSignature}>
+                                <div className={styles.directorSignatureLine} aria-hidden="true" />
+                                <div className={styles.directorInfo}>
+                                    <cite className={styles.directorName}>
+                                        {director.name}
                                     </cite>
-                                    <span className={styles.founderTitle}>
-                                        {founder.title}
+                                    <span className={styles.directorTitle}>
+                                        {director.title}
                                     </span>
-                                </footer>
-                            </div>
+                                    <span className={styles.directorGeneration}>
+                                        {director.generation}
+                                    </span>
+                                </div>
+                            </footer>
                         </div>
                     </div>
                 </div>
@@ -400,26 +438,29 @@ export function AboutContent() {
             </section>
 
             {/* ============================================
-                SECTION 5: SOCIAL PROOF
+                SECTION 5: NOS RÉALISATIONS (Projects)
             ============================================ */}
             <section
-                ref={socialProofSection.ref as React.RefObject<HTMLElement>}
-                className={styles.socialProof}
-                aria-labelledby="social-proof-title"
+                ref={projectsSection.ref as React.RefObject<HTMLElement>}
+                className={styles.projectsSection}
+                aria-labelledby="projects-title"
             >
                 <div className={styles.container}>
                     {/* Section Header */}
                     <header className={styles.sectionHeader}>
-                        <span className={styles.eyebrow}>Ils nous font confiance</span>
-                        <h2 id="social-proof-title" className={styles.sectionTitle}>
-                            Des chiffres qui parlent
+                        <span className={styles.eyebrow}>Nos Réalisations</span>
+                        <h2 id="projects-title" className={styles.sectionTitle}>
+                            Des projets prestigieux
                         </h2>
+                        <p className={styles.sectionSubtitle}>
+                            De la centrale solaire NOOR aux plus beaux hôtels de la région, nous sommes fiers d&apos;avoir contribué à ces réalisations emblématiques.
+                        </p>
                     </header>
 
                     {/* Stats Row */}
                     <div
                         className={styles.statsRow}
-                        data-visible={socialProofSection.isVisible}
+                        data-visible={projectsSection.isVisible}
                     >
                         {socialProofStats.map((stat, index) => (
                             <div
@@ -433,22 +474,85 @@ export function AboutContent() {
                         ))}
                     </div>
 
-                    {/* Testimonials Grid */}
-                    <div className={styles.testimonialsGrid}>
-                        {testimonials.map((testimonial, index) => (
-                            <TestimonialCard
-                                key={testimonial.id}
-                                testimonial={testimonial}
-                                index={index}
-                                isVisible={socialProofSection.isVisible}
-                            />
-                        ))}
+                    {/* Projects Grid by Category */}
+                    <div className={styles.projectsGrid}>
+                        {/* Énergie */}
+                        <div className={styles.projectCategoryGroup}>
+                            <h3 className={styles.projectCategoryTitle}>
+                                <Zap size={20} />
+                                <span>Énergie</span>
+                            </h3>
+                            <div className={styles.projectCategoryCards}>
+                                {projectsByCategory.energie?.map((project, index) => (
+                                    <ProjectCard
+                                        key={project.id}
+                                        project={project}
+                                        index={index}
+                                        isVisible={projectsSection.isVisible}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Hôtellerie */}
+                        <div className={styles.projectCategoryGroup}>
+                            <h3 className={styles.projectCategoryTitle}>
+                                <Building size={20} />
+                                <span>Hôtellerie</span>
+                            </h3>
+                            <div className={styles.projectCategoryCards}>
+                                {projectsByCategory.hotellerie?.map((project, index) => (
+                                    <ProjectCard
+                                        key={project.id}
+                                        project={project}
+                                        index={index}
+                                        isVisible={projectsSection.isVisible}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Infrastructure */}
+                        <div className={styles.projectCategoryGroup}>
+                            <h3 className={styles.projectCategoryTitle}>
+                                <Construction size={20} />
+                                <span>Infrastructure</span>
+                            </h3>
+                            <div className={styles.projectCategoryCards}>
+                                {projectsByCategory.infrastructure?.map((project, index) => (
+                                    <ProjectCard
+                                        key={project.id}
+                                        project={project}
+                                        index={index}
+                                        isVisible={projectsSection.isVisible}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Commerce */}
+                        <div className={styles.projectCategoryGroup}>
+                            <h3 className={styles.projectCategoryTitle}>
+                                <ShoppingCart size={20} />
+                                <span>Commerce</span>
+                            </h3>
+                            <div className={styles.projectCategoryCards}>
+                                {projectsByCategory.commerce?.map((project, index) => (
+                                    <ProjectCard
+                                        key={project.id}
+                                        project={project}
+                                        index={index}
+                                        isVisible={projectsSection.isVisible}
+                                    />
+                                ))}
+                            </div>
+                        </div>
                     </div>
 
                     {/* Trust Badges */}
                     <div
                         className={styles.trustBadges}
-                        data-visible={socialProofSection.isVisible}
+                        data-visible={projectsSection.isVisible}
                     >
                         <div className={styles.trustBadge}>
                             <CheckCircle size={20} />
@@ -463,48 +567,69 @@ export function AboutContent() {
             </section>
 
             {/* ============================================
-                SECTION 6: CTA
+                SECTION 6: CTA - PREMIUM DESIGN
             ============================================ */}
             <section
                 ref={ctaSection.ref as React.RefObject<HTMLElement>}
                 className={styles.cta}
                 aria-labelledby="cta-title"
             >
+                {/* Decorative Background */}
+                <div className={styles.ctaBackground} aria-hidden="true">
+                    <div className={styles.ctaGradientOrb1} />
+                    <div className={styles.ctaGradientOrb2} />
+                </div>
+
                 <div className={styles.container}>
                     <div
-                        className={styles.ctaContent}
+                        className={styles.ctaCard}
                         data-visible={ctaSection.isVisible}
                     >
-                        <h2 id="cta-title" className={styles.ctaTitle}>
-                            {ctaContent.title}
-                        </h2>
-                        <p className={styles.ctaSubtitle}>
-                            {ctaContent.subtitle}
-                        </p>
+                        {/* Decorative Corner Accents */}
+                        <div className={styles.ctaCornerTL} aria-hidden="true" />
+                        <div className={styles.ctaCornerBR} aria-hidden="true" />
 
-                        <div className={styles.ctaButtons}>
-                            <Link href={ctaContent.primaryCta.href}>
+                        <div className={styles.ctaContent}>
+                            {/* Eyebrow */}
+                            <span className={styles.ctaEyebrow}>
+                                +17 500 Produits
+                            </span>
+
+                            <h2 id="cta-title" className={styles.ctaTitle}>
+                                {ctaContent.title}
+                            </h2>
+                            <p className={styles.ctaSubtitle}>
+                                {ctaContent.subtitle}
+                            </p>
+
+                            {/* Primary CTA - EMPHASIZED */}
+                            <div className={styles.ctaButtonsWrapper}>
+                                <Link href={ctaContent.primaryCta.href} className={styles.ctaPrimaryWrapper}>
+                                    <button className={styles.ctaPrimaryButton}>
+                                        <span className={styles.ctaButtonShimmer} aria-hidden="true" />
+                                        <span className={styles.ctaButtonContent}>
+                                            <span className={styles.ctaButtonText}>
+                                                {ctaContent.primaryCta.text}
+                                            </span>
+                                            <ArrowRight size={22} className={styles.ctaButtonIcon} />
+                                        </span>
+                                    </button>
+                                </Link>
+
+                                {/* Secondary CTA */}
                                 <Button
-                                    variant="primary"
+                                    as="a"
+                                    href={getWhatsAppLink('Bonjour ! Je souhaite des informations sur vos produits.')}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    variant="whatsapp"
                                     size="lg"
-                                    rightIcon={<ArrowRight size={20} />}
-                                    className={styles.ctaPrimaryButton}
+                                    leftIcon={<MessageCircle size={20} />}
+                                    className={styles.ctaSecondaryButton}
                                 >
-                                    {ctaContent.primaryCta.text}
+                                    Nous Contacter
                                 </Button>
-                            </Link>
-
-                            <Button
-                                as="a"
-                                href={getWhatsAppLink('Bonjour ! Je souhaite des informations sur vos produits.')}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                variant="whatsapp"
-                                size="lg"
-                                leftIcon={<MessageCircle size={20} />}
-                            >
-                                Contacter par WhatsApp
-                            </Button>
+                            </div>
                         </div>
                     </div>
                 </div>

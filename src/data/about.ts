@@ -2,13 +2,10 @@
  * About Page Data
  * 
  * Contains all data for the À Propos page including:
- * - Company timeline milestones
+ * - Company timeline milestones (pending client data)
  * - Core values
- * - Testimonials
- * - Founder information
- * 
- * [MOCKUP DATA] - All content marked with [MOCKUP] should be
- * replaced with actual client information when available.
+ * - Prestigious projects
+ * - Director message
  * 
  * @module data/about
  */
@@ -19,6 +16,7 @@
 
 /**
  * Timeline milestone item
+ * NOTE: Timeline data pending from client
  */
 export interface TimelineItem {
     /** Unique identifier */
@@ -40,7 +38,7 @@ export interface Value {
     /** Unique identifier */
     id: string;
     /** Lucide icon name */
-    icon: 'Award' | 'MapPin' | 'Users' | 'Shield' | 'Heart' | 'Star';
+    icon: 'Award' | 'Users' | 'Lightbulb' | 'Heart' | 'Star' | 'Shield';
     /** Value title */
     title: string;
     /** Value description */
@@ -48,33 +46,38 @@ export interface Value {
 }
 
 /**
- * Customer testimonial
+ * Project category
  */
-export interface Testimonial {
+export type ProjectCategory = 'energie' | 'hotellerie' | 'infrastructure' | 'commerce';
+
+/**
+ * Prestigious project reference
+ */
+export interface Project {
     /** Unique identifier */
     id: string;
-    /** Customer name */
+    /** Project name */
     name: string;
-    /** Customer company or role */
-    company: string;
-    /** Testimonial quote */
-    quote: string;
-    /** Optional avatar image path */
-    avatar?: string;
+    /** Category of the project */
+    category: ProjectCategory;
+    /** Short description (optional) */
+    description?: string;
 }
 
 /**
- * Founder information
+ * Director/Leader information
  */
-export interface FounderInfo {
-    /** Founder's name */
+export interface DirectorInfo {
+    /** Director's name */
     name: string;
-    /** Founder's title */
+    /** Director's title */
     title: string;
-    /** Inspirational quote */
-    quote: string;
-    /** Optional portrait image path */
-    image?: string;
+    /** Generation info */
+    generation: string;
+    /** Welcome message - personal and warm tone */
+    message: string;
+    /** Signature text */
+    signature: string;
 }
 
 /* ==========================================================================
@@ -83,120 +86,170 @@ export interface FounderInfo {
 
 /**
  * Company history timeline
- * [MOCKUP] - Replace with client's actual history
+ * ⏳ PENDING: Client will provide detailed timeline/milestones later
+ * Using minimal placeholder for now
  */
 export const timeline: TimelineItem[] = [
     {
         id: 'founding',
         year: '1975',
-        title: 'Les Fondations', // [MOCKUP]
-        description: 'Ouverture du premier magasin à Ouarzazate par Hassan Ait. Une vision simple: fournir des matériaux de qualité aux artisans et constructeurs de la région.', // [MOCKUP]
-        image: '/images/about/timeline-1975.jpg', // [MOCKUP] - Placeholder
+        title: 'La Naissance',
+        description: 'Création d\'Equipement Ouarzazate par Brahim Amcassou. Une vision: devenir le partenaire qualité de la région.',
     },
     {
-        id: 'expansion',
-        year: '1985',
-        title: 'Expansion Régionale', // [MOCKUP]
-        description: 'Equipement Ouarzazate devient un acteur clé dans le Sud marocain. Élargissement de la gamme de produits et premiers partenariats avec des marques internationales.', // [MOCKUP]
-        image: '/images/about/timeline-1985.jpg', // [MOCKUP] - Placeholder
+        id: 'today',
+        year: '2024',
+        title: 'Votre Partenaire Qualité',
+        description: 'Aujourd\'hui, avec 120 collaborateurs dévoués et plus de 300 marques partenaires, nous continuons à façonner l\'excellence.',
     },
-    {
-        id: 'generation',
-        year: '1995',
-        title: 'Nouvelle Génération', // [MOCKUP]
-        description: 'Intégration de la deuxième génération et modernisation de l\'entreprise. Introduction de nouvelles catégories: luminaires et électroménager.', // [MOCKUP]
-        image: '/images/about/timeline-1995.jpg', // [MOCKUP] - Placeholder
-    },
-    {
-        id: 'showroom',
-        year: '2010',
-        title: 'La Vision d\'Aujourd\'hui', // [MOCKUP]
-        description: 'Inauguration du nouveau showroom dédié au design et à l\'aménagement intérieur. Plus de 17 500 références disponibles.', // [MOCKUP]
-        image: '/images/about/timeline-2010.jpg', // [MOCKUP] - Placeholder
-    },
-    {
-        id: 'innovation',
-        year: '2023',
-        title: 'L\'Innovation Continue', // [MOCKUP]
-        description: 'Partenaire de confiance pour les architectes et designers. Plus de 300 marques partenaires et une équipe de 185 collaborateurs dévoués.', // [MOCKUP]
-        image: '/images/about/timeline-2023.jpg', // [MOCKUP] - Placeholder
-    },
-] as const;
+];
+
+/**
+ * Flag indicating timeline is pending detailed data from client
+ */
+export const timelinePending = true;
 
 /* ==========================================================================
-   Values Data
+   Values Data - Confirmed by Client
    ========================================================================== */
 
 /**
  * Company core values
- * [MOCKUP] - Replace with client's actual values
+ * ✅ Confirmed: Qualité, Service Client, Innovation
  */
 export const values: Value[] = [
     {
         id: 'quality',
         icon: 'Award',
-        title: 'Qualité', // [MOCKUP]
-        description: 'Notre engagement pour l\'excellence se reflète dans chaque produit que nous sélectionnons. Nous ne proposons que des matériaux qui répondent à nos standards exigeants.', // [MOCKUP]
-    },
-    {
-        id: 'expertise',
-        icon: 'MapPin',
-        title: 'Expertise Locale', // [MOCKUP]
-        description: 'Une connaissance approfondie du marché marocain et des besoins spécifiques de la région. 50 ans d\'expérience au service de vos projets.', // [MOCKUP]
+        title: 'Qualité',
+        description: 'Notre engagement envers l\'excellence se reflète dans chaque produit que nous sélectionnons. Nous ne proposons que des matériaux qui répondent à nos standards les plus exigeants.',
     },
     {
         id: 'service',
         icon: 'Users',
-        title: 'Service Client', // [MOCKUP]
-        description: 'Accompagnement personnalisé de A à Z. Notre équipe de 185 collaborateurs est à votre écoute pour vous guider dans vos choix.', // [MOCKUP]
+        title: 'Service Client',
+        description: 'Accompagnement personnalisé et chaleureux à chaque étape. Notre équipe de 120 collaborateurs passionnés est à votre écoute pour transformer vos projets en réalité.',
     },
-] as const;
+    {
+        id: 'innovation',
+        icon: 'Lightbulb',
+        title: 'Innovation',
+        description: 'Toujours à la recherche des meilleures solutions et des dernières tendances. Nous évoluons constamment pour vous offrir le meilleur du marché.',
+    },
+];
 
 /* ==========================================================================
-   Testimonials Data
+   Prestigious Projects Data - Confirmed by Client
    ========================================================================== */
 
 /**
- * Customer testimonials
- * [MOCKUP] - Replace with real customer testimonials
+ * Category display information
  */
-export const testimonials: Testimonial[] = [
+export const projectCategories: Record<ProjectCategory, { label: string; icon: string }> = {
+    energie: { label: 'Énergie', icon: 'Zap' },
+    hotellerie: { label: 'Hôtellerie', icon: 'Building' },
+    infrastructure: { label: 'Infrastructure', icon: 'Construction' },
+    commerce: { label: 'Commerce', icon: 'ShoppingCart' },
+};
+
+/**
+ * 12 Prestigious projects
+ * ✅ Confirmed by client
+ */
+export const projects: Project[] = [
+    // Énergie (2 projets)
     {
-        id: 'testimonial-1',
-        name: 'Mohammed El Fassi', // [MOCKUP]
-        company: 'Architecte DPLG', // [MOCKUP]
-        quote: 'Partenaire incontournable pour tous mes projets dans la région. Leur expertise et la qualité de leurs produits font la différence.', // [MOCKUP]
-        avatar: '/images/about/avatar-1.jpg', // [MOCKUP] - Placeholder
+        id: 'noor',
+        name: 'NOOR',
+        category: 'energie',
+        description: 'Centrale solaire',
     },
     {
-        id: 'testimonial-2',
-        name: 'Fatima Benali', // [MOCKUP]
-        company: 'Hôtel Kasbah Rose', // [MOCKUP]
-        quote: 'Nous avons entièrement équipé notre hôtel avec Equipement Ouarzazate. Service impeccable et suivi exemplaire.', // [MOCKUP]
-        avatar: '/images/about/avatar-2.jpg', // [MOCKUP] - Placeholder
+        id: 'pompage',
+        name: 'Station de Pompage',
+        category: 'energie',
+    },
+
+    // Hôtellerie (4 projets)
+    {
+        id: 'berber-palace',
+        name: 'Berber Palace',
+        category: 'hotellerie',
     },
     {
-        id: 'testimonial-3',
-        name: 'Ahmed Tazi', // [MOCKUP]
-        company: 'Promoteur Immobilier', // [MOCKUP]
-        quote: 'Plus de 15 ans de collaboration. Leur gamme complète et leurs prix compétitifs en font un allié précieux pour nos chantiers.', // [MOCKUP]
-        avatar: '/images/about/avatar-3.jpg', // [MOCKUP] - Placeholder
+        id: 'ibis',
+        name: 'Ibis',
+        category: 'hotellerie',
     },
-] as const;
+    {
+        id: 'rs-karam',
+        name: 'RS Karam',
+        category: 'hotellerie',
+    },
+    {
+        id: 'kenzi-azghor',
+        name: 'Kenzi Azghor',
+        category: 'hotellerie',
+    },
+
+    // Infrastructure (4 projets)
+    {
+        id: 'pont-ait-ben-haddou',
+        name: 'Pont d\'Ait Ben Haddou',
+        category: 'infrastructure',
+    },
+    {
+        id: 'pont-agdez',
+        name: 'Pont d\'Agdez',
+        category: 'infrastructure',
+    },
+    {
+        id: 'col-tichka',
+        name: 'Col Tichka',
+        category: 'infrastructure',
+    },
+    {
+        id: 'aeroport',
+        name: 'Aéroport',
+        category: 'infrastructure',
+    },
+
+    // Commerce (2 projets)
+    {
+        id: 'marjane',
+        name: 'Marjane',
+        category: 'commerce',
+    },
+    {
+        id: 'atacadao',
+        name: 'Atacadao',
+        category: 'commerce',
+    },
+];
 
 /* ==========================================================================
-   Founder Data
+   Director Data - Confirmed by Client
    ========================================================================== */
 
 /**
- * Founder information
- * [MOCKUP] - Replace with actual founder information
+ * Director information
+ * ✅ Confirmed: Brahim Amcassou, 2ème génération
+ * Tone: Chaleureux et familial
  */
-export const founder: FounderInfo = {
-    name: 'Hassan Ait', // [MOCKUP]
-    title: 'Fondateur', // [MOCKUP]
-    quote: 'La qualité n\'est pas un acte, c\'est une habitude. Depuis 1975, nous construisons chaque jour sur cette conviction.', // [MOCKUP]
-    image: '/images/about/founder.jpg', // [MOCKUP] - Placeholder
+export const director: DirectorInfo = {
+    name: 'Brahim Amcassou',
+    title: 'Directeur Général',
+    generation: '2ème génération',
+    message: `Chers clients et partenaires,
+
+Depuis 1975, notre famille s'engage à vos côtés pour concrétiser vos projets les plus ambitieux. Ce qui a commencé comme une petite entreprise familiale est devenu, grâce à votre confiance, un acteur incontournable de la région.
+
+Notre philosophie reste simple : vous offrir la qualité, le service et l'innovation que vous méritez. Chaque jour, nos 120 collaborateurs se lèvent avec cette mission en tête.
+
+Des projets emblématiques comme la centrale NOOR, le Berber Palace ou le Col Tichka témoignent de cette relation de confiance que nous avons bâtie ensemble.
+
+Merci de faire partie de notre histoire.`,
+    signature: 'Brahim Amcassou',
 };
 
 /* ==========================================================================
@@ -208,9 +261,9 @@ export const founder: FounderInfo = {
  */
 export const socialProofStats = [
     {
-        id: 'clients',
-        value: '+16 000',
-        label: 'clients satisfaits',
+        id: 'projects',
+        value: '12',
+        label: 'projets prestigieux',
     },
     {
         id: 'experience',
@@ -218,11 +271,16 @@ export const socialProofStats = [
         label: 'ans d\'expérience',
     },
     {
+        id: 'team',
+        value: '120',
+        label: 'collaborateurs',
+    },
+    {
         id: 'brands',
         value: '+300',
         label: 'marques partenaires',
     },
-] as const;
+];
 
 /**
  * Company certifications/legal info for trust badges
@@ -230,7 +288,8 @@ export const socialProofStats = [
 export const certifications = {
     rc: '4433', // Registre de Commerce
     ice: '000125028000047', // ICE
-} as const;
+    // ⏳ PENDING: Certification béton (client will add later)
+};
 
 /* ==========================================================================
    Hero Data
@@ -238,26 +297,44 @@ export const certifications = {
 
 /**
  * Hero section content
- * [MOCKUP] - Adjust messaging as needed
+ * ✅ Using confirmed slogan: "Votre Partenaire Qualité"
  */
 export const heroContent = {
     eyebrow: 'Notre Histoire',
-    title: 'Depuis 1975, nous façonnons l\'excellence',
-    subtitle: 'Plus qu\'un fournisseur, un partenaire de confiance pour tous vos projets de construction et d\'aménagement dans la région de Ouarzazate.',
-} as const;
+    slogan: 'Votre Partenaire Qualité',
+    title: 'Depuis 1975, une histoire de famille et de confiance',
+    subtitle: 'Plus qu\'un fournisseur, nous sommes le partenaire de vos projets depuis près de 50 ans. De la centrale NOOR aux plus beaux hôtels de la région, notre engagement qualité fait la différence.',
+};
 
 /**
  * CTA section content
+ * ✅ Using confirmed CTA: "Visiter le Catalogue"
  */
 export const ctaContent = {
     title: 'Prêt à concrétiser votre projet ?',
-    subtitle: 'Découvrez notre catalogue de plus de 17 500 produits ou contactez notre équipe pour un accompagnement personnalisé.',
+    subtitle: 'Rejoignez les centaines d\'entreprises qui nous font confiance. Découvrez notre catalogue de plus de 17 500 produits.',
     primaryCta: {
-        text: 'Explorer le Catalogue',
+        text: 'Visiter le Catalogue',
         href: '/catalogue',
     },
     secondaryCta: {
         text: 'Nous Contacter',
         href: '/contact',
     },
-} as const;
+};
+
+/* ==========================================================================
+   Pending Data (Client will provide later)
+   ========================================================================== */
+
+/**
+ * Pending items to be added when client provides:
+ * - ⏳ Timeline/Étapes clés détaillées
+ * - ⏳ Photos showroom (extérieur + intérieur)
+ * - ⏳ Certification béton
+ */
+export const pendingItems = {
+    timeline: true,
+    showroomPhotos: true,
+    certificationBeton: true,
+};

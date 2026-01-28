@@ -3,11 +3,11 @@
  * 
  * Complete styling for the About page including:
  * 1. Base Layout
- * 2. Hero Section
+ * 2. Hero Section (with slogan)
  * 3. Timeline Section
- * 4. Founder Section
+ * 4. Director Message Section (text-only)
  * 5. Values Section
- * 6. Social Proof Section
+ * 6. Projects Section (Nos Réalisations)
  * 7. CTA Section
  * 8. Dark Mode Overrides
  * 9. Responsive Design
@@ -162,6 +162,7 @@
 }
 
 .heroContent[data-visible="false"] .eyebrow,
+.heroContent[data-visible="false"] .sloganWrapper,
 .heroContent[data-visible="false"] .accentLine,
 .heroContent[data-visible="false"] .heroTitle,
 .heroContent[data-visible="false"] .heroSubtitle {
@@ -174,23 +175,48 @@
     animation-delay: 0.1s;
 }
 
+.heroContent[data-visible="true"] .sloganWrapper {
+    animation: fadeSlideUp 0.7s ease-out forwards;
+    animation-delay: 0.2s;
+}
+
 .heroContent[data-visible="true"] .accentLine {
-    animation: revealLine 0.7s ease-out 0.2s forwards;
+    animation: revealLine 0.7s ease-out 0.3s forwards;
 }
 
 .heroContent[data-visible="true"] .heroTitle {
     animation: fadeSlideUp 0.7s ease-out forwards;
-    animation-delay: 0.3s;
+    animation-delay: 0.4s;
 }
 
 .heroContent[data-visible="true"] .heroSubtitle {
     animation: fadeSlideUp 0.7s ease-out forwards;
-    animation-delay: 0.4s;
+    animation-delay: 0.5s;
+}
+
+/* Slogan */
+.sloganWrapper {
+    margin-bottom: var(--spacing-4);
+    opacity: 0;
+}
+
+.slogan {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: var(--font-weight-bold);
+    font-style: italic;
+    background: linear-gradient(135deg,
+            var(--color-wood) 0%,
+            var(--color-wood-light) 50%,
+            var(--color-wood) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .heroTitle {
     font-family: var(--font-heading);
-    font-size: clamp(2rem, 5vw + 1rem, 4rem);
+    font-size: clamp(1.5rem, 4vw + 0.5rem, 3rem);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
     margin: 0 0 var(--spacing-6);
@@ -370,26 +396,20 @@
 /* Timeline Image */
 .timelineImageWrapper {
     position: relative;
-    height: 120px;
+    height: 80px;
     background: linear-gradient(135deg,
             rgba(176, 141, 87, 0.1) 0%,
             rgba(176, 141, 87, 0.05) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .timelineImagePlaceholder {
-    position: absolute;
-    inset: 0;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-2);
     color: var(--color-wood);
-}
-
-.timelineImagePlaceholder span {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
 }
 
 /* Timeline Content */
@@ -412,11 +432,20 @@
     margin: 0;
 }
 
+/* Pending Notice */
+.pendingNotice {
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+    font-style: italic;
+    margin-top: var(--spacing-8);
+}
+
 /* ==========================================================================
-   4. FOUNDER SECTION
+   4. DIRECTOR MESSAGE SECTION (Text-Only)
    ========================================================================== */
 
-.founder {
+.director {
     padding: var(--spacing-20) 0;
     background: linear-gradient(180deg,
             var(--color-background) 0%,
@@ -424,149 +453,107 @@
             var(--color-background) 100%);
 }
 
-:global([data-theme="dark"]) .founder {
+:global([data-theme="dark"]) .director {
     background: linear-gradient(180deg,
             var(--color-background) 0%,
             var(--color-accent) 50%,
             var(--color-background) 100%);
 }
 
-.founderGrid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--spacing-10);
-    align-items: center;
-    max-width: 1000px;
+.directorContent {
+    max-width: 800px;
     margin: 0 auto;
 }
 
-.founderGrid[data-visible="false"] {
+.directorContent[data-visible="false"] {
     opacity: 0;
 }
 
-.founderGrid[data-visible="true"] {
+.directorContent[data-visible="true"] {
     animation: fadeIn 0.8s ease-out forwards;
 }
 
-@media (min-width: 768px) {
-    .founderGrid {
-        grid-template-columns: 1fr 1.5fr;
-        gap: var(--spacing-12);
-    }
-}
-
-/* Founder Image */
-.founderImageColumn {
-    display: flex;
-    justify-content: center;
-}
-
-.founderImageWrapper {
+/* Director Message Card */
+.directorMessageCard {
     position: relative;
-    width: 250px;
-    height: 300px;
-}
-
-.founderImagePlaceholder {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-3);
-    background: linear-gradient(135deg,
-            rgba(176, 141, 87, 0.15) 0%,
-            rgba(176, 141, 87, 0.08) 100%);
-    border-radius: var(--radius-2xl);
-    color: var(--color-wood);
-}
-
-.founderImagePlaceholder span {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-secondary);
-}
-
-.founderImageFrame {
-    position: absolute;
-    inset: -8px;
-    border: 2px solid var(--color-wood);
-    border-radius: var(--radius-2xl);
-    opacity: 0.3;
-    pointer-events: none;
-}
-
-/* Founder Quote */
-.founderQuoteColumn {
-    display: flex;
-    justify-content: center;
-}
-
-.founderQuoteCard {
-    position: relative;
-    padding: var(--spacing-8);
+    padding: var(--spacing-10);
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.9);
     border-radius: var(--radius-2xl);
     box-shadow: var(--elevation-2);
-    max-width: 500px;
 }
 
-:global([data-theme="dark"]) .founderQuoteCard {
+:global([data-theme="dark"]) .directorMessageCard {
     background: rgba(30, 30, 30, 0.7);
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-.founderQuoteIcon {
+.directorQuoteIcon {
     position: absolute;
-    top: var(--spacing-4);
-    left: var(--spacing-4);
+    top: var(--spacing-6);
+    left: var(--spacing-6);
     color: var(--color-wood);
-    opacity: 0.3;
+    opacity: 0.2;
 }
 
-.founderQuote {
-    margin: 0 0 var(--spacing-6);
-    padding-top: var(--spacing-6);
+/* Director Message Text */
+.directorMessage {
+    padding-top: var(--spacing-8);
+    margin-bottom: var(--spacing-8);
 }
 
-.founderQuote p {
-    font-family: var(--font-heading);
-    font-size: clamp(1.125rem, 2vw, 1.5rem);
-    font-style: italic;
-    font-weight: var(--font-weight-medium);
+.directorMessage p {
+    font-size: var(--font-size-base);
     color: var(--color-text-primary);
     line-height: var(--line-height-relaxed);
-    margin: 0;
+    margin: 0 0 var(--spacing-4);
 }
 
-.founderSignature {
+.directorMessage p:last-child {
+    margin-bottom: 0;
+}
+
+/* Director Signature */
+.directorSignature {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--spacing-1);
+    gap: var(--spacing-2);
+    padding-top: var(--spacing-6);
+    border-top: 1px solid var(--color-border-light);
 }
 
-.founderSignatureLine {
-    width: 40px;
+.directorSignatureLine {
+    width: 50px;
     height: 2px;
-    background: var(--color-wood);
+    background: linear-gradient(90deg, var(--color-wood), var(--color-wood-light));
     margin-bottom: var(--spacing-2);
 }
 
-.founderName {
+.directorInfo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.directorName {
     font-family: var(--font-heading);
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-xl);
     font-style: italic;
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-bold);
     color: var(--color-wood);
 }
 
-.founderTitle {
+.directorTitle {
     font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+}
+
+.directorGeneration {
+    font-size: var(--font-size-xs);
     color: var(--color-text-tertiary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -739,10 +726,10 @@
 }
 
 /* ==========================================================================
-   6. SOCIAL PROOF SECTION
+   6. PROJECTS SECTION (NOS RÉALISATIONS)
    ========================================================================== */
 
-.socialProof {
+.projectsSection {
     padding: var(--spacing-20) 0;
     background: linear-gradient(180deg,
             var(--color-background) 0%,
@@ -755,9 +742,9 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: var(--spacing-8);
+    gap: var(--spacing-6);
     margin-bottom: var(--spacing-12);
-    padding: var(--spacing-8);
+    padding: var(--spacing-6) var(--spacing-4);
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -785,12 +772,12 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 0 var(--spacing-6);
+    padding: 0 var(--spacing-4);
 }
 
 .statValue {
     font-family: var(--font-heading);
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
     font-weight: var(--font-weight-bold);
     background: linear-gradient(135deg,
             var(--color-text-primary) 0%,
@@ -811,109 +798,138 @@
 }
 
 .statLabel {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
     font-weight: var(--font-weight-medium);
 }
 
-/* Testimonials Grid */
-.testimonialsGrid {
+/* Projects Grid */
+.projectsGrid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--spacing-6);
+    gap: var(--spacing-8);
     margin-bottom: var(--spacing-10);
 }
 
 @media (min-width: 768px) {
-    .testimonialsGrid {
-        grid-template-columns: repeat(3, 1fr);
+    .projectsGrid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* Testimonial Card */
-.testimonialCard {
-    position: relative;
-    padding: var(--spacing-6);
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--elevation-1);
-    transition: transform var(--duration-300) var(--ease-out),
-        box-shadow var(--duration-300) var(--ease-out);
+@media (min-width: 1024px) {
+    .projectsGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Project Category Group */
+.projectCategoryGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.projectCategoryTitle {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-family: var(--font-heading);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-wood);
+    margin: 0;
+    padding-bottom: var(--spacing-2);
+    border-bottom: 2px solid var(--color-wood);
+}
+
+.projectCategoryTitle svg {
+    flex-shrink: 0;
+}
+
+.projectCategoryCards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+}
+
+/* Project Card */
+.projectCard {
     opacity: 0;
     transform: translateY(20px);
 }
 
-.testimonialCard[data-visible="true"] {
-    animation: fadeSlideUp 0.6s ease-out forwards;
+.projectCard[data-visible="true"] {
+    animation: fadeSlideUp 0.5s ease-out forwards;
 }
 
-.testimonialCard:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--elevation-3);
-}
-
-:global([data-theme="dark"]) .testimonialCard {
-    background: rgba(30, 30, 30, 0.7);
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-.testimonialQuoteIcon {
-    position: absolute;
-    top: var(--spacing-4);
-    right: var(--spacing-4);
-    color: var(--color-wood);
-    opacity: 0.2;
-}
-
-.testimonialQuote {
-    font-size: var(--font-size-base);
-    font-style: italic;
-    color: var(--color-text-primary);
-    line-height: var(--line-height-relaxed);
-    margin: 0 0 var(--spacing-5);
-}
-
-.testimonialFooter {
+.projectCardInner {
     display: flex;
     align-items: center;
     gap: var(--spacing-3);
+    padding: var(--spacing-3) var(--spacing-4);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--elevation-1);
+    transition: transform var(--duration-200) var(--ease-out),
+        box-shadow var(--duration-200) var(--ease-out),
+        border-color var(--duration-200) var(--ease-out);
 }
 
-.testimonialAvatar {
-    width: 44px;
-    height: 44px;
+.projectCard:hover .projectCardInner {
+    transform: translateY(-2px);
+    box-shadow: var(--elevation-2);
+    border-color: rgba(176, 141, 87, 0.3);
+}
+
+:global([data-theme="dark"]) .projectCardInner {
+    background: rgba(30, 30, 30, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .projectCard:hover .projectCardInner {
+    border-color: rgba(176, 141, 87, 0.4);
+}
+
+/* Project Icon */
+.projectIconWrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, var(--color-wood-light), var(--color-wood));
-    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, rgba(176, 141, 87, 0.15) 0%, rgba(176, 141, 87, 0.08) 100%);
+    border-radius: var(--radius-md);
     flex-shrink: 0;
+    color: var(--color-wood);
 }
 
-.testimonialAvatar span {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-bold);
-    color: white;
+/* Project Content */
+.projectContent {
+    flex: 1;
+    min-width: 0;
 }
 
-.testimonialAuthor {
-    display: flex;
-    flex-direction: column;
-}
-
-.testimonialName {
+.projectName {
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
-    font-style: normal;
     color: var(--color-text-primary);
+    margin: 0;
+    line-height: 1.3;
 }
 
-.testimonialCompany {
+.projectDescription {
     font-size: var(--font-size-xs);
     color: var(--color-text-tertiary);
+    display: block;
+}
+
+/* Project Category Badge */
+.projectCategory {
+    display: none;
 }
 
 /* Trust Badges */
@@ -947,36 +963,161 @@
 }
 
 /* ==========================================================================
-   7. CTA SECTION
+   7. CTA SECTION - PREMIUM DESIGN
    ========================================================================== */
 
 .cta {
-    padding: var(--spacing-20) 0;
-    background: linear-gradient(135deg,
-            rgba(176, 141, 87, 0.08) 0%,
-            rgba(176, 141, 87, 0.03) 100%);
+    position: relative;
+    padding: var(--spacing-24) 0;
+    overflow: hidden;
+    background: linear-gradient(180deg,
+            var(--color-background) 0%,
+            rgba(176, 141, 87, 0.06) 50%,
+            var(--color-background) 100%);
 }
 
 :global([data-theme="dark"]) .cta {
-    background: linear-gradient(135deg,
-            rgba(176, 141, 87, 0.12) 0%,
-            rgba(176, 141, 87, 0.05) 100%);
+    background: linear-gradient(180deg,
+            var(--color-background) 0%,
+            rgba(176, 141, 87, 0.1) 50%,
+            var(--color-background) 100%);
 }
 
-.ctaContent {
-    text-align: center;
-    max-width: 700px;
+/* Decorative Background */
+.ctaBackground {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.ctaGradientOrb1 {
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 60%;
+    height: 150%;
+    background: radial-gradient(circle,
+            rgba(176, 141, 87, 0.12) 0%,
+            transparent 60%);
+    animation: orbFloat1 15s ease-in-out infinite;
+}
+
+.ctaGradientOrb2 {
+    position: absolute;
+    bottom: -50%;
+    right: -20%;
+    width: 60%;
+    height: 150%;
+    background: radial-gradient(circle,
+            rgba(176, 141, 87, 0.08) 0%,
+            transparent 60%);
+    animation: orbFloat2 18s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(30px, -20px);
+    }
+}
+
+@keyframes orbFloat2 {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(-25px, 15px);
+    }
+}
+
+/* CTA Card */
+.ctaCard {
+    position: relative;
+    max-width: 800px;
     margin: 0 auto;
+    padding: var(--spacing-12) var(--spacing-8);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: var(--radius-3xl);
+    box-shadow:
+        0 20px 60px rgba(176, 141, 87, 0.15),
+        0 8px 20px rgba(0, 0, 0, 0.06);
     opacity: 0;
 }
 
-.ctaContent[data-visible="true"] {
-    animation: fadeSlideUp 0.7s ease-out forwards;
+.ctaCard[data-visible="true"] {
+    animation: fadeSlideUp 0.8s ease-out forwards;
+}
+
+:global([data-theme="dark"]) .ctaCard {
+    background: rgba(30, 30, 30, 0.85);
+    border-color: rgba(176, 141, 87, 0.2);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        0 0 80px rgba(176, 141, 87, 0.1);
+}
+
+/* Corner Accents */
+.ctaCornerTL,
+.ctaCornerBR {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    pointer-events: none;
+}
+
+.ctaCornerTL {
+    top: -1px;
+    left: -1px;
+    border-top: 3px solid var(--color-wood);
+    border-left: 3px solid var(--color-wood);
+    border-top-left-radius: var(--radius-3xl);
+}
+
+.ctaCornerBR {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 3px solid var(--color-wood);
+    border-right: 3px solid var(--color-wood);
+    border-bottom-right-radius: var(--radius-3xl);
+}
+
+/* CTA Content */
+.ctaContent {
+    text-align: center;
+}
+
+/* Eyebrow */
+.ctaEyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-2) var(--spacing-5);
+    background: linear-gradient(135deg,
+            rgba(176, 141, 87, 0.2) 0%,
+            rgba(176, 141, 87, 0.1) 100%);
+    border: 1px solid rgba(176, 141, 87, 0.3);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-wood);
+    margin-bottom: var(--spacing-6);
 }
 
 .ctaTitle {
     font-family: var(--font-heading);
-    font-size: var(--font-size-display);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
     margin: 0 0 var(--spacing-4);
@@ -987,10 +1128,14 @@
     font-size: var(--font-size-lg);
     color: var(--color-text-secondary);
     line-height: var(--line-height-relaxed);
-    margin: 0 0 var(--spacing-8);
+    margin: 0 0 var(--spacing-10);
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.ctaButtons {
+/* Button Wrapper */
+.ctaButtonsWrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -998,37 +1143,147 @@
 }
 
 @media (min-width: 640px) {
-    .ctaButtons {
+    .ctaButtonsWrapper {
         flex-direction: row;
         justify-content: center;
+        gap: var(--spacing-5);
     }
 }
 
+/* Primary CTA Wrapper */
+.ctaPrimaryWrapper {
+    text-decoration: none;
+}
+
+/* PRIMARY BUTTON - STAR OF THE SHOW */
 .ctaPrimaryButton {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-5) var(--spacing-10);
     background: linear-gradient(135deg,
-            #C9A66B 0%,
-            #b08d57 45%,
-            #D4B87A 55%,
-            #b08d57 100%) !important;
-    background-size: 250% 100% !important;
-    color: #1A1A1A !important;
-    border: none !important;
-    font-weight: var(--font-weight-bold) !important;
+            #D4B87A 0%,
+            #C9A66B 25%,
+            #b08d57 50%,
+            #C9A66B 75%,
+            #D4B87A 100%);
+    background-size: 300% 100%;
+    border: none;
+    border-radius: var(--radius-xl);
+    font-family: var(--font-heading);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: #1A1A1A;
+    cursor: pointer;
+    overflow: hidden;
     box-shadow:
-        0 4px 16px rgba(176, 141, 87, 0.3),
-        0 2px 6px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        0 8px 32px rgba(176, 141, 87, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        inset 0 2px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: buttonGradient 4s ease infinite;
+}
+
+@keyframes buttonGradient {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 .ctaPrimaryButton:hover {
-    background-position: 100% 0 !important;
-    transform: translateY(-2px) scale(1.02);
+    transform: translateY(-4px) scale(1.03);
     box-shadow:
-        0 8px 24px rgba(176, 141, 87, 0.4),
-        0 4px 10px rgba(0, 0, 0, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+        0 16px 48px rgba(176, 141, 87, 0.5),
+        0 8px 20px rgba(0, 0, 0, 0.2),
+        inset 0 2px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.1);
 }
+
+.ctaPrimaryButton:active {
+    transform: translateY(-2px) scale(1.01);
+}
+
+/* Shimmer Effect */
+.ctaButtonShimmer {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.4) 50%,
+            transparent 100%);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+
+    50%,
+    100% {
+        left: 100%;
+    }
+}
+
+.ctaButtonContent {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+}
+
+.ctaButtonText {
+    letter-spacing: 0.02em;
+}
+
+.ctaButtonIcon {
+    transition: transform 0.3s ease;
+}
+
+.ctaPrimaryButton:hover .ctaButtonIcon {
+    transform: translateX(4px);
+}
+
+/* Secondary Button */
+.ctaSecondaryButton {
+    opacity: 0.9;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.ctaSecondaryButton:hover {
+    opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    .ctaCard {
+        padding: var(--spacing-16) var(--spacing-12);
+    }
+
+    .ctaPrimaryButton {
+        padding: var(--spacing-5) var(--spacing-12);
+        font-size: var(--font-size-xl);
+    }
+}
+
+@media (min-width: 1024px) {
+    .cta {
+        padding: var(--spacing-28) 0;
+    }
+}
+
 
 /* ==========================================================================
    8. ANIMATIONS
@@ -1103,9 +1358,9 @@
     }
 
     .timeline,
-    .founder,
+    .director,
     .values,
-    .socialProof,
+    .projectsSection,
     .cta {
         padding: var(--spacing-24) 0;
     }
@@ -1113,14 +1368,22 @@
     .sectionHeader {
         margin-bottom: var(--spacing-16);
     }
+
+    .directorMessageCard {
+        padding: var(--spacing-12);
+    }
+
+    .directorMessage p {
+        font-size: var(--font-size-lg);
+    }
 }
 
 @media (min-width: 1024px) {
 
     .timeline,
-    .founder,
+    .director,
     .values,
-    .socialProof,
+    .projectsSection,
     .cta {
         padding: var(--spacing-28) 0;
     }
@@ -1133,14 +1396,15 @@
 @media (prefers-reduced-motion: reduce) {
 
     .heroContent[data-visible="true"] .eyebrow,
+    .heroContent[data-visible="true"] .sloganWrapper,
     .heroContent[data-visible="true"] .accentLine,
     .heroContent[data-visible="true"] .heroTitle,
     .heroContent[data-visible="true"] .heroSubtitle,
     .timelineItem[data-visible="true"],
-    .founderGrid[data-visible="true"],
+    .directorContent[data-visible="true"],
     .valueCard[data-visible="true"],
     .statsRow[data-visible="true"],
-    .testimonialCard[data-visible="true"],
+    .projectCard[data-visible="true"],
     .trustBadges[data-visible="true"],
     .ctaContent[data-visible="true"] {
         animation: none !important;
@@ -1151,7 +1415,7 @@
     .timelineCard:hover,
     .valueCard:hover .valueCardInner,
     .valueCard:hover .valueIconWrapper,
-    .testimonialCard:hover,
+    .projectCard:hover .projectCardInner,
     .ctaPrimaryButton:hover {
         transform: none;
     }
@@ -1175,5 +1439,9 @@
 
     .eyebrow {
         border-width: 2px;
+    }
+
+    .slogan {
+        -webkit-text-fill-color: var(--color-wood);
     }
 }

@@ -55,18 +55,22 @@ export type { Statistic } from './statistics';
 // About Page Data
 export {
     timeline,
+    timelinePending,
     values,
-    testimonials,
-    founder,
+    projects,
+    projectCategories,
+    director,
     socialProofStats,
     certifications,
     heroContent,
     ctaContent,
+    pendingItems,
 } from './about';
 export type {
     TimelineItem,
     Value,
-    Testimonial,
-    FounderInfo,
+    Project,
+    ProjectCategory,
+    DirectorInfo,
 } from './about';
 
