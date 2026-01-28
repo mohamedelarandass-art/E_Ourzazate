@@ -27,28 +27,33 @@
 
 .main {
     flex: 1;
-    padding: var(--spacing-8) var(--spacing-6);
+    padding-top: var(--header-height);
+    padding-right: var(--spacing-6);
+    padding-bottom: var(--spacing-8);
+    padding-left: var(--spacing-6);
     max-width: var(--container-max);
     margin: 0 auto;
     width: 100%;
 }
 
 /* ==========================================================================
-   Breadcrumb
+   Breadcrumb - Enhanced styling matching catalogue design
    ========================================================================== */
 
 .breadcrumb {
+    margin-top: var(--spacing-6);
     margin-bottom: var(--spacing-8);
 }
 
 .breadcrumbList {
     display: flex;
     align-items: center;
-    gap: var(--spacing-2);
+    gap: var(--spacing-1-5);
     list-style: none;
     padding: 0;
     margin: 0;
     flex-wrap: wrap;
+    font-size: var(--font-size-sm);
 }
 
 .breadcrumbItem {
@@ -57,28 +62,54 @@
 }
 
 .breadcrumbLink {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: var(--spacing-2);
+    gap: var(--spacing-1);
     color: var(--color-text-secondary);
     font-size: var(--font-size-sm);
-    transition: color var(--duration-200);
+    text-decoration: none;
+    padding: var(--spacing-1) var(--spacing-1);
+    margin: calc(-1 * var(--spacing-1));
+    border-radius: var(--radius-sm);
+    transition: all var(--duration-150) var(--ease-out);
+    position: relative;
+}
+
+/* Hover underline effect */
+.breadcrumbLink::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: var(--spacing-1);
+    right: var(--spacing-1);
+    height: 1px;
+    background-color: var(--color-wood);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform var(--duration-200) var(--ease-out);
 }
 
 .breadcrumbLink:hover {
     color: var(--color-wood);
+    background-color: rgba(196, 167, 125, 0.08);
+}
+
+.breadcrumbLink:hover::after {
+    transform: scaleX(1);
 }
 
 .breadcrumbSeparator {
     color: var(--color-text-tertiary);
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .breadcrumbCurrent {
     color: var(--color-text-primary);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
+    padding: var(--spacing-1);
 }
 
 /* ==========================================================================

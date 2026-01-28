@@ -1,0 +1,283 @@
+/**
+ * SpotlightCard Styles
+ * 
+ * Premium spotlight effect card with:
+ * - Radial gradient spotlight following cursor
+ * - Glassmorphism background
+ * - Gold accent glow on hover
+ * - Smooth transitions
+ * - Dark mode support
+ * - Accessibility (reduced motion, focus states)
+ * 
+ * @module components/ui/SpotlightCard/styles
+ */
+
+/* ==========================================================================
+   BASE CARD
+   ========================================================================== */
+
+.spotlightCard {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.05),
+        0 1px 3px rgba(0, 0, 0, 0.03);
+    transition:
+        transform var(--duration-300) var(--ease-out),
+        box-shadow var(--duration-300) var(--ease-out),
+        border-color var(--duration-300) var(--ease-out);
+
+    /* CSS Custom Properties for spotlight (set via JS) */
+    --spotlight-x: 50%;
+    --spotlight-y: 50%;
+    --spotlight-color: rgba(176, 141, 87, 0.25);
+    --spotlight-radius: 80%;
+    --spotlight-intensity: 0.6;
+}
+
+/* Dark Mode */
+:global([data-theme="dark"]) .spotlightCard {
+    background: rgba(30, 30, 30, 0.85);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover State */
+.spotlightCard:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 12px 40px rgba(176, 141, 87, 0.15),
+        0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: rgba(176, 141, 87, 0.3);
+}
+
+:global([data-theme="dark"]) .spotlightCard:hover {
+    box-shadow:
+        0 12px 40px rgba(176, 141, 87, 0.12),
+        0 4px 12px rgba(0, 0, 0, 0.4);
+    border-color: rgba(176, 141, 87, 0.4);
+}
+
+/* ==========================================================================
+   SPOTLIGHT EFFECT LAYER
+   ========================================================================== */
+
+.spotlightEffect {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--spotlight-x) var(--spotlight-y),
+            var(--spotlight-color),
+            transparent var(--spotlight-radius));
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Show spotlight on hover and focus-within */
+.spotlightCard:hover .spotlightEffect,
+.spotlightCard:focus-within .spotlightEffect {
+    opacity: var(--spotlight-intensity);
+}
+
+/* ==========================================================================
+   GLOW BORDER EFFECT (Optional)
+   ========================================================================== */
+
+.glowBorderEffect {
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: radial-gradient(circle at var(--spotlight-x) var(--spotlight-y),
+            rgba(176, 141, 87, 0.6),
+            transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 0;
+
+    /* Create border effect using mask */
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    padding: 2px;
+}
+
+.glowBorder:hover .glowBorderEffect,
+.glowBorder:focus-within .glowBorderEffect {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   CONTENT LAYER
+   ========================================================================== */
+
+.content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+}
+
+/* ==========================================================================
+   RADIUS VARIANTS
+   ========================================================================== */
+
+.radius-md {
+    border-radius: var(--radius-md);
+}
+
+.radius-lg {
+    border-radius: var(--radius-lg);
+}
+
+.radius-xl {
+    border-radius: var(--radius-xl);
+}
+
+.radius-2xl {
+    border-radius: var(--radius-2xl);
+}
+
+.radius-3xl {
+    border-radius: var(--radius-3xl);
+}
+
+/* ==========================================================================
+   SIZE VARIANTS
+   ========================================================================== */
+
+.size-compact {
+    padding: var(--spacing-4);
+}
+
+.size-default {
+    padding: var(--spacing-6);
+}
+
+.size-large {
+    padding: var(--spacing-8);
+}
+
+/* ==========================================================================
+   FEATURED VARIANT
+   ========================================================================== */
+
+.featured {
+    border-width: 2px;
+    border-color: rgba(176, 141, 87, 0.3);
+    box-shadow:
+        0 8px 32px rgba(176, 141, 87, 0.12),
+        0 4px 12px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.featured .spotlightEffect {
+    background: radial-gradient(circle at var(--spotlight-x) var(--spotlight-y),
+            rgba(176, 141, 87, 0.35),
+            transparent 70%);
+}
+
+.featured:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow:
+        0 20px 48px rgba(176, 141, 87, 0.2),
+        0 8px 16px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    border-color: rgba(176, 141, 87, 0.5);
+}
+
+:global([data-theme="dark"]) .featured {
+    border-color: rgba(176, 141, 87, 0.4);
+    box-shadow:
+        0 8px 32px rgba(176, 141, 87, 0.15),
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .featured:hover {
+    box-shadow:
+        0 20px 48px rgba(176, 141, 87, 0.25),
+        0 8px 16px rgba(0, 0, 0, 0.4);
+    border-color: rgba(176, 141, 87, 0.6);
+}
+
+/* ==========================================================================
+   CLICKABLE STATE
+   ========================================================================== */
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:focus {
+    outline: none;
+}
+
+.clickable:focus-visible {
+    outline: 2px solid var(--color-wood);
+    outline-offset: 2px;
+}
+
+.clickable:active {
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   ACCESSIBILITY - REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .spotlightCard {
+        transition: none;
+    }
+
+    .spotlightCard:hover {
+        transform: none;
+    }
+
+    .spotlightEffect {
+        transition: opacity 0.1s ease;
+    }
+
+    .featured:hover {
+        transform: none;
+    }
+
+    .clickable:active {
+        transform: none;
+    }
+}
+
+/* ==========================================================================
+   TOUCH DEVICES
+   ========================================================================== */
+
+@media (hover: none) {
+
+    /* On touch devices, spotlight stays centered */
+    .spotlightCard {
+        --spotlight-x: 50%;
+        --spotlight-y: 50%;
+    }
+
+    /* Slightly visible by default on touch */
+    .spotlightEffect {
+        opacity: calc(var(--spotlight-intensity) * 0.3);
+    }
+
+    /* Full opacity on active (touch) */
+    .spotlightCard:active .spotlightEffect {
+        opacity: var(--spotlight-intensity);
+    }
+}

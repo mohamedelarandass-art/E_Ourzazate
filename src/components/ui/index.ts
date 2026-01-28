@@ -37,3 +37,7 @@ export type { AccordionProps, AccordionItemProps } from './Accordion';
 // Toast
 export { ToastProvider, useToast } from './Toast';
 export type { Toast, ToastType } from './Toast';
+
+// SpotlightCard
+export { SpotlightCard } from './SpotlightCard';
+export type { SpotlightCardProps } from './SpotlightCard';

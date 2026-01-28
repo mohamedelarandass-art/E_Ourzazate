@@ -254,18 +254,49 @@
     outline-offset: 3px;
 }
 
-/* Secondary CTA - Text Link with Animated Arrow */
+/* Secondary CTA - Magnetic Text Link with Animated Underline */
 .secondaryCta {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: var(--spacing-1);
+    gap: var(--spacing-2);
     font-family: var(--font-body);
     font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
     color: var(--color-text-secondary);
     text-decoration: none;
-    padding: var(--spacing-2) var(--spacing-3);
+    padding: var(--spacing-2) var(--spacing-1);
     border-radius: var(--radius-md);
-    transition: color 0.25s ease;
+    cursor: pointer;
+    /* Smooth magnetic movement and color transition */
+    transition:
+        color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, color;
+}
+
+/* Text wrapper for underline positioning */
+.ctaText {
+    position: relative;
+}
+
+/* Animated underline - slides in from left on hover */
+.ctaText::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, var(--color-wood), var(--color-wood-light));
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 1px;
+}
+
+.secondaryCta:hover .ctaText::after {
+    transform: scaleX(1);
 }
 
 .secondaryCta:hover {
@@ -274,9 +305,14 @@
 
 .secondaryCta:focus-visible {
     outline: 2px solid var(--color-wood);
-    outline-offset: 2px;
+    outline-offset: 4px;
 }
 
+.secondaryCta:focus-visible .ctaText::after {
+    transform: scaleX(1);
+}
+
+/* Dark mode */
 [data-theme="dark"] .secondaryCta {
     color: rgba(255, 255, 255, 0.65);
 }
@@ -285,15 +321,59 @@
     color: var(--color-wood-light);
 }
 
-/* Animated arrow on hover */
-.ctaArrow {
-    display: inline-block;
-    margin-left: var(--spacing-1);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+[data-theme="dark"] .ctaText::after {
+    background: linear-gradient(90deg, var(--color-wood-light), var(--color-wood));
 }
 
-.secondaryCta:hover .ctaArrow {
-    transform: translateX(5px);
+/* Icon Wrapper for Morph Effect */
+.iconWrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+}
+
+/* Arrow Icon */
+.arrowIcon {
+    position: absolute;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    color: var(--color-text-secondary);
+}
+
+.secondaryCta:hover .arrowIcon {
+    opacity: 0;
+    transform: translateX(10px) scale(0.8);
+}
+
+/* WhatsApp Icon */
+.whatsappIcon {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateX(-10px) scale(0.5) rotate(-45deg);
+    color: #25D366;
+    /* WhatsApp Brand Color */
+}
+
+.secondaryCta:hover .whatsappIcon {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotate(0deg);
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] .arrowIcon {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+[data-theme="dark"] .secondaryCta:hover .whatsappIcon {
+    color: #4ADE80;
+    /* Lighter Green for Dark Mode */
 }
 
 /* =============================================================================
@@ -525,8 +605,32 @@
         transform: none;
     }
 
-    .ctaArrow {
-        transition: none;
+    /* Disable magnetic effect and animations on secondary CTA */
+    .secondaryCta {
+        transition: color 0.2s ease !important;
+        transform: none !important;
+    }
+
+    .ctaText::after {
+        transition: none !important;
+        transform: scaleX(1) !important;
+        opacity: 0.5;
+    }
+
+    .arrowIcon,
+    .whatsappIcon {
+        transition: opacity 0.2s ease !important;
+        transform: none !important;
+    }
+
+    .secondaryCta:hover .arrowIcon {
+        opacity: 0;
+        transform: none !important;
+    }
+
+    .secondaryCta:hover .whatsappIcon {
+        opacity: 1;
+        transform: none !important;
     }
 }
 

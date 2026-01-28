@@ -19,10 +19,10 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, MoveRight } from 'lucide-react';
 import { siteConfig } from '@/config';
 import { getWhatsAppUrl } from '@/lib/whatsapp';
 import { Button } from '@/components/ui';
@@ -35,6 +35,31 @@ import styles from './Hero.module.css';
 export interface HeroProps {
     /** Additional CSS class names */
     className?: string;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                   Icons                                    */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Premium WhatsApp Icon (Outline style to match editorial design)
+ */
+function WhatsAppIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+        >
+            <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
+            <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" />
+        </svg>
+    );
 }
 
 /* -------------------------------------------------------------------------- */
@@ -58,10 +83,44 @@ export function Hero({ className }: HeroProps) {
     // Animation trigger state
     const [isLoaded, setIsLoaded] = useState(false);
 
+    // Magnetic effect state
+    const [magneticOffset, setMagneticOffset] = useState({ x: 0, y: 0 });
+    const secondaryCtaRef = useRef<HTMLAnchorElement>(null);
+
     // Trigger entrance animations after mount
     useEffect(() => {
         const timer = setTimeout(() => setIsLoaded(true), 100);
         return () => clearTimeout(timer);
+    }, []);
+
+    /**
+     * Handle mouse move for magnetic pull effect
+     * Calculates offset from element center, applies subtle displacement
+     */
+    const handleMouseMove = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+        const element = secondaryCtaRef.current;
+        if (!element) return;
+
+        const rect = element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        // Calculate magnetic offset (max ~8px movement for subtle effect)
+        const offsetX = (e.clientX - centerX) * 0.15;
+        const offsetY = (e.clientY - centerY) * 0.25;
+
+        // Clamp values to prevent excessive movement
+        const clampedX = Math.max(-8, Math.min(8, offsetX));
+        const clampedY = Math.max(-4, Math.min(4, offsetY));
+
+        setMagneticOffset({ x: clampedX, y: clampedY });
+    }, []);
+
+    /**
+     * Reset magnetic offset when mouse leaves
+     */
+    const handleMouseLeave = useCallback(() => {
+        setMagneticOffset({ x: 0, y: 0 });
     }, []);
 
     return (
@@ -117,14 +176,24 @@ export function Hero({ className }: HeroProps) {
                             </Button>
                         </Link>
 
+                        {/* Secondary CTA - Magnetic Text Link */}
                         <a
+                            ref={secondaryCtaRef}
                             href={getWhatsAppUrl()}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.secondaryCta}
+                            onMouseMove={handleMouseMove}
+                            onMouseLeave={handleMouseLeave}
+                            style={{
+                                transform: `translate(${magneticOffset.x}px, ${magneticOffset.y}px)`,
+                            }}
                         >
-                            Une question ? Contactez-nous
-                            <span className={styles.ctaArrow}>→</span>
+                            <span className={styles.ctaText}>Une question ? Contactez-nous</span>
+                            <span className={styles.iconWrapper}>
+                                <MoveRight size={18} strokeWidth={1.5} className={styles.arrowIcon} />
+                                <WhatsAppIcon className={styles.whatsappIcon} />
+                            </span>
                         </a>
                     </div>
 

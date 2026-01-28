@@ -37,7 +37,7 @@ import {
     Heart,
     Calendar,
 } from 'lucide-react';
-import { Button } from '@/components/ui';
+import { Button, SpotlightCard } from '@/components/ui';
 import { getWhatsAppLink } from '@/config';
 import {
     timeline,
@@ -193,43 +193,82 @@ function ValueCard({ value, index, isVisible }: ValueCardProps) {
 }
 
 /**
- * Project Card Component
+ * Spotlight Project Card Component
+ * 
+ * Uses SpotlightCard for an interactive hover effect.
+ * Category-specific spotlight colors for visual grouping.
  */
-interface ProjectCardProps {
+interface SpotlightProjectCardProps {
     project: Project;
     index: number;
     isVisible: boolean;
+    featured?: boolean;
 }
 
-function ProjectCard({ project, index, isVisible }: ProjectCardProps) {
+// Category-specific spotlight colors (all gold-tinted for cohesion)
+const categorySpotlightColors: Record<ProjectCategory, string> = {
+    energie: 'rgba(255, 193, 7, 0.25)',      // Amber gold (solar energy)
+    hotellerie: 'rgba(176, 141, 87, 0.28)',  // Wood gold (luxury)
+    infrastructure: 'rgba(139, 119, 101, 0.25)', // Earthy gold (construction)
+    commerce: 'rgba(212, 184, 122, 0.25)',   // Light gold (retail)
+};
+
+function SpotlightProjectCard({ project, index, isVisible, featured = false }: SpotlightProjectCardProps) {
     const categoryInfo = projectCategories[project.category];
     const Icon = projectCategoryIconMap[project.category];
+    const spotlightColor = categorySpotlightColors[project.category];
 
     return (
-        <article
-            className={styles.projectCard}
+        <div
+            className={styles.spotlightProjectWrapper}
             data-visible={isVisible}
-            data-category={project.category}
-            style={{ animationDelay: `${index * 50}ms` }}
+            data-featured={featured}
+            style={{ animationDelay: `${index * 80}ms` }}
         >
-            <div className={styles.projectCardInner}>
-                {/* Icon */}
-                <div className={styles.projectIconWrapper}>
-                    <Icon size={20} aria-hidden="true" />
+            <SpotlightCard
+                className={styles.spotlightProjectCard}
+                spotlightColor={spotlightColor}
+                spotlightIntensity={featured ? 0.7 : 0.55}
+                featured={featured}
+                radius={featured ? '2xl' : 'xl'}
+                size={featured ? 'large' : 'default'}
+                glowBorder={featured}
+            >
+                {/* Category Icon */}
+                <div className={styles.spotlightProjectIcon}>
+                    <Icon
+                        size={featured ? 32 : 24}
+                        strokeWidth={1.5}
+                        aria-hidden="true"
+                    />
                 </div>
 
-                {/* Content */}
-                <div className={styles.projectContent}>
-                    <h4 className={styles.projectName}>{project.name}</h4>
-                    {project.description && (
-                        <span className={styles.projectDescription}>{project.description}</span>
-                    )}
-                </div>
+                {/* Project Name */}
+                <h4 className={styles.spotlightProjectName}>
+                    {project.name}
+                </h4>
 
-                {/* Category Badge */}
-                <span className={styles.projectCategory}>{categoryInfo.label}</span>
-            </div>
-        </article>
+                {/* Description (if exists) */}
+                {project.description && (
+                    <p className={styles.spotlightProjectDescription}>
+                        {project.description}
+                    </p>
+                )}
+
+                {/* Category Label */}
+                <span className={styles.spotlightProjectCategory}>
+                    {categoryInfo.label}
+                </span>
+
+                {/* Featured Badge */}
+                {featured && (
+                    <div className={styles.featuredBadge}>
+                        <Star size={12} fill="currentColor" />
+                        <span>Projet Phare</span>
+                    </div>
+                )}
+            </SpotlightCard>
+        </div>
     );
 }
 
@@ -474,79 +513,28 @@ export function AboutContent() {
                         ))}
                     </div>
 
-                    {/* Projects Grid by Category */}
-                    <div className={styles.projectsGrid}>
-                        {/* Énergie */}
-                        <div className={styles.projectCategoryGroup}>
-                            <h3 className={styles.projectCategoryTitle}>
-                                <Zap size={20} />
-                                <span>Énergie</span>
-                            </h3>
-                            <div className={styles.projectCategoryCards}>
-                                {projectsByCategory.energie?.map((project, index) => (
-                                    <ProjectCard
-                                        key={project.id}
-                                        project={project}
-                                        index={index}
-                                        isVisible={projectsSection.isVisible}
-                                    />
-                                ))}
-                            </div>
-                        </div>
+                    {/* Featured Project - NOOR */}
+                    <div className={styles.featuredProjectWrapper}>
+                        <SpotlightProjectCard
+                            project={projects.find(p => p.id === 'noor')!}
+                            index={0}
+                            isVisible={projectsSection.isVisible}
+                            featured={true}
+                        />
+                    </div>
 
-                        {/* Hôtellerie */}
-                        <div className={styles.projectCategoryGroup}>
-                            <h3 className={styles.projectCategoryTitle}>
-                                <Building size={20} />
-                                <span>Hôtellerie</span>
-                            </h3>
-                            <div className={styles.projectCategoryCards}>
-                                {projectsByCategory.hotellerie?.map((project, index) => (
-                                    <ProjectCard
-                                        key={project.id}
-                                        project={project}
-                                        index={index}
-                                        isVisible={projectsSection.isVisible}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Infrastructure */}
-                        <div className={styles.projectCategoryGroup}>
-                            <h3 className={styles.projectCategoryTitle}>
-                                <Construction size={20} />
-                                <span>Infrastructure</span>
-                            </h3>
-                            <div className={styles.projectCategoryCards}>
-                                {projectsByCategory.infrastructure?.map((project, index) => (
-                                    <ProjectCard
-                                        key={project.id}
-                                        project={project}
-                                        index={index}
-                                        isVisible={projectsSection.isVisible}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Commerce */}
-                        <div className={styles.projectCategoryGroup}>
-                            <h3 className={styles.projectCategoryTitle}>
-                                <ShoppingCart size={20} />
-                                <span>Commerce</span>
-                            </h3>
-                            <div className={styles.projectCategoryCards}>
-                                {projectsByCategory.commerce?.map((project, index) => (
-                                    <ProjectCard
-                                        key={project.id}
-                                        project={project}
-                                        index={index}
-                                        isVisible={projectsSection.isVisible}
-                                    />
-                                ))}
-                            </div>
-                        </div>
+                    {/* Projects Grid - All Other Projects */}
+                    <div className={styles.spotlightProjectsGrid}>
+                        {projects
+                            .filter(p => p.id !== 'noor')
+                            .map((project, index) => (
+                                <SpotlightProjectCard
+                                    key={project.id}
+                                    project={project}
+                                    index={index + 1}
+                                    isVisible={projectsSection.isVisible}
+                                />
+                            ))}
                     </div>
 
                     {/* Trust Badges */}
