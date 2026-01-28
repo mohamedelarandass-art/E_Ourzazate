@@ -400,8 +400,8 @@
 /* Mobile - Improved vertical centering */
 @media (max-width: 767px) {
     .container {
-        /* Better vertical distribution - centered with equal spacing */
-        padding: calc(var(--header-height-mobile) + var(--spacing-8)) var(--spacing-4) var(--spacing-10);
+        /* Better vertical distribution - content shifted upward for visual balance */
+        padding: calc(var(--header-height-mobile) + var(--spacing-4)) var(--spacing-4) var(--spacing-16);
         justify-content: center;
     }
 
