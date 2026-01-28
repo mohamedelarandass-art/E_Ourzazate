@@ -737,21 +737,10 @@
 }
 
 /* Product Item Animation */
+/* Product Item Animation - Handled by Framer Motion */
 .productItem {
-    opacity: 0;
-    animation: productIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes productIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    /* Optimization for layout animations */
+    will-change: transform, opacity;
 }
 
 /* ===========================================================================

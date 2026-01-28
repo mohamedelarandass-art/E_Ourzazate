@@ -21,6 +21,7 @@ import {
     ArrowUpAZ, ArrowDownAZ, LayoutGrid, LayoutList, Loader2,
     Home, Search
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ProductCard } from '@/components';
 import type { Product, Category } from '@/types';
 import styles from './page.module.css';
@@ -263,20 +264,33 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
             {/* Products Grid or Empty State */}
             {filteredProducts.length > 0 ? (
                 <>
-                    <div className={gridClass}>
-                        {displayedProducts.map((product, index) => (
-                            <div
-                                key={product.id}
-                                className={styles.productItem}
-                                style={{ animationDelay: `${Math.min(index, 9) * 60}ms` }}
-                            >
-                                <ProductCard
-                                    product={product}
-                                    compact={viewMode === 'double'}
-                                />
-                            </div>
-                        ))}
-                    </div>
+                    <motion.div
+                        className={gridClass}
+                        layout
+                    >
+                        <AnimatePresence mode="popLayout">
+                            {displayedProducts.map((product, index) => (
+                                <motion.div
+                                    key={product.id}
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.9 }}
+                                    transition={{
+                                        duration: 0.3,
+                                        ease: "easeOut",
+                                        layout: { duration: 0.3 }
+                                    }}
+                                    className={styles.productItem}
+                                >
+                                    <ProductCard
+                                        product={product}
+                                        compact={viewMode === 'double'}
+                                    />
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+                    </motion.div>
 
                     {/* Load More Section */}
                     <div className={styles.loadMoreSection}>
