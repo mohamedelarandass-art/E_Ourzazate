@@ -65,6 +65,9 @@ export {
     heroContent,
     ctaContent,
     pendingItems,
+    differentiationMessage,
+    companyMetrics,
+    showroomImages,
 } from './about';
 export type {
     TimelineItem,
@@ -72,5 +75,6 @@ export type {
     Project,
     ProjectCategory,
     DirectorInfo,
+    CompanyMetrics,
 } from './about';
 

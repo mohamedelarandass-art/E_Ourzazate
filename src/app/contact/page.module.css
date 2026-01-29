@@ -511,14 +511,54 @@
     color: var(--color-text-secondary);
 }
 
-/* Store Image (replaces placeholder) */
+/* Store Images - Carousel with Crossfade */
 .storeImage {
     object-fit: cover;
-    transition: transform 8s ease-out;
+    /* Start invisible, positioned absolutely within wrapper */
+    opacity: 0;
+    /* Smooth crossfade transition */
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.imageWrapper:hover .storeImage {
-    transform: scale(1.05);
+/* Active image in carousel becomes visible */
+.storeImageActive {
+    opacity: 1;
+    /* Slow Ken Burns zoom effect */
+    animation: slowZoom 12s ease-out forwards;
+}
+
+/* Ken Burns zoom animation */
+@keyframes slowZoom {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.08);
+    }
+}
+
+/* Hover enhances the zoom slightly */
+.imageWrapper:hover .storeImageActive {
+    animation-play-state: paused;
+    transform: scale(1.1);
+    transition: transform 0.8s ease-out;
+}
+
+/* Reduced motion: disable animations */
+@media (prefers-reduced-motion: reduce) {
+    .storeImage {
+        transition: opacity 0.3s ease !important;
+    }
+
+    .storeImageActive {
+        animation: none !important;
+        transform: none !important;
+    }
+
+    .imageWrapper:hover .storeImageActive {
+        transform: none !important;
+    }
 }
 
 /* Hours Overlay on Image */

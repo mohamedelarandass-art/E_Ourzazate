@@ -5,11 +5,15 @@
  * 
  * Sections:
  * 1. Hero - Company tagline with slogan "Votre Partenaire Qualité"
- * 2. Timeline - Minimal timeline (pending detailed data from client)
+ * 2. Timeline - 10 étapes complètes de 1975 à 2025
  * 3. Director Message - Text-centric message from Brahim Amcassou
- * 4. Values - Core company values (Qualité, Service Client, Innovation)
- * 5. Projects - Nos Réalisations: 12 prestigious projects
- * 6. CTA - Call to action for catalogue/contact
+ * 4. Differentiation - Nouveau bloc différenciation
+ * 5. Values - Core company values (Qualité, Service Client, Innovation)
+ * 6. Projects - Nos Réalisations: 12 prestigious projects with CountUp
+ * 7. Showroom Gallery - 25 photos du showroom
+ * 8. CTA - Call to action for catalogue/contact
+ * 
+ * ✅ DONNÉES FINALES — Version 29 janvier 2026
  * 
  * @module app/a-propos/AboutContent
  */
@@ -36,6 +40,10 @@ import {
     LucideIcon,
     Heart,
     Calendar,
+    Sparkles,
+    MapPin,
+    ChevronLeft,
+    ChevronRight,
 } from 'lucide-react';
 import { Button, SpotlightCard, CountUp } from '@/components/ui';
 import { getWhatsAppLink } from '@/config';
@@ -50,6 +58,9 @@ import {
     certifications,
     heroContent,
     ctaContent,
+    differentiationMessage,
+    companyMetrics,
+    showroomImages,
     type TimelineItem,
     type Value,
     type Project,
@@ -283,6 +294,7 @@ export function AboutContent() {
     const directorSection = useScrollAnimation(0.2);
     const valuesSection = useScrollAnimation(0.2);
     const projectsSection = useScrollAnimation(0.15);
+    const showroomSection = useScrollAnimation(0.15);
     const ctaSection = useScrollAnimation(0.3);
 
     // Group projects by category for display
@@ -440,7 +452,83 @@ export function AboutContent() {
             </section>
 
             {/* ============================================
-                SECTION 4: VALUES
+                SECTION 4: NOTRE DIFFÉRENCIATION
+            ============================================ */}
+            <section
+                className={styles.differentiation}
+                aria-labelledby="differentiation-title"
+            >
+                <div className={styles.container}>
+                    <div className={styles.differentiationContent}>
+                        {/* Icon */}
+                        <div className={styles.differentiationIcon}>
+                            <Sparkles size={32} strokeWidth={1.5} />
+                        </div>
+
+                        {/* Title */}
+                        <h2 id="differentiation-title" className={styles.differentiationTitle}>
+                            Ce qui nous différencie
+                        </h2>
+
+                        {/* Message */}
+                        <p className={styles.differentiationText}>
+                            {differentiationMessage}
+                        </p>
+
+                        {/* Metrics Row */}
+                        <div className={styles.differentiationMetrics}>
+                            <div className={styles.differentiationMetric}>
+                                <MapPin size={20} strokeWidth={1.5} />
+                                <span className={styles.metricValue}>
+                                    <CountUp
+                                        to={companyMetrics.siteSurface}
+                                        from={0}
+                                        duration={2.5}
+                                        delay={0.3}
+                                        separator=" "
+                                        className={styles.metricNumber}
+                                    />
+                                    <span className={styles.metricUnit}>m²</span>
+                                </span>
+                                <span className={styles.metricLabel}>de site industriel</span>
+                            </div>
+                            <div className={styles.differentiationMetricDivider} aria-hidden="true" />
+                            <div className={styles.differentiationMetric}>
+                                <Building2 size={20} strokeWidth={1.5} />
+                                <span className={styles.metricValue}>
+                                    <CountUp
+                                        to={companyMetrics.showroomSurface}
+                                        from={0}
+                                        duration={2}
+                                        delay={0.5}
+                                        separator=" "
+                                        className={styles.metricNumber}
+                                    />
+                                    <span className={styles.metricUnit}>m²</span>
+                                </span>
+                                <span className={styles.metricLabel}>de showroom</span>
+                            </div>
+                            <div className={styles.differentiationMetricDivider} aria-hidden="true" />
+                            <div className={styles.differentiationMetric}>
+                                <Users size={20} strokeWidth={1.5} />
+                                <span className={styles.metricValue}>
+                                    <CountUp
+                                        to={companyMetrics.collaborators}
+                                        from={0}
+                                        duration={2}
+                                        delay={0.7}
+                                        className={styles.metricNumber}
+                                    />
+                                </span>
+                                <span className={styles.metricLabel}>collaborateurs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ============================================
+                SECTION 5: VALUES
             ============================================ */}
             <section
                 ref={valuesSection.ref as React.RefObject<HTMLElement>}
@@ -477,7 +565,7 @@ export function AboutContent() {
             </section>
 
             {/* ============================================
-                SECTION 5: NOS RÉALISATIONS (Projects) - WOW EDITION
+                SECTION 6: NOS RÉALISATIONS (Projects) - WOW EDITION
             ============================================ */}
             <section
                 ref={projectsSection.ref as React.RefObject<HTMLElement>}
@@ -668,7 +756,48 @@ export function AboutContent() {
             </section>
 
             {/* ============================================
-                SECTION 6: CTA - PREMIUM DESIGN
+                SECTION 7: SHOWROOM GALLERY
+            ============================================ */}
+            <section
+                ref={showroomSection.ref as React.RefObject<HTMLElement>}
+                className={styles.showroom}
+                aria-labelledby="showroom-title"
+            >
+                <div className={styles.container}>
+                    {/* Section Header */}
+                    <header className={styles.sectionHeader}>
+                        <span className={styles.eyebrow}>Notre Espace</span>
+                        <h2 id="showroom-title" className={styles.sectionTitle}>
+                            Visitez notre showroom
+                        </h2>
+                        <p className={styles.sectionSubtitle}>
+                            Plus de 1 500 m² d&apos;exposition pour découvrir nos matériaux en situation réelle.
+                        </p>
+                    </header>
+
+                    {/* Showroom Grid */}
+                    <div className={styles.showroomGrid}>
+                        {showroomImages.map((imagePath, index) => (
+                            <div
+                                key={index}
+                                className={styles.showroomItem}
+                                style={{ animationDelay: `${(index % 6) * 100}ms` }}
+                            >
+                                <Image
+                                    src={imagePath}
+                                    alt={`Showroom Equipement Ouarzazate - Vue ${index + 1}`}
+                                    fill
+                                    sizes="(max-width: 768px) 50vw, 33vw"
+                                    className={styles.showroomImage}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ============================================
+                SECTION 8: CTA - PREMIUM DESIGN
             ============================================ */}
             <section
                 ref={ctaSection.ref as React.RefObject<HTMLElement>}
@@ -734,7 +863,7 @@ export function AboutContent() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
         </>
     );
 }

@@ -92,6 +92,22 @@ const subjectOptions = [
     { value: 'other', label: 'Autre demande' },
 ];
 
+/**
+ * Showroom images for the carousel
+ * Curated selection showcasing variety of products
+ */
+const showroomImages = [
+    { src: '/images/real/showroom/IMG_9775.png', alt: 'Showroom - Exposition de carrelages et marbres premium' },
+    { src: '/images/real/showroom/IMG_9776.png', alt: 'Showroom - Collection Crema Marfil et carrelages design' },
+    { src: '/images/real/showroom/IMG_9780.png', alt: 'Showroom - Salle de bain luxe avec marbre noir' },
+    { src: '/images/real/showroom/IMG_9785.png', alt: 'Showroom - Sanitaires, robinetterie et douches' },
+    { src: '/images/real/showroom/IMG_9790.png', alt: 'Showroom - Éclairage extérieur et décoratif' },
+    { src: '/images/real/facade/WhatsApp Image 2026-01-29 at 11.09.21 (1).jpeg', alt: 'Façade Equipement Ouarzazate' },
+] as const;
+
+/** Time in ms between image transitions */
+const CAROUSEL_INTERVAL = 6000;
+
 export function ContactContent() {
     const toast = useToast();
     const [isOpen, setIsOpen] = useState(false);
@@ -101,6 +117,9 @@ export function ContactContent() {
     // Magnetic effect state for WhatsApp link
     const [magneticOffset, setMagneticOffset] = useState({ x: 0, y: 0 });
     const whatsappLinkRef = useRef<HTMLAnchorElement>(null);
+
+    // Image carousel state
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [formData, setFormData] = useState<FormData>({
         name: '',
         email: '',
@@ -112,6 +131,15 @@ export function ContactContent() {
 
     useEffect(() => {
         setIsOpen(isBusinessOpen());
+    }, []);
+
+    // Auto-rotate carousel images
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentImageIndex((prev) => (prev + 1) % showroomImages.length);
+        }, CAROUSEL_INTERVAL);
+
+        return () => clearInterval(timer);
     }, []);
 
     const validateForm = (): boolean => {
@@ -341,18 +369,21 @@ export function ContactContent() {
             ============================================ */}
             <section className={styles.mainSection}>
                 <div className={styles.mainGrid}>
-                    {/* Left: Image with Hours Overlay */}
+                    {/* Left: Image Carousel with Hours Overlay */}
                     <div className={styles.imageColumn}>
                         <div className={styles.imageWrapper}>
-                            {/* Real showroom photo */}
-                            <Image
-                                src="/images/real/showroom/IMG_9775.png"
-                                alt="Showroom Equipement Ouarzazate - Exposition de carrelages et matériaux premium"
-                                fill
-                                className={styles.storeImage}
-                                sizes="(max-width: 1024px) 100vw, 40vw"
-                                priority
-                            />
+                            {/* Carousel of showroom photos */}
+                            {showroomImages.map((image, index) => (
+                                <Image
+                                    key={image.src}
+                                    src={image.src}
+                                    alt={image.alt}
+                                    fill
+                                    className={`${styles.storeImage} ${index === currentImageIndex ? styles.storeImageActive : ''}`}
+                                    sizes="(max-width: 1024px) 100vw, 40vw"
+                                    priority={index === 0}
+                                />
+                            ))}
 
                             {/* Hours Overlay */}
                             <div className={styles.hoursOverlay}>

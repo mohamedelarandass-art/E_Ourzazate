@@ -1923,6 +1923,196 @@
 }
 
 /* ==========================================================================
+   DIFFERENTIATION SECTION
+   ========================================================================== */
+
+.differentiation {
+    position: relative;
+    padding: var(--spacing-20) 0;
+    overflow: hidden;
+}
+
+.differentiationContent {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-10);
+    text-align: center;
+    
+    /* Premium Glassmorphism */
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: var(--radius-2xl);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.differentiationIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--spacing-6);
+    border-radius: var(--radius-full);
+    background: linear-gradient(135deg, 
+        rgba(176, 141, 87, 0.2) 0%, 
+        rgba(176, 141, 87, 0.1) 100%);
+    color: var(--color-wood);
+    box-shadow: 0 8px 16px rgba(176, 141, 87, 0.15);
+}
+
+.differentiationTitle {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-6);
+    line-height: 1.2;
+}
+
+.differentiationText {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--spacing-10);
+}
+
+.differentiationMetrics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-6);
+    padding-top: var(--spacing-8);
+    border-top: 1px solid rgba(176, 141, 87, 0.15);
+}
+
+.differentiationMetric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.differentiationMetric svg {
+    color: var(--color-wood);
+    margin-bottom: var(--spacing-1);
+}
+
+.differentiationMetric .metricValue {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+.differentiationMetric .metricUnit {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-wood);
+    text-transform: none;
+}
+
+.differentiationMetric .metricLabel {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: var(--font-weight-medium);
+}
+
+.differentiationMetricDivider {
+    width: 1px;
+    height: 40px;
+    background: rgba(176, 141, 87, 0.2);
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .differentiationMetrics {
+        gap: var(--spacing-10);
+    }
+    
+    .differentiationMetricDivider {
+        display: block;
+    }
+}
+
+:global([data-theme="dark"]) .differentiationContent {
+    background: rgba(30, 30, 30, 0.6);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================================
+   SHOWROOM GALLERY
+   ========================================================================== */
+
+.showroom {
+    padding: var(--spacing-20) 0;
+    background-color: var(--color-bg-secondary);
+}
+
+.showroomGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-4);
+}
+
+@media (min-width: 640px) {
+    .showroomGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .showroomGrid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--spacing-6);
+    }
+}
+
+.showroomItem {
+    position: relative;
+    aspect-ratio: 4/3;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeSlideUp 0.6s ease-out forwards;
+}
+
+.showroomImage {
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.showroomItem:hover .showroomImage {
+    transform: scale(1.08);
+}
+
+/* Overlay gradient on hover */
+.showroomItem::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.showroomItem:hover::after {
+    opacity: 1;
+}
+
+/* ==========================================================================
    9. RESPONSIVE DESIGN
    ========================================================================== */
 
