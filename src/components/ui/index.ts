@@ -41,3 +41,11 @@ export type { Toast, ToastType } from './Toast';
 // SpotlightCard
 export { SpotlightCard } from './SpotlightCard';
 export type { SpotlightCardProps } from './SpotlightCard';
+
+// ProjectCarousel
+export { ProjectCarousel } from './ProjectCarousel';
+export type { ProjectCarouselProps, CarouselItem } from './ProjectCarousel';
+
+// CountUp
+export { CountUp } from './CountUp';
+export type { CountUpProps } from './CountUp';

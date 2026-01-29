@@ -511,6 +511,16 @@
     color: var(--color-text-secondary);
 }
 
+/* Store Image (replaces placeholder) */
+.storeImage {
+    object-fit: cover;
+    transition: transform 8s ease-out;
+}
+
+.imageWrapper:hover .storeImage {
+    transform: scale(1.05);
+}
+
 /* Hours Overlay on Image */
 .hoursOverlay {
     position: absolute;
@@ -717,35 +727,208 @@
 .formActions {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-4);
-    margin-top: var(--spacing-4);
+    align-items: stretch;
+    gap: var(--spacing-5);
+    margin-top: var(--spacing-6);
 }
 
 @media (min-width: 640px) {
     .formActions {
         flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--spacing-6);
     }
 }
 
 .submitButton {
-    flex: 1;
-    width: 100%;
-    gap: var(--spacing-2);
+    /* Auto-width based on content, not full width */
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 200px;
+    gap: var(--spacing-3);
+
+    /* Gold/Wood gradient background */
+    background: linear-gradient(135deg,
+            #C9A66B 0%,
+            #b08d57 45%,
+            #D4B87A 55%,
+            #b08d57 100%) !important;
+    background-size: 250% 100% !important;
+
+    /* Dark text on gold for contrast */
+    color: #1A1A1A !important;
+
+    /* No border needed */
+    border: none !important;
+
+    /* Typography */
+    font-weight: var(--font-weight-bold) !important;
+    font-size: var(--font-size-base) !important;
+
+    /* Comfortable padding */
+    padding: var(--spacing-4) var(--spacing-8) !important;
+
+    /* Rounded corners */
+    border-radius: var(--radius-xl) !important;
+
+    /* Premium shadow with gold tint */
+    box-shadow:
+        0 4px 16px rgba(176, 141, 87, 0.3),
+        0 2px 6px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+
+    /* Smooth transitions */
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-.formOr {
+.submitButton:hover:not(:disabled) {
+    background-position: 100% 0 !important;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow:
+        0 8px 24px rgba(176, 141, 87, 0.4),
+        0 4px 10px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+.submitButton:active:not(:disabled) {
+    transform: translateY(0) scale(1);
+}
+
+.submitButton:focus-visible {
+    outline: 2px solid var(--color-wood);
+    outline-offset: 3px;
+}
+
+.submitButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Dark mode adjustments for submit button */
+[data-theme="dark"] .submitButton {
+    background: linear-gradient(135deg,
+            #D4B87A 0%,
+            #C9A66B 45%,
+            #E5C98E 55%,
+            #C9A66B 100%) !important;
+    color: #1A1A1A !important;
+    box-shadow:
+        0 4px 16px rgba(196, 167, 125, 0.35),
+        0 2px 6px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .submitButton:hover:not(:disabled) {
+    box-shadow:
+        0 8px 24px rgba(196, 167, 125, 0.5),
+        0 4px 10px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Mobile: Button can be full-width */
+@media (max-width: 639px) {
+    .submitButton {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Secondary CTA - Magnetic WhatsApp Text Link */
+.whatsappLink {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-family: var(--font-body);
     font-size: var(--font-size-sm);
-    color: var(--color-text-tertiary);
     font-weight: var(--font-weight-medium);
-    text-transform: uppercase;
-    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    padding: var(--spacing-2) var(--spacing-1);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition:
+        color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, color;
 }
 
-.whatsappButton {
-    flex: 1;
-    width: 100%;
-    gap: var(--spacing-2);
+.whatsappLink:hover {
+    color: var(--color-wood);
+}
+
+.whatsappLink:focus-visible {
+    outline: 2px solid var(--color-wood);
+    outline-offset: 4px;
+}
+
+/* Text with animated underline */
+.whatsappLinkText {
+    position: relative;
+}
+
+.whatsappLinkText::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, var(--color-wood), var(--color-wood-light));
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 1px;
+}
+
+.whatsappLink:hover .whatsappLinkText::after {
+    transform: scaleX(1);
+}
+
+.whatsappLink:focus-visible .whatsappLinkText::after {
+    transform: scaleX(1);
+}
+
+/* Icon Wrapper for Morph Effect */
+.iconWrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+}
+
+/* Arrow Icon */
+.arrowIcon {
+    position: absolute;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    color: var(--color-text-secondary);
+}
+
+.whatsappLink:hover .arrowIcon {
+    opacity: 0;
+    transform: translateX(10px) scale(0.8);
+}
+
+/* WhatsApp Icon */
+.whatsappIconSvg {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateX(-10px) scale(0.5) rotate(-45deg);
+    color: #25D366;
+}
+
+.whatsappLink:hover .whatsappIconSvg {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotate(0deg);
 }
 
 /* ==========================================================================
@@ -976,4 +1159,64 @@
 
 [data-theme="dark"] .mapOverlay {
     background: rgba(30, 30, 30, 0.98);
+}
+
+/* Dark mode - WhatsApp link */
+[data-theme="dark"] .whatsappLink {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+[data-theme="dark"] .whatsappLink:hover {
+    color: var(--color-wood-light);
+}
+
+[data-theme="dark"] .arrowIcon {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+[data-theme="dark"] .whatsappLinkText::after {
+    background: linear-gradient(90deg, var(--color-wood-light), var(--color-wood));
+}
+
+[data-theme="dark"] .whatsappLink:hover .whatsappIconSvg {
+    color: #4ADE80;
+}
+
+/* Reduced motion - WhatsApp link */
+@media (prefers-reduced-motion: reduce) {
+    .whatsappLink {
+        transition: color 0.2s ease !important;
+        transform: none !important;
+    }
+
+    .whatsappLinkText::after {
+        transition: none !important;
+        transform: scaleX(1) !important;
+        opacity: 0.5;
+    }
+
+    .arrowIcon,
+    .whatsappIconSvg {
+        transition: opacity 0.2s ease !important;
+        transform: none !important;
+    }
+
+    .whatsappLink:hover .arrowIcon {
+        opacity: 0;
+        transform: none !important;
+    }
+
+    .whatsappLink:hover .whatsappIconSvg {
+        opacity: 1;
+        transform: none !important;
+    }
+
+    .storeImage {
+        transition: none !important;
+        transform: none !important;
+    }
+
+    .imageWrapper:hover .storeImage {
+        transform: none !important;
+    }
 }

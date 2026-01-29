@@ -49,6 +49,8 @@ html {
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  /* P2 Fix: Prevent layout jank when scrollbar disappears */
+  scrollbar-gutter: stable;
 }
 
 /**

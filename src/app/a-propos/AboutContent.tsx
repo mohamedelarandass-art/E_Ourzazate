@@ -37,7 +37,7 @@ import {
     Heart,
     Calendar,
 } from 'lucide-react';
-import { Button, SpotlightCard } from '@/components/ui';
+import { Button, SpotlightCard, CountUp } from '@/components/ui';
 import { getWhatsAppLink } from '@/config';
 import {
     timeline,
@@ -477,7 +477,7 @@ export function AboutContent() {
             </section>
 
             {/* ============================================
-                SECTION 5: NOS RÉALISATIONS (Projects)
+                SECTION 5: NOS RÉALISATIONS (Projects) - WOW EDITION
             ============================================ */}
             <section
                 ref={projectsSection.ref as React.RefObject<HTMLElement>}
@@ -485,35 +485,76 @@ export function AboutContent() {
                 aria-labelledby="projects-title"
             >
                 <div className={styles.container}>
-                    {/* Section Header */}
-                    <header className={styles.sectionHeader}>
+                    {/* Section Header with Animated Counter */}
+                    <header className={styles.sectionHeaderWow}>
                         <span className={styles.eyebrow}>Nos Réalisations</span>
-                        <h2 id="projects-title" className={styles.sectionTitle}>
-                            Des projets prestigieux
+                        <h2 id="projects-title" className={styles.sectionTitleWow}>
+                            <CountUp
+                                to={12}
+                                from={0}
+                                duration={2}
+                                delay={0.3}
+                                className={styles.countUpNumber}
+                                startWhen={projectsSection.isVisible}
+                            />
+                            {' '}projets prestigieux
                         </h2>
-                        <p className={styles.sectionSubtitle}>
-                            De la centrale solaire NOOR aux plus beaux hôtels de la région, nous sommes fiers d&apos;avoir contribué à ces réalisations emblématiques.
+                        <p className={styles.sectionSubtitleWow}>
+                            De la centrale solaire NOOR aux plus beaux hôtels de la région
                         </p>
                     </header>
 
-                    {/* Stats Row */}
+                    {/* Hero Stats with CountUp */}
                     <div
-                        className={styles.statsRow}
+                        className={styles.heroStatsRow}
                         data-visible={projectsSection.isVisible}
                     >
-                        {socialProofStats.map((stat, index) => (
-                            <div
-                                key={stat.id}
-                                className={styles.statItem}
-                                style={{ animationDelay: `${index * 100}ms` }}
-                            >
-                                <span className={styles.statValue}>{stat.value}</span>
-                                <span className={styles.statLabel}>{stat.label}</span>
-                            </div>
-                        ))}
+                        <div className={styles.heroStatItem}>
+                            <span className={styles.heroStatValue}>
+                                <CountUp
+                                    to={50}
+                                    from={0}
+                                    duration={2.5}
+                                    delay={0.5}
+                                    suffix="+"
+                                    className={styles.heroStatNumber}
+                                    startWhen={projectsSection.isVisible}
+                                />
+                            </span>
+                            <span className={styles.heroStatLabel}>Ans d&apos;expérience</span>
+                        </div>
+                        <div className={styles.heroStatDivider} aria-hidden="true" />
+                        <div className={styles.heroStatItem}>
+                            <span className={styles.heroStatValue}>
+                                <CountUp
+                                    to={4}
+                                    from={0}
+                                    duration={1.5}
+                                    delay={0.7}
+                                    className={styles.heroStatNumber}
+                                    startWhen={projectsSection.isVisible}
+                                />
+                            </span>
+                            <span className={styles.heroStatLabel}>Secteurs d&apos;activité</span>
+                        </div>
+                        <div className={styles.heroStatDivider} aria-hidden="true" />
+                        <div className={styles.heroStatItem}>
+                            <span className={styles.heroStatValue}>
+                                <CountUp
+                                    to={100}
+                                    from={0}
+                                    duration={2}
+                                    delay={0.9}
+                                    suffix="%"
+                                    className={styles.heroStatNumber}
+                                    startWhen={projectsSection.isVisible}
+                                />
+                            </span>
+                            <span className={styles.heroStatLabel}>Clients satisfaits</span>
+                        </div>
                     </div>
 
-                    {/* Featured Project - NOOR */}
+                    {/* Featured Project - NOOR (Hero Spotlight) */}
                     <div className={styles.featuredProjectWrapper}>
                         <SpotlightProjectCard
                             project={projects.find(p => p.id === 'noor')!}
@@ -523,18 +564,90 @@ export function AboutContent() {
                         />
                     </div>
 
-                    {/* Projects Grid - All Other Projects */}
-                    <div className={styles.spotlightProjectsGrid}>
-                        {projects
-                            .filter(p => p.id !== 'noor')
-                            .map((project, index) => (
-                                <SpotlightProjectCard
-                                    key={project.id}
-                                    project={project}
-                                    index={index + 1}
-                                    isVisible={projectsSection.isVisible}
-                                />
-                            ))}
+                    {/* Projects By Category */}
+                    <div
+                        className={styles.projectsByCategoryWrapper}
+                        data-visible={projectsSection.isVisible}
+                    >
+                        {/* Category: Énergie */}
+                        <div className={styles.categoryGroup} style={{ animationDelay: '0ms' }}>
+                            <div className={styles.categoryHeader}>
+                                <div className={styles.categoryIconBadge}>
+                                    <Zap size={18} strokeWidth={2} />
+                                </div>
+                                <h3 className={styles.categoryTitle}>Énergie</h3>
+                                <span className={styles.categoryCount}>
+                                    {projects.filter(p => p.category === 'energie').length} projets
+                                </span>
+                            </div>
+                            <div className={styles.categoryProjects}>
+                                {projects.filter(p => p.category === 'energie' && p.id !== 'noor').map((project, i) => (
+                                    <span key={project.id} className={styles.projectChip} style={{ animationDelay: `${i * 50}ms` }}>
+                                        {project.name}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Category: Hôtellerie */}
+                        <div className={styles.categoryGroup} style={{ animationDelay: '100ms' }}>
+                            <div className={styles.categoryHeader}>
+                                <div className={styles.categoryIconBadge}>
+                                    <Building size={18} strokeWidth={2} />
+                                </div>
+                                <h3 className={styles.categoryTitle}>Hôtellerie</h3>
+                                <span className={styles.categoryCount}>
+                                    {projects.filter(p => p.category === 'hotellerie').length} projets
+                                </span>
+                            </div>
+                            <div className={styles.categoryProjects}>
+                                {projects.filter(p => p.category === 'hotellerie').map((project, i) => (
+                                    <span key={project.id} className={styles.projectChip} style={{ animationDelay: `${i * 50}ms` }}>
+                                        {project.name}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Category: Infrastructure */}
+                        <div className={styles.categoryGroup} style={{ animationDelay: '200ms' }}>
+                            <div className={styles.categoryHeader}>
+                                <div className={styles.categoryIconBadge}>
+                                    <Construction size={18} strokeWidth={2} />
+                                </div>
+                                <h3 className={styles.categoryTitle}>Infrastructure</h3>
+                                <span className={styles.categoryCount}>
+                                    {projects.filter(p => p.category === 'infrastructure').length} projets
+                                </span>
+                            </div>
+                            <div className={styles.categoryProjects}>
+                                {projects.filter(p => p.category === 'infrastructure').map((project, i) => (
+                                    <span key={project.id} className={styles.projectChip} style={{ animationDelay: `${i * 50}ms` }}>
+                                        {project.name}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Category: Commerce */}
+                        <div className={styles.categoryGroup} style={{ animationDelay: '300ms' }}>
+                            <div className={styles.categoryHeader}>
+                                <div className={styles.categoryIconBadge}>
+                                    <ShoppingCart size={18} strokeWidth={2} />
+                                </div>
+                                <h3 className={styles.categoryTitle}>Commerce</h3>
+                                <span className={styles.categoryCount}>
+                                    {projects.filter(p => p.category === 'commerce').length} projets
+                                </span>
+                            </div>
+                            <div className={styles.categoryProjects}>
+                                {projects.filter(p => p.category === 'commerce').map((project, i) => (
+                                    <span key={project.id} className={styles.projectChip} style={{ animationDelay: `${i * 50}ms` }}>
+                                        {project.name}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
                     </div>
 
                     {/* Trust Badges */}

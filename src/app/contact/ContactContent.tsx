@@ -12,7 +12,8 @@
 
 'use client';
 
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, useRef, useCallback, FormEvent } from 'react';
+import Image from 'next/image';
 import {
     Phone,
     MessageCircle,
@@ -23,12 +24,12 @@ import {
     Send,
     ChevronDown,
     ChevronUp,
-    CheckCircle,
     XCircle,
     Award,
     Zap,
     Users,
-    ExternalLink
+    ExternalLink,
+    MoveRight
 } from 'lucide-react';
 import { Button, Input } from '@/components/ui';
 import { useToast } from '@/components/ui/Toast/Toast';
@@ -40,6 +41,31 @@ import {
     isBusinessOpen
 } from '@/config';
 import styles from './page.module.css';
+
+/* -------------------------------------------------------------------------- */
+/*                             WhatsApp Icon SVG                              */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Premium WhatsApp Icon (Outline style to match editorial design)
+ */
+function WhatsAppIconSvg({ className }: { className?: string }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+        >
+            <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
+            <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" />
+        </svg>
+    );
+}
 
 /**
  * Form data interface
@@ -71,6 +97,10 @@ export function ContactContent() {
     const [isOpen, setIsOpen] = useState(false);
     const [showMorePhones, setShowMorePhones] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Magnetic effect state for WhatsApp link
+    const [magneticOffset, setMagneticOffset] = useState({ x: 0, y: 0 });
+    const whatsappLinkRef = useRef<HTMLAnchorElement>(null);
     const [formData, setFormData] = useState<FormData>({
         name: '',
         email: '',
@@ -129,6 +159,33 @@ export function ContactContent() {
     const scrollToMap = () => {
         document.getElementById('map-section')?.scrollIntoView({ behavior: 'smooth' });
     };
+
+    /**
+     * Handle mouse move for magnetic pull effect on WhatsApp link
+     */
+    const handleMouseMove = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+        const element = whatsappLinkRef.current;
+        if (!element) return;
+
+        const rect = element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const offsetX = (e.clientX - centerX) * 0.15;
+        const offsetY = (e.clientY - centerY) * 0.25;
+
+        const clampedX = Math.max(-8, Math.min(8, offsetX));
+        const clampedY = Math.max(-4, Math.min(4, offsetY));
+
+        setMagneticOffset({ x: clampedX, y: clampedY });
+    }, []);
+
+    /**
+     * Reset magnetic offset when mouse leaves
+     */
+    const handleMouseLeave = useCallback(() => {
+        setMagneticOffset({ x: 0, y: 0 });
+    }, []);
 
     return (
         <>
@@ -287,14 +344,15 @@ export function ContactContent() {
                     {/* Left: Image with Hours Overlay */}
                     <div className={styles.imageColumn}>
                         <div className={styles.imageWrapper}>
-                            {/* Placeholder image - can be replaced with real photo */}
-                            <div className={styles.imagePlaceholder}>
-                                <div className={styles.imagePlaceholderContent}>
-                                    <MapPin size={48} />
-                                    <span>Equipement Ouarzazate</span>
-                                    <span className={styles.imagePlaceholderSub}>Votre partenaire depuis 1975</span>
-                                </div>
-                            </div>
+                            {/* Real showroom photo */}
+                            <Image
+                                src="/images/real/showroom/IMG_9775.png"
+                                alt="Showroom Equipement Ouarzazate - Exposition de carrelages et matériaux premium"
+                                fill
+                                className={styles.storeImage}
+                                sizes="(max-width: 1024px) 100vw, 40vw"
+                                priority
+                            />
 
                             {/* Hours Overlay */}
                             <div className={styles.hoursOverlay}>
@@ -328,9 +386,9 @@ export function ContactContent() {
                     <div className={styles.formColumn}>
                         <div className={styles.formCard}>
                             <div className={styles.formHeader}>
-                                <h2 className={styles.formTitle}>Préférez un devis détaillé ?</h2>
+                                <h2 className={styles.formTitle}>Comment pouvons-nous vous aider ?</h2>
                                 <p className={styles.formSubtitle}>
-                                    Décrivez votre projet et recevez une réponse personnalisée sous 24h
+                                    Une question, un devis, ou simplement besoin de conseils — on vous répond sous 24h
                                 </p>
                             </div>
 
@@ -391,7 +449,7 @@ export function ContactContent() {
                                         onChange={handleChange}
                                         className={`${styles.textarea} ${errors.message ? styles.textareaError : ''}`}
                                         rows={4}
-                                        placeholder="Décrivez votre projet ou posez votre question..."
+                                        placeholder="Dites-nous ce que vous avez en tête — projet, question ou simple curiosité..."
                                     />
                                     {errors.message && (
                                         <span className={styles.errorText}>{errors.message}</span>
@@ -404,28 +462,30 @@ export function ContactContent() {
                                         variant="primary"
                                         disabled={isSubmitting}
                                         className={styles.submitButton}
+                                        rightIcon={!isSubmitting ? <Send size={18} /> : undefined}
                                     >
-                                        {isSubmitting ? 'Envoi...' : (
-                                            <>
-                                                <Send size={18} />
-                                                Envoyer ma demande
-                                            </>
-                                        )}
+                                        {isSubmitting ? 'Envoi en cours...' : 'Envoyer ma demande'}
                                     </Button>
 
-                                    <span className={styles.formOr}>ou</span>
-
-                                    <Button
-                                        as="a"
-                                        href={getWhatsAppLink('Bonjour, je souhaite un devis pour...')}
+                                    {/* Secondary CTA - Magnetic WhatsApp Text Link */}
+                                    <a
+                                        ref={whatsappLinkRef}
+                                        href={getWhatsAppLink('Bonjour ! Je souhaite des informations.')}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        variant="whatsapp"
-                                        className={styles.whatsappButton}
+                                        className={styles.whatsappLink}
+                                        onMouseMove={handleMouseMove}
+                                        onMouseLeave={handleMouseLeave}
+                                        style={{
+                                            transform: `translate(${magneticOffset.x}px, ${magneticOffset.y}px)`,
+                                        }}
                                     >
-                                        <MessageCircle size={18} />
-                                        Réponse plus rapide
-                                    </Button>
+                                        <span className={styles.whatsappLinkText}>Préférez WhatsApp ? Réponse plus rapide</span>
+                                        <span className={styles.iconWrapper}>
+                                            <MoveRight size={18} strokeWidth={1.5} className={styles.arrowIcon} />
+                                            <WhatsAppIconSvg className={styles.whatsappIconSvg} />
+                                        </span>
+                                    </a>
                                 </div>
                             </form>
                         </div>
