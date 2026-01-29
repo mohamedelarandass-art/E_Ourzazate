@@ -20,6 +20,7 @@ import {
     LucideIcon
 } from 'lucide-react';
 import { companyStatistics, type Statistic } from '@/data/statistics';
+import { CountUp } from '@/components/ui';
 import styles from './Statistics.module.css';
 
 /**
@@ -44,58 +45,7 @@ const iconMap: Record<Statistic['icon'], LucideIcon> = {
     Building,
 };
 
-/**
- * Custom hook for animated counter
- */
-function useAnimatedCounter(
-    end: number,
-    duration: number,
-    isVisible: boolean,
-    hasDecimal: boolean = false
-): number {
-    const [count, setCount] = useState(0);
-    const frameRef = useRef<number | null>(null);
-    const startTimeRef = useRef<number | null>(null);
 
-    useEffect(() => {
-        if (!isVisible) {
-            setCount(0);
-            return;
-        }
-
-        const animate = (timestamp: number) => {
-            if (startTimeRef.current === null) {
-                startTimeRef.current = timestamp;
-            }
-
-            const elapsed = timestamp - startTimeRef.current;
-            const progress = Math.min(elapsed / duration, 1);
-
-            // Easing function for smooth animation (easeOutQuart)
-            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-            const currentValue = end * easeOutQuart;
-
-            setCount(hasDecimal ? parseFloat(currentValue.toFixed(1)) : Math.floor(currentValue));
-
-            if (progress < 1) {
-                frameRef.current = requestAnimationFrame(animate);
-            } else {
-                setCount(end);
-            }
-        };
-
-        frameRef.current = requestAnimationFrame(animate);
-
-        return () => {
-            if (frameRef.current !== null) {
-                cancelAnimationFrame(frameRef.current);
-            }
-            startTimeRef.current = null;
-        };
-    }, [end, duration, isVisible, hasDecimal]);
-
-    return count;
-}
 
 /**
  * Individual statistic card component
@@ -109,11 +59,9 @@ interface StatCardProps {
 
 function StatCard({ stat, isVisible, duration, index }: StatCardProps) {
     const Icon = iconMap[stat.icon];
-    const hasDecimal = stat.value % 1 !== 0;
-    const animatedValue = useAnimatedCounter(stat.value, duration, isVisible, hasDecimal);
-
-    // Format the value with prefix and suffix
-    const formattedValue = `${stat.prefix || ''}${hasDecimal ? animatedValue.toFixed(1) : animatedValue}${stat.suffix || ''}`;
+    // Duration passed from parent is in ms (e.g. 2000), CountUp expects seconds (e.g. 2.5)
+    // We'll use a fixed premium duration or convert, but 2.5s is the "Luxury" standard we defined.
+    const animationDurationSec = 2.5;
 
     return (
         <article
@@ -130,7 +78,14 @@ function StatCard({ stat, isVisible, duration, index }: StatCardProps) {
 
                 {/* Value with animated counter */}
                 <div className={styles.value} aria-live="polite">
-                    {formattedValue}
+                    <CountUp
+                        to={stat.value}
+                        duration={animationDurationSec}
+                        startWhen={isVisible}
+                        separator=" "
+                        prefix={stat.prefix}
+                        suffix={stat.suffix}
+                    />
                 </div>
 
                 {/* Label */}

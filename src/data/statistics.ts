@@ -43,11 +43,12 @@ export const companyStatistics: Statistic[] = [
         icon: 'Award',
     },
     {
-        id: 'vehicles',
-        value: 100,
+        id: 'surface',
+        value: 61,
         prefix: '+',
-        label: 'Véhicules de transport',
-        icon: 'Truck',
+        suffix: 'K',
+        label: 'm² de surface',
+        icon: 'Building',
     },
     {
         id: 'clients',
@@ -74,7 +75,7 @@ export const companyStatistics: Statistic[] = [
     },
     {
         id: 'employees',
-        value: 185,
+        value: 140,
         prefix: '+',
         label: 'collaborateurs',
         icon: 'Users',

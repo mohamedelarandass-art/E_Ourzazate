@@ -30,7 +30,8 @@ export function MagneticButton({
     const y = useMotionValue(0);
 
     // Spring physics for smooth movement
-    const springConfig = { damping: 15, stiffness: 150, mass: 0.1 };
+    // Spring physics for smooth movement
+    const springConfig = { damping: 30, stiffness: 80, mass: 0.8 };
     const xSpring = useSpring(x, springConfig);
     const ySpring = useSpring(y, springConfig);
 

@@ -42,20 +42,14 @@ export default function FAQPage() {
             <main className={styles.main}>
                 {/* Breadcrumb */}
                 <nav className={styles.breadcrumb} aria-label="Fil d'Ariane">
-                    <ol className={styles.breadcrumbList}>
-                        <li className={styles.breadcrumbItem}>
-                            <Link href="/" className={styles.breadcrumbLink}>
-                                <Home size={14} />
-                                Accueil
-                            </Link>
-                        </li>
-                        <li className={styles.breadcrumbSeparator}>
-                            <ChevronRight size={14} />
-                        </li>
-                        <li className={styles.breadcrumbItem}>
-                            <span className={styles.breadcrumbCurrent}>FAQ</span>
-                        </li>
-                    </ol>
+                    <Link href="/" className={styles.breadcrumbLink}>
+                        <Home size={14} className={styles.breadcrumbHomeIcon} aria-hidden="true" />
+                        Accueil
+                    </Link>
+                    <ChevronRight size={14} className={styles.breadcrumbSeparator} aria-hidden="true" />
+                    <span className={styles.breadcrumbCurrent} aria-current="page">
+                        Questions Fréquentes
+                    </span>
                 </nav>
 
                 {/* Hero Section */}

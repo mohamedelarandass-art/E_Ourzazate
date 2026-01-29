@@ -259,7 +259,7 @@
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
     line-height: 1;
-    margin-bottom: var(--spacing-2);
+    margin-bottom: var(--spacing-4);
     background: linear-gradient(135deg,
             var(--color-text-primary) 0%,
             var(--color-wood) 100%);

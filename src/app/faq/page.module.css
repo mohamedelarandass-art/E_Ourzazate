@@ -28,48 +28,72 @@
    Breadcrumb
    ========================================================================== */
 
+/* ==========================================================================
+   Breadcrumb
+   ========================================================================== */
+
 .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1-5);
+    font-size: var(--font-size-sm);
     margin-bottom: var(--spacing-8);
-}
-
-.breadcrumbList {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-2);
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-wrap: wrap;
-}
-
-.breadcrumbItem {
-    display: flex;
-    align-items: center;
+    /* Kept spacing-8 from FAQ design for consistency with layout, or should I use spacing-4 from Catalogue? FAQ has large hero margin. Let's use spacing-8 to match existing layout vertical rhythm or spacing-4 to be tight? Catalogue uses spacing-4. Let's use spacing-4 to match Catalogue EXACTLY as requested. */
+    margin-bottom: var(--spacing-4);
 }
 
 .breadcrumbLink {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: var(--spacing-2);
+    gap: var(--spacing-1);
     color: var(--color-text-secondary);
-    font-size: var(--font-size-sm);
-    transition: color var(--duration-200);
+    text-decoration: none;
+    padding: var(--spacing-1) var(--spacing-1);
+    margin: calc(-1 * var(--spacing-1));
+    border-radius: var(--radius-sm);
+    transition: all var(--duration-150) var(--ease-out);
+    position: relative;
+}
+
+/* Hover underline effect */
+.breadcrumbLink::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: var(--spacing-1);
+    right: var(--spacing-1);
+    height: 1px;
+    background-color: var(--color-wood);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform var(--duration-200) var(--ease-out);
 }
 
 .breadcrumbLink:hover {
     color: var(--color-wood);
+    background-color: rgba(196, 167, 125, 0.08);
+}
+
+.breadcrumbLink:hover::after {
+    transform: scaleX(1);
+}
+
+/* Home icon styling */
+.breadcrumbHomeIcon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
 }
 
 .breadcrumbSeparator {
     color: var(--color-text-tertiary);
-    display: flex;
-    align-items: center;
+    flex-shrink: 0;
 }
 
 .breadcrumbCurrent {
     color: var(--color-text-primary);
-    font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
+    padding: var(--spacing-1);
 }
 
 /* ==========================================================================
@@ -414,4 +438,94 @@
 
 :global([data-theme="dark"]) .ctaContact:hover {
     background: var(--color-surface-hover);
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hero Animation */
+.hero[data-visible="false"] .heroTitle,
+.hero[data-visible="false"] .heroSubtitle {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.hero[data-visible="true"] .heroTitle {
+    animation: fadeSlideUp 0.7s ease-out forwards;
+}
+
+.hero[data-visible="true"] .heroSubtitle {
+    animation: fadeSlideUp 0.7s ease-out forwards;
+    animation-delay: 0.2s;
+}
+
+/* Category Tabs Animation */
+.categoryTabs {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+}
+
+.categoryTabs[data-visible="true"] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.categoryTab {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.categoryTabs[data-visible="true"] .categoryTab {
+    animation: fadeSlideUp 0.5s ease-out forwards;
+}
+
+/* Add delays for tabs */
+.categoryTabs[data-visible="true"] .categoryTab:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.categoryTabs[data-visible="true"] .categoryTab:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.categoryTabs[data-visible="true"] .categoryTab:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.categoryTabs[data-visible="true"] .categoryTab:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+/* FAQ Section Animation (Wrapper) */
+.faqSection {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.faqSection[data-visible="true"] {
+    animation: fadeSlideUp 0.7s ease-out forwards;
+}
+
+/* CTA Animation */
+.ctaSection {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.ctaSection[data-visible="true"] {
+    animation: fadeSlideUp 0.7s ease-out forwards;
 }

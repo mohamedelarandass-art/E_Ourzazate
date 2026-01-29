@@ -24,8 +24,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, MoveRight } from 'lucide-react';
 import { siteConfig } from '@/config';
+import { getYearsOfExperience } from '@/data/statistics'; // Import dynamic calc
 import { getWhatsAppUrl } from '@/lib/whatsapp';
-import { Button } from '@/components/ui';
+import { Button, CountUp } from '@/components/ui';
 import styles from './Hero.module.css';
 
 /* -------------------------------------------------------------------------- */
@@ -70,9 +71,9 @@ function WhatsAppIcon({ className }: { className?: string }) {
  * Trust statistics displayed inline at the bottom of the hero
  */
 const trustStats = [
-    { value: '50+', label: 'années' },
-    { value: '6', label: 'catégories' },
-    { value: '1000+', label: 'produits' },
+    { value: getYearsOfExperience(), suffix: '+', label: "d'expérience" },
+    { value: 5, suffix: '', label: "pôles d'expertise" },
+    { value: 17.5, suffix: 'K+', label: 'références' },
 ] as const;
 
 /* -------------------------------------------------------------------------- */
@@ -151,7 +152,7 @@ export function Hero({ className }: HeroProps) {
                     {/* Headline */}
                     <h1 className={styles.headline}>
                         <span className={styles.headlineMain}>
-                            L'excellence des matériaux,
+                            Bâtisseurs de relations durables,
                         </span>
                         <span className={styles.headlineAccent}>
                             depuis {siteConfig.establishedYear}.
@@ -160,7 +161,7 @@ export function Hero({ className }: HeroProps) {
 
                     {/* Subtitle */}
                     <p className={styles.subtitle}>
-                        Fournisseur de référence au Maroc pour vos projets d'exception.
+                        Plus que des matériaux, nous vous offrons l'expertise et la qualité pour concrétiser vos projets les plus ambitieux.
                     </p>
 
                     {/* Call to Actions */}
@@ -201,7 +202,15 @@ export function Hero({ className }: HeroProps) {
                     <div className={styles.stats}>
                         {trustStats.map((stat, index) => (
                             <div key={stat.label} className={styles.statItem}>
-                                <span className={styles.statValue}>{stat.value}</span>
+                                <span className={styles.statValue}>
+                                    <CountUp
+                                        to={stat.value}
+                                        suffix={stat.suffix}
+                                        duration={2.5}
+                                        startWhen={isLoaded}
+                                        separator=""
+                                    />
+                                </span>
                                 <span className={styles.statLabel}>{stat.label}</span>
                                 {index < trustStats.length - 1 && (
                                     <span className={styles.statDivider} aria-hidden="true" />

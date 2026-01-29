@@ -8,7 +8,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import {
     ShoppingCart,
@@ -90,10 +90,83 @@ const faqCategories = [
 ];
 
 /**
+ * Hook for scroll-triggered visibility animations
+ */
+function useScrollAnimation(threshold = 0.2) {
+    const [isVisible, setIsVisible] = useState(false);
+    const ref = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        const element = ref.current;
+        if (!element) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold }
+        );
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, [threshold]);
+
+    return { ref, isVisible };
+}
+
+/**
+ * Animated Section Wrapper
+ */
+interface AnimatedFAQSectionProps {
+    category: typeof faqCategories[0];
+}
+
+function AnimatedFAQSection({ category }: AnimatedFAQSectionProps) {
+    // Determine threshold based on screen size (optional optimization)
+    // For now, consistent threshold
+    const { ref, isVisible } = useScrollAnimation(0.15);
+    const Icon = category.icon;
+
+    return (
+        <section
+            ref={ref as React.RefObject<HTMLElement>}
+            className={styles.faqSection}
+            data-visible={isVisible}
+        >
+            <div className={styles.sectionHeader}>
+                <div className={styles.sectionIcon}>
+                    <Icon size={24} />
+                </div>
+                <h2 className={styles.sectionTitle}>{category.label}</h2>
+            </div>
+
+            <Accordion allowMultiple={false} className={styles.accordion}>
+                {category.questions.map((item) => (
+                    <AccordionItem
+                        key={item.id}
+                        id={item.id}
+                        title={item.question}
+                    >
+                        <p className={styles.answerText}>{item.answer}</p>
+                    </AccordionItem>
+                ))}
+            </Accordion>
+        </section>
+    );
+}
+
+/**
  * FAQ Content Component
  */
 export function FAQContent() {
     const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+    // Animation hooks
+    const tabsAnimation = useScrollAnimation(0.1);
+    const ctaAnimation = useScrollAnimation(0.2);
 
     // Filter questions based on selected category
     const displayedCategories = activeCategory
@@ -103,7 +176,13 @@ export function FAQContent() {
     return (
         <div className={styles.content}>
             {/* Category Tabs */}
-            <div className={styles.categoryTabs} role="tablist" aria-label="Catégories FAQ">
+            <div
+                ref={tabsAnimation.ref as React.RefObject<HTMLDivElement>}
+                className={styles.categoryTabs}
+                role="tablist"
+                aria-label="Catégories FAQ"
+                data-visible={tabsAnimation.isVisible}
+            >
                 <button
                     type="button"
                     role="tab"
@@ -134,35 +213,17 @@ export function FAQContent() {
 
             {/* FAQ Sections */}
             <div className={styles.faqSections}>
-                {displayedCategories.map((category) => {
-                    const Icon = category.icon;
-                    return (
-                        <section key={category.id} className={styles.faqSection}>
-                            <div className={styles.sectionHeader}>
-                                <div className={styles.sectionIcon}>
-                                    <Icon size={24} />
-                                </div>
-                                <h2 className={styles.sectionTitle}>{category.label}</h2>
-                            </div>
-
-                            <Accordion allowMultiple={false} className={styles.accordion}>
-                                {category.questions.map((item) => (
-                                    <AccordionItem
-                                        key={item.id}
-                                        id={item.id}
-                                        title={item.question}
-                                    >
-                                        <p className={styles.answerText}>{item.answer}</p>
-                                    </AccordionItem>
-                                ))}
-                            </Accordion>
-                        </section>
-                    );
-                })}
+                {displayedCategories.map((category) => (
+                    <AnimatedFAQSection key={category.id} category={category} />
+                ))}
             </div>
 
             {/* CTA Section */}
-            <section className={styles.ctaSection}>
+            <section
+                ref={ctaAnimation.ref as React.RefObject<HTMLElement>}
+                className={styles.ctaSection}
+                data-visible={ctaAnimation.isVisible}
+            >
                 <div className={styles.ctaContent}>
                     <MessageCircle size={48} className={styles.ctaIcon} />
                     <h2 className={styles.ctaTitle}>Vous n&apos;avez pas trouvé votre réponse ?</h2>
