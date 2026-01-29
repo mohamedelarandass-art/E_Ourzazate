@@ -13,10 +13,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { ProductCard } from '@/components/product';
-import { Button } from '@/components/ui';
+import { MagneticButton } from '@/components/ui';
 import { getFeaturedProducts } from '@/data';
 import styles from './FeaturedProducts.module.css';
 
@@ -56,15 +55,11 @@ export function FeaturedProducts({ className, limit = 6 }: FeaturedProductsProps
                             Découvrez notre sélection de produits premium, choisis pour leur qualité exceptionnelle.
                         </p>
                     </div>
-                    <Link href="/catalogue" className={styles.headerCta}>
-                        <Button
-                            variant="outline"
-                            rightIcon={<ArrowRight size={18} />}
-                            className={styles.viewAllBtn}
-                        >
+                    <div className={styles.headerCta}>
+                        <MagneticButton href="/catalogue" size="lg" strength={0.4}>
                             Voir Tout le Catalogue
-                        </Button>
-                    </Link>
+                        </MagneticButton>
+                    </div>
                 </div>
 
                 {/* Products Grid */}
@@ -82,16 +77,9 @@ export function FeaturedProducts({ className, limit = 6 }: FeaturedProductsProps
 
                 {/* Mobile CTA */}
                 <div className={styles.mobileCta}>
-                    <Link href="/catalogue">
-                        <Button
-                            variant="primary"
-                            size="lg"
-                            fullWidth
-                            rightIcon={<ArrowRight size={18} />}
-                        >
-                            Voir Tout le Catalogue
-                        </Button>
-                    </Link>
+                    <MagneticButton href="/catalogue" size="xl">
+                        Voir Tout le Catalogue
+                    </MagneticButton>
                 </div>
             </div>
         </section>

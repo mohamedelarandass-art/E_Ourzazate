@@ -1,0 +1,169 @@
+/* ==========================================================================
+   MAGNETIC BUTTON STYLES
+   ========================================================================== */
+
+.magneticButton {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    border: 1px solid rgba(176, 141, 87, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 9999px;
+    /* Pill shape */
+    overflow: hidden;
+    color: var(--color-text-primary);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: border-color 0.3s ease, color 0.3s ease;
+    z-index: 1;
+}
+
+/* Sizes */
+.sm {
+    padding: 10px 20px;
+    font-size: 0.875rem;
+}
+
+.md {
+    padding: 14px 28px;
+    font-size: 1rem;
+}
+
+.lg {
+    padding: 18px 36px;
+    font-size: 1.125rem;
+}
+
+.xl {
+    padding: 22px 48px;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Hover State - Border Color */
+.magneticButton:hover {
+    border-color: rgba(176, 141, 87, 0.8);
+    color: #fff;
+    /* Text becomes white on fill */
+}
+
+/* Liquid Fill Effect */
+.fill {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(135deg,
+            var(--color-wood) 0%,
+            #cfa15b 100%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.magneticButton:hover .fill {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Text Wrapper to ensure z-index */
+.text {
+    position: relative;
+    z-index: 2;
+}
+
+/* Arrow Animation */
+.arrowContainer {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.arrow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+}
+
+.arrowPrimary {
+    transform: translateX(0);
+}
+
+.arrowSecondary {
+    transform: translateX(-150%);
+}
+
+.magneticButton:hover .arrowPrimary {
+    transform: translateX(150%);
+}
+
+.magneticButton:hover .arrowSecondary {
+    transform: translateX(0);
+}
+
+/* ==========================================================================
+   MOBILE & REDUCED MOTION
+   ========================================================================== */
+
+/* Mobile Enhancements (No magnetic effect, but texture) */
+@media (max-width: 1024px) {
+    .magneticButton {
+        width: 100%;
+        /* Full width on mobile often looks better for CTA */
+        background: linear-gradient(135deg,
+                rgba(176, 141, 87, 0.1) 0%,
+                rgba(176, 141, 87, 0.05) 100%);
+        border-color: var(--color-wood);
+    }
+
+    /* Shimmer Effect for Mobile - Attention Grabber */
+    .magneticButton::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent);
+        transform: skewX(-20deg);
+        animation: shimmer 5s infinite;
+    }
+}
+
+@keyframes shimmer {
+
+    0%,
+    90% {
+        left: -100%;
+    }
+
+    100% {
+        left: 200%;
+    }
+}
+
+/* Grain Texture Overlay (Subtle premium feel) */
+.grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+}

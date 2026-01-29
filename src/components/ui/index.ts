@@ -49,3 +49,7 @@ export type { ProjectCarouselProps, CarouselItem } from './ProjectCarousel';
 // CountUp
 export { CountUp } from './CountUp';
 export type { CountUpProps } from './CountUp';
+
+// MagneticButton
+export { MagneticButton } from './MagneticButton';
+
