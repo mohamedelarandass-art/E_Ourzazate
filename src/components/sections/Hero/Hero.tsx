@@ -72,7 +72,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
  */
 const trustStats = [
     { value: getYearsOfExperience(), suffix: '+', label: "d'expérience" },
-    { value: 5, suffix: '', label: "pôles d'expertise" },
+    { value: 5, suffix: '', label: 'gammes' },
     { value: 17.5, suffix: 'K+', label: 'références' },
 ] as const;
 
@@ -152,7 +152,7 @@ export function Hero({ className }: HeroProps) {
                     {/* Headline */}
                     <h1 className={styles.headline}>
                         <span className={styles.headlineMain}>
-                            Bâtisseurs de relations durables,
+                            L'excellence des matériaux,
                         </span>
                         <span className={styles.headlineAccent}>
                             depuis {siteConfig.establishedYear}.
