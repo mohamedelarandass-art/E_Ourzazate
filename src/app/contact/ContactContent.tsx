@@ -166,12 +166,33 @@ export function ContactContent() {
             return;
         }
         setIsSubmitting(true);
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        console.log('Form submitted:', formData);
-        toast.success('Message envoyé !', 'Nous vous répondrons sous 24h.');
-        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-        setErrors({});
-        setIsSubmitting(false);
+        try {
+            const res = await fetch('/api/public/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: formData.name.trim(),
+                    email: formData.email.trim(),
+                    phone: formData.phone.trim() || undefined,
+                    subject: formData.subject || 'Demande generale',
+                    message: formData.message.trim(),
+                }),
+            });
+            const json = await res.json();
+
+            if (!res.ok || !json.success) {
+                toast.error('Erreur', json.error || 'Impossible d\'envoyer le message.');
+                return;
+            }
+
+            toast.success('Message envoye !', 'Nous vous repondrons sous 24h.');
+            setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+            setErrors({});
+        } catch {
+            toast.error('Erreur', 'Une erreur est survenue. Veuillez reessayer.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleChange = (

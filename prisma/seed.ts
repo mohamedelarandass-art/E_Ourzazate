@@ -42,7 +42,19 @@ async function main(): Promise<void> {
   console.log('[1/3] Creating OWNER user...');
 
   const seedPassword = process.env.SEED_ADMIN_PASSWORD ?? 'Admin@EqOuarz2025!';
-  const passwordHash = await hash(seedPassword, { type: 2 });
+
+  // TM1: Only hash the password if the user doesn't exist yet.
+  // Argon2 hashing is CPU-expensive (~100ms). On the update path,
+  // passwordHash is intentionally omitted (RI3), so the hash would be
+  // computed and thrown away. Skip it entirely when the user already exists.
+  const existingAdmin = await prisma.user.findUnique({
+    where: { username: 'admin' },
+    select: { id: true },
+  });
+
+  const passwordHash = existingAdmin
+    ? 'SKIP' // placeholder — not used in the update block
+    : await hash(seedPassword, { type: 2 });
 
   const admin = await prisma.user.upsert({
     where: { username: 'admin' },
@@ -50,7 +62,7 @@ async function main(): Promise<void> {
       email: 'equipementouarzazate@gmail.com',
       displayName: 'Administrateur',
       // passwordHash intentionally omitted — do not overwrite a password
-      // that may have been changed after initial seeding.
+      // that may have been changed after initial seeding (RI3).
       role: 'OWNER',
       isActive: true,
     },

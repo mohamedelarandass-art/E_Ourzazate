@@ -30,7 +30,10 @@ export type LoginInput = z.infer<typeof loginSchema>;
 // Contact
 // ──────────────────────────────────────────────
 
-/** Contact form submission. */
+/**
+ * Contact form submission.
+ * Matches ContactFormRequest in src/types/api.ts.
+ */
 export const contactFormSchema = z.object({
   name: z
     .string()
@@ -51,6 +54,11 @@ export const contactFormSchema = z.object({
     .string()
     .min(10, 'Le message doit contenir au moins 10 caracteres')
     .max(5000, 'Le message ne doit pas depasser 5000 caracteres'),
+  /** Optional product ID when inquiry is about a specific product (TI3). */
+  productId: z
+    .string()
+    .min(1, 'Identifiant produit invalide')
+    .optional(),
 });
 
 export type ContactFormInput = z.infer<typeof contactFormSchema>;
@@ -123,7 +131,10 @@ export type CreateProductInput = z.infer<typeof createProductSchema>;
 // Categories
 // ──────────────────────────────────────────────
 
-/** Create a new category. */
+/**
+ * Create a new category.
+ * Matches CreateCategoryRequest in src/types/api.ts.
+ */
 export const createCategorySchema = z.object({
   name: z
     .string()
@@ -145,6 +156,8 @@ export const createCategorySchema = z.object({
     .min(0)
     .optional()
     .default(0),
+  /** Whether the category is visible. Defaults to true (TI4). */
+  isActive: z.boolean().optional().default(true),
 });
 
 export type CreateCategoryInput = z.infer<typeof createCategorySchema>;

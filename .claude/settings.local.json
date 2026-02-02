@@ -7,7 +7,15 @@
       "Bash(node:*)",
       "Bash(npx tsc:*)",
       "Bash(copy .env.example .env)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(npx next build:*)",
+      "Bash(npm ls:*)",
+      "Bash(curl:*)",
+      "Bash(taskkill //F //PID 6228)",
+      "Bash(tasklist:*)",
+      "Bash(npm i:*)",
+      "Bash(nslookup:*)",
+      "Bash(powershell:*)"
     ]
   }
 }

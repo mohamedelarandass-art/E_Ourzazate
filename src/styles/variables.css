@@ -67,6 +67,15 @@
     /* Darker bronze */
 
     /**
+   * Purple (Tertiary Accent)
+   * Used for category-related UI elements
+   */
+    --color-purple: #7C3AED;
+    /* Primary purple */
+    --color-purple-light: #F3E8FF;
+    /* Light purple background */
+
+    /**
    * Emerald (Secondary Accent)
    * Used for CTAs, success states, and action buttons
    */

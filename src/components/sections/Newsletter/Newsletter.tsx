@@ -73,14 +73,22 @@ export function Newsletter({
 
         setStatus('loading');
 
-        // Frontend-only for now - backend integration will come later
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            const res = await fetch('/api/public/newsletter', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email.trim(), source: 'homepage' }),
+            });
+            const json = await res.json();
 
-            console.log('Newsletter signup:', email);
+            if (!res.ok || !json.success) {
+                setStatus('error');
+                setMessage(json.error || 'Une erreur est survenue. Veuillez reessayer.');
+                return;
+            }
+
             setStatus('success');
-            setMessage('Merci pour votre inscription ! 🎉');
+            setMessage('Merci ! Vous etes inscrit(e) a notre newsletter.');
             setEmail('');
 
             // Reset after 5 seconds
@@ -90,7 +98,7 @@ export function Newsletter({
             }, 5000);
         } catch {
             setStatus('error');
-            setMessage('Une erreur est survenue. Veuillez réessayer.');
+            setMessage('Une erreur est survenue. Veuillez reessayer.');
         }
     };
 

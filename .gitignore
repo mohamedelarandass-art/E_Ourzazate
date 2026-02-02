@@ -38,6 +38,9 @@ yarn-error.log*
 .env.production.local
 # .env.example is tracked (template for developers)
 
+# uploaded files
+public/uploads/
+
 # vercel
 .vercel
 
