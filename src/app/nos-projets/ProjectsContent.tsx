@@ -68,26 +68,52 @@ function useScrollAnimation(threshold = 0.2) {
  * Displays a project with image carousel and navigation arrows.
  * Based on client reference design.
  */
+import { motion, AnimatePresence } from 'framer-motion';
+
+// ... existing code ...
+
+/**
+ * ProjectCard Component
+ * 
+ * Displays a project with image carousel and navigation arrows.
+ * Based on client reference design.
+ */
 interface ProjectCardProps {
     project: Project;
     index: number;
     isVisible: boolean;
 }
 
+const variants = {
+    enter: (direction: number) => ({
+        x: direction > 0 ? '100%' : '-100%',
+        opacity: 0,
+    }),
+    center: {
+        zIndex: 1,
+        x: 0,
+        opacity: 1,
+    },
+    exit: (direction: number) => ({
+        zIndex: 0,
+        x: direction < 0 ? '100%' : '-100%',
+        opacity: 0,
+    }),
+};
+
 function ProjectCard({ project, index, isVisible }: ProjectCardProps) {
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [[page, direction], setPage] = useState([0, 0]);
     const images = project.images;
     const hasMultipleImages = images.length > 1;
 
-    const nextImage = useCallback((e: React.MouseEvent) => {
-        e.stopPropagation();
-        setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    }, [images.length]);
+    // We rely on the index (page) to get the current image
+    const imageIndex = Math.abs(page % images.length);
+    const currentImage = images[imageIndex];
 
-    const prevImage = useCallback((e: React.MouseEvent) => {
+    const paginate = useCallback((newDirection: number, e: React.MouseEvent) => {
         e.stopPropagation();
-        setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
-    }, [images.length]);
+        setPage([page + newDirection, newDirection]);
+    }, [page]);
 
     return (
         <article
@@ -97,28 +123,45 @@ function ProjectCard({ project, index, isVisible }: ProjectCardProps) {
         >
             {/* Image Container */}
             <div className={styles.projectImageContainer}>
-                <Image
-                    src={images[currentImageIndex]}
-                    alt={project.name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className={styles.projectImage}
-                    unoptimized // For external Unsplash images
-                />
+                <AnimatePresence initial={false} custom={direction} mode="popLayout">
+                    <motion.div
+                        key={page}
+                        custom={direction}
+                        variants={variants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{
+                            x: { type: "spring", stiffness: 300, damping: 30 },
+                            opacity: { duration: 0.2 }
+                        }}
+                        className={styles.projectImageWrapper}
+                    >
+                        <Image
+                            src={currentImage}
+                            alt={project.name}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className={styles.projectImage}
+                            unoptimized // For external Unsplash images
+                            draggable={false}
+                        />
+                    </motion.div>
+                </AnimatePresence>
 
                 {/* Navigation Arrows */}
                 {hasMultipleImages && (
                     <>
                         <button
                             className={`${styles.carouselArrow} ${styles.carouselArrowLeft}`}
-                            onClick={prevImage}
+                            onClick={(e) => paginate(-1, e)}
                             aria-label="Image précédente"
                         >
                             <ChevronLeft size={20} />
                         </button>
                         <button
                             className={`${styles.carouselArrow} ${styles.carouselArrowRight}`}
-                            onClick={nextImage}
+                            onClick={(e) => paginate(1, e)}
                             aria-label="Image suivante"
                         >
                             <ChevronRight size={20} />
@@ -129,10 +172,12 @@ function ProjectCard({ project, index, isVisible }: ProjectCardProps) {
                             {images.map((_, i) => (
                                 <button
                                     key={i}
-                                    className={`${styles.carouselDot} ${i === currentImageIndex ? styles.carouselDotActive : ''}`}
+                                    className={`${styles.carouselDot} ${i === imageIndex ? styles.carouselDotActive : ''}`}
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        setCurrentImageIndex(i);
+                                        // Calculate direction based on click
+                                        const newDirection = i > imageIndex ? 1 : -1;
+                                        setPage([i, newDirection]); // Note: logic simplifiction for dots, might need wrap handling for true endless, but sufficient for simple jump
                                     }}
                                     aria-label={`Aller à l'image ${i + 1}`}
                                 />
