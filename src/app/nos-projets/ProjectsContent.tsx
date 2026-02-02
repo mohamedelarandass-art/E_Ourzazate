@@ -103,6 +103,7 @@ const variants = {
 
 function ProjectCard({ project, index, isVisible }: ProjectCardProps) {
     const [[page, direction], setPage] = useState([0, 0]);
+    const [isHovered, setIsHovered] = useState(false);
     const images = project.images;
     const hasMultipleImages = images.length > 1;
 
@@ -110,16 +111,42 @@ function ProjectCard({ project, index, isVisible }: ProjectCardProps) {
     const imageIndex = Math.abs(page % images.length);
     const currentImage = images[imageIndex];
 
-    const paginate = useCallback((newDirection: number, e: React.MouseEvent) => {
-        e.stopPropagation();
-        setPage([page + newDirection, newDirection]);
-    }, [page]);
+    const paginate = useCallback((newDirection: number) => {
+        setPage(prev => [prev[0] + newDirection, newDirection]);
+    }, []);
+
+    // Auto-play logic with staggered wave effect
+    useEffect(() => {
+        if (!isVisible || !hasMultipleImages || isHovered) return;
+
+        // "Wave" logic: Stagger the start based on column position (approx index % 3 or 4)
+        // We stagger by 1.5s for each position in the sequence to create a ripple
+        const staggerDelay = (index % 4) * 1500;
+        const intervalDuration = 6000; // 6s per image
+
+        let intervalId: NodeJS.Timeout;
+
+        const timeoutId = setTimeout(() => {
+            paginate(1); // First move after delay
+
+            intervalId = setInterval(() => {
+                paginate(1);
+            }, intervalDuration);
+        }, staggerDelay);
+
+        return () => {
+            clearTimeout(timeoutId);
+            if (intervalId) clearInterval(intervalId);
+        };
+    }, [isVisible, hasMultipleImages, isHovered, index, paginate]);
 
     return (
         <article
             className={styles.projectCard}
             data-visible={isVisible}
             style={{ animationDelay: `${index * 100}ms` }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
             {/* Image Container */}
             <div className={styles.projectImageContainer}>
@@ -154,14 +181,20 @@ function ProjectCard({ project, index, isVisible }: ProjectCardProps) {
                     <>
                         <button
                             className={`${styles.carouselArrow} ${styles.carouselArrowLeft}`}
-                            onClick={(e) => paginate(-1, e)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                paginate(-1);
+                            }}
                             aria-label="Image précédente"
                         >
                             <ChevronLeft size={20} />
                         </button>
                         <button
                             className={`${styles.carouselArrow} ${styles.carouselArrowRight}`}
-                            onClick={(e) => paginate(1, e)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                paginate(1);
+                            }}
                             aria-label="Image suivante"
                         >
                             <ChevronRight size={20} />
@@ -177,7 +210,7 @@ function ProjectCard({ project, index, isVisible }: ProjectCardProps) {
                                         e.stopPropagation();
                                         // Calculate direction based on click
                                         const newDirection = i > imageIndex ? 1 : -1;
-                                        setPage([i, newDirection]); // Note: logic simplifiction for dots, might need wrap handling for true endless, but sufficient for simple jump
+                                        setPage([i, newDirection]);
                                     }}
                                     aria-label={`Aller à l'image ${i + 1}`}
                                 />

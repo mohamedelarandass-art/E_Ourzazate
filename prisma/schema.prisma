@@ -1,0 +1,204 @@
+/// Equipement Ouarzazate — Database Schema
+///
+/// PostgreSQL database schema for the construction materials catalog.
+/// All models align with the frontend TypeScript interfaces in src/types/.
+///
+/// @see src/types/product.ts
+/// @see src/types/category.ts
+/// @see src/types/admin.ts
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ──────────────────────────────────────────────
+// Auth Models
+// ──────────────────────────────────────────────
+
+/// User roles for role-based access control.
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  VIEWER
+}
+
+/// Admin user account. Maps to AdminUser in src/types/admin.ts.
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  username     String   @unique
+  passwordHash String
+  displayName  String
+  role         UserRole @default(VIEWER)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  sessions  Session[]
+  auditLogs AuditLog[]
+
+  @@map("users")
+}
+
+/// Session for Lucia v3 auth. Fields match Lucia's expected schema.
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+// ──────────────────────────────────────────────
+// Catalog Models
+// ──────────────────────────────────────────────
+
+/// Product category. Maps to Category in src/types/category.ts.
+model Category {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  icon        String
+  imageUrl    String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+
+  @@map("categories")
+}
+
+/// Variation type enum. Maps to ProductVariation.type union in src/types/product.ts.
+enum VariationType {
+  COLOR
+  SIZE
+  MATERIAL
+}
+
+/// Product in the catalog. Maps to Product in src/types/product.ts.
+/// No price field — customers contact via WhatsApp for pricing.
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  categoryId  String
+  isNew       Boolean  @default(false)
+  isFeatured  Boolean  @default(false)
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category   Category           @relation(fields: [categoryId], references: [id])
+  images     ProductImage[]
+  variations ProductVariation[]
+
+  @@index([categoryId])
+  @@index([slug])
+  @@index([isPublished])
+  @@index([isFeatured])
+  @@map("products")
+}
+
+/// Product image for gallery display. Maps to ProductImage in src/types/product.ts.
+model ProductImage {
+  id         String   @id @default(cuid())
+  productId  String
+  url        String
+  alt        String
+  order      Int      @default(0)
+  isFeatured Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_images")
+}
+
+/// Product variation (color, size, material). Maps to ProductVariation in src/types/product.ts.
+model ProductVariation {
+  id        String        @id @default(cuid())
+  productId String
+  type      VariationType
+  name      String
+  value     String
+  createdAt DateTime      @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_variations")
+}
+
+// ──────────────────────────────────────────────
+// Communication Models
+// ──────────────────────────────────────────────
+
+/// Contact message status workflow.
+enum ContactMessageStatus {
+  NEW
+  READ
+  REPLIED
+  ARCHIVED
+}
+
+/// Contact form submission from visitors.
+model ContactMessage {
+  id        String               @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String
+  status    ContactMessageStatus @default(NEW)
+  notes     String?
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+
+  @@index([status])
+  @@map("contact_messages")
+}
+
+/// Newsletter subscriber. Maps to NewsletterSubscriber in src/types/newsletter.ts.
+model NewsletterSubscriber {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  isSubscribed   Boolean   @default(true)
+  source         String?
+  subscribedAt   DateTime  @default(now())
+  unsubscribedAt DateTime?
+
+  @@map("newsletter_subscribers")
+}
+
+// ──────────────────────────────────────────────
+// Audit Models
+// ──────────────────────────────────────────────
+
+/// Audit log entry for tracking admin actions.
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String
+  action     String
+  entityType String
+  entityId   String?
+  changes    Json?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("audit_logs")
+}

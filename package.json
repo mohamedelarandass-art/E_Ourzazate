@@ -8,13 +8,21 @@
     "start": "next start",
     "lint": "eslint"
   },
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
+  },
   "dependencies": {
+    "@lucia-auth/adapter-prisma": "^4.0.1",
+    "@prisma/client": "^5.22.0",
+    "argon2": "^0.44.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.29.2",
+    "lucia": "^3.2.2",
     "lucide-react": "^0.562.0",
     "next": "16.1.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -22,8 +30,10 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
+    "prisma": "^5.22.0",
     "sharp": "^0.34.5",
     "sharp-cli": "^5.2.0",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }
