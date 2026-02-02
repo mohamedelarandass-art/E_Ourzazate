@@ -130,7 +130,7 @@ export async function requireRole(allowedRoles: UserRole[]): Promise<User> {
     throw new ForbiddenError('Compte desactive');
   }
 
-  if (!allowedRoles.includes(user.role as UserRole)) {
+  if (!allowedRoles.includes(user.role)) {
     throw new ForbiddenError('Permissions insuffisantes');
   }
 

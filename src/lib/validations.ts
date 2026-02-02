@@ -45,8 +45,8 @@ export const contactFormSchema = z.object({
     .optional(),
   subject: z
     .string()
-    .max(200, 'Le sujet ne doit pas depasser 200 caracteres')
-    .optional(),
+    .min(1, 'Le sujet est requis')
+    .max(200, 'Le sujet ne doit pas depasser 200 caracteres'),
   message: z
     .string()
     .min(10, 'Le message doit contenir au moins 10 caracteres')
@@ -92,7 +92,13 @@ const productVariationSchema = z.object({
   value: z.string().min(1, 'La valeur de la variation est requise'),
 });
 
-/** Create a new product. */
+/**
+ * Create a new product.
+ *
+ * Note on slug (I6): slug is NOT in this schema because it is auto-generated
+ * from the product name by the API route handler using `slugify()` from
+ * `src/lib/utils.ts`. This ensures slug uniqueness and consistent formatting.
+ */
 export const createProductSchema = z.object({
   name: z
     .string()
@@ -106,6 +112,7 @@ export const createProductSchema = z.object({
     .min(1, 'La categorie est requise'),
   isNew: z.boolean().optional().default(false),
   isFeatured: z.boolean().optional().default(false),
+  isPublished: z.boolean().optional().default(false),
   images: z.array(productImageSchema).optional().default([]),
   variations: z.array(productVariationSchema).optional().default([]),
 });

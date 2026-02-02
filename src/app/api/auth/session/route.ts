@@ -10,17 +10,11 @@
 import { NextResponse } from 'next/server';
 import { validateRequest } from '@/lib/auth-utils';
 import { apiErrorResponse } from '@/lib/errors';
+import { toFrontendRole } from '@/lib/auth-types';
+import type { AuthUserResponse } from '@/lib/auth-types';
 import type { ApiResponse } from '@/types';
 
-interface SessionResponseData {
-  id: string;
-  username: string;
-  email: string;
-  displayName: string;
-  role: string;
-}
-
-export async function GET(): Promise<NextResponse<ApiResponse<SessionResponseData | null>>> {
+export async function GET(): Promise<NextResponse<ApiResponse<AuthUserResponse | null>>> {
   try {
     const { user } = await validateRequest();
 
@@ -31,7 +25,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<SessionResponseDat
       );
     }
 
-    return NextResponse.json<ApiResponse<SessionResponseData>>(
+    return NextResponse.json<ApiResponse<AuthUserResponse>>(
       {
         success: true,
         data: {
@@ -39,7 +33,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<SessionResponseDat
           username: user.username,
           email: user.email,
           displayName: user.displayName,
-          role: user.role,
+          role: toFrontendRole(user.role),
         },
       },
       { status: 200 },

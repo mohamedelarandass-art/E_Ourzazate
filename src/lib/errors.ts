@@ -68,9 +68,15 @@ export class NotFoundError extends AppError {
 
 /** 429 — Too many requests. */
 export class RateLimitError extends AppError {
-  constructor(message = 'Trop de tentatives. Veuillez reessayer plus tard.') {
+  public readonly retryAfterSeconds: number;
+
+  constructor(
+    retryAfterSeconds = 900,
+    message = 'Trop de tentatives. Veuillez reessayer plus tard.',
+  ) {
     super(429, 'RATE_LIMIT', message);
     this.name = 'RateLimitError';
+    this.retryAfterSeconds = retryAfterSeconds;
   }
 }
 
@@ -80,14 +86,16 @@ export class RateLimitError extends AppError {
  */
 export function apiErrorResponse(error: unknown): NextResponse<ApiResponse<never>> {
   if (error instanceof AppError) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: error.message,
-        ...(error.details ? { details: error.details } : {}),
-      },
-      { status: error.statusCode },
-    );
+    const body: ApiResponse<never> = {
+      success: false,
+      error: error.message,
+      ...(error.details ? { details: error.details } : {}),
+    };
+    const headers: HeadersInit = {};
+    if (error instanceof RateLimitError) {
+      headers['Retry-After'] = String(error.retryAfterSeconds);
+    }
+    return NextResponse.json(body, { status: error.statusCode, headers });
   }
 
   // Unexpected errors — hide internals in production
@@ -96,7 +104,7 @@ export function apiErrorResponse(error: unknown): NextResponse<ApiResponse<never
       ? error.message
       : 'Erreur interne du serveur';
 
-  return NextResponse.json(
+  return NextResponse.json<ApiResponse<never>>(
     { success: false, error: message },
     { status: 500 },
   );

@@ -22,23 +22,28 @@ datasource db {
 // ──────────────────────────────────────────────
 
 /// User roles for role-based access control.
+/// Values align with AdminRole in src/types/admin.ts:
+///   OWNER   → 'owner'   (full access)
+///   MANAGER → 'manager' (can manage products/categories)
+///   VIEWER  → 'viewer'  (read-only dashboard access)
 enum UserRole {
-  SUPER_ADMIN
-  ADMIN
+  OWNER
+  MANAGER
   VIEWER
 }
 
 /// Admin user account. Maps to AdminUser in src/types/admin.ts.
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  username     String   @unique
+  id           String    @id @default(cuid())
+  email        String    @unique
+  username     String    @unique
   passwordHash String
   displayName  String
-  role         UserRole @default(VIEWER)
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  role         UserRole  @default(VIEWER)
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
   sessions  Session[]
   auditLogs AuditLog[]
@@ -101,7 +106,8 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  category   Category           @relation(fields: [categoryId], references: [id])
+  /// Restrict deletion if products exist — admin must reassign or delete products first (I8).
+  category   Category           @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   images     ProductImage[]
   variations ProductVariation[]
 
@@ -159,7 +165,7 @@ model ContactMessage {
   name      String
   email     String
   phone     String?
-  subject   String?
+  subject   String
   message   String
   status    ContactMessageStatus @default(NEW)
   notes     String?

@@ -2,11 +2,14 @@
  * Database Seed Script
  *
  * Populates the database with:
- * 1. A SUPER_ADMIN user account
+ * 1. An OWNER user account (admin)
  * 2. All 5 product categories (from src/data/categories.ts)
- * 3. All 13 products with images and variations (from src/data/products.ts)
+ * 3. All 11 products with images and variations (from src/data/products.ts)
  *
  * Uses upsert throughout so the script is idempotent — safe to run multiple times.
+ *
+ * Password is read from SEED_ADMIN_PASSWORD env var with a dev-only default (I1 fix).
+ * Category lookup uses a pre-built map instead of fragile string replace (I2 fix).
  *
  * Run: npx tsx prisma/seed.ts
  *
@@ -34,19 +37,21 @@ async function main(): Promise<void> {
   console.log('--- Equipement Ouarzazate — Seed Script ---\n');
 
   // ──────────────────────────────────────────────
-  // 1. Super Admin
+  // 1. Owner Admin (I1: password from env var)
   // ──────────────────────────────────────────────
-  console.log('[1/3] Creating SUPER_ADMIN user...');
+  console.log('[1/3] Creating OWNER user...');
 
-  const passwordHash = await hash('Admin@EqOuarz2025!', { type: 2 });
+  const seedPassword = process.env.SEED_ADMIN_PASSWORD ?? 'Admin@EqOuarz2025!';
+  const passwordHash = await hash(seedPassword, { type: 2 });
 
   const admin = await prisma.user.upsert({
     where: { username: 'admin' },
     update: {
       email: 'equipementouarzazate@gmail.com',
       displayName: 'Administrateur',
-      passwordHash,
-      role: 'SUPER_ADMIN',
+      // passwordHash intentionally omitted — do not overwrite a password
+      // that may have been changed after initial seeding.
+      role: 'OWNER',
       isActive: true,
     },
     create: {
@@ -54,7 +59,7 @@ async function main(): Promise<void> {
       email: 'equipementouarzazate@gmail.com',
       displayName: 'Administrateur',
       passwordHash,
-      role: 'SUPER_ADMIN',
+      role: 'OWNER',
       isActive: true,
     },
   });
@@ -94,19 +99,33 @@ async function main(): Promise<void> {
 
   // ──────────────────────────────────────────────
   // 3. Products (with images and variations)
+  //    I2 fix: build a lookup map from mock category IDs to DB slugs
   // ──────────────────────────────────────────────
   console.log('[3/3] Seeding products...');
 
+  // Build a stable lookup: mock category id (e.g. "cat-sanitaire") → slug (e.g. "sanitaire")
+  const categoryIdToSlug = new Map<string, string>();
+  for (const cat of categories) {
+    categoryIdToSlug.set(cat.id, cat.slug);
+  }
+
+  let productCount = 0;
+
   for (const prod of products) {
-    // Find the category by the mock categoryId (e.g., "cat-sanitaire")
-    // We stored categories by slug, and the slug matches the part after "cat-"
-    const categorySlug = prod.categoryId.replace('cat-', '');
+    // Use the explicit map instead of fragile string manipulation
+    const categorySlug = categoryIdToSlug.get(prod.categoryId);
+
+    if (!categorySlug) {
+      console.warn(`  !! Skipping "${prod.name}" — category "${prod.categoryId}" not found in mock data.`);
+      continue;
+    }
+
     const category = await prisma.category.findUnique({
       where: { slug: categorySlug },
     });
 
     if (!category) {
-      console.warn(`  !! Skipping "${prod.name}" — category "${prod.categoryId}" not found.`);
+      console.warn(`  !! Skipping "${prod.name}" — category slug "${categorySlug}" not found in database.`);
       continue;
     }
 
@@ -132,7 +151,7 @@ async function main(): Promise<void> {
       },
     });
 
-    // Sync images: delete existing and re-create (upsert on images is complex with no stable unique key)
+    // Sync images: delete existing and re-create
     await prisma.productImage.deleteMany({
       where: { productId: product.id },
     });
@@ -168,9 +187,10 @@ async function main(): Promise<void> {
     const imgCount = prod.images.length;
     const varCount = prod.variations?.length ?? 0;
     console.log(`  -> "${product.name}" (${imgCount} images, ${varCount} variations)`);
+    productCount++;
   }
 
-  console.log(`  -> ${products.length} products seeded.\n`);
+  console.log(`  -> ${productCount} products seeded.\n`);
   console.log('--- Seed complete! ---');
 }
 

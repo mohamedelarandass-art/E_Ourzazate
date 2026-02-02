@@ -5,7 +5,9 @@
       "Bash(npm install:*)",
       "Bash(npx prisma:*)",
       "Bash(node:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(copy .env.example .env)",
+      "Bash(npx tsx:*)"
     ]
   }
 }

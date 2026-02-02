@@ -10,10 +10,15 @@
  * - sameSite: lax (CSRF protection while allowing top-level navigations)
  * - maxAge: 30 days
  *
+ * TECH DEBT: Lucia v3 (3.2.2) and @lucia-auth/adapter-prisma (4.0.1) are
+ * deprecated by their author. Versions are pinned in package.json (no ^).
+ * Plan migration to manual session management per the Copenhagen Book
+ * before adding more auth features. See: https://thecopenhagenbook.com/
+ *
  * @module lib/auth
  */
 
-import { Lucia } from 'lucia';
+import { Lucia, TimeSpan } from 'lucia';
 import { PrismaAdapter } from '@lucia-auth/adapter-prisma';
 import { prisma } from './prisma';
 import type { UserRole } from '@prisma/client';
@@ -25,6 +30,7 @@ const adapter = new PrismaAdapter(prisma.session, prisma.user);
  * Import this wherever you need to create/validate/invalidate sessions.
  */
 export const lucia = new Lucia(adapter, {
+  sessionExpiresIn: new TimeSpan(30, 'd'),
   sessionCookie: {
     name: 'auth_session',
     expires: false, // Session cookies are refreshed on each validation
@@ -34,7 +40,6 @@ export const lucia = new Lucia(adapter, {
       path: '/',
     },
   },
-  sessionExpiresIn: new TimeSpan(30, 'd'),
   getUserAttributes: (attributes) => ({
     username: attributes.username,
     email: attributes.email,
@@ -43,9 +48,6 @@ export const lucia = new Lucia(adapter, {
     isActive: attributes.isActive,
   }),
 });
-
-// TimeSpan is from Lucia — re-import for session expiry config
-import { TimeSpan } from 'lucia';
 
 // ──────────────────────────────────────────────
 // Type augmentation for Lucia

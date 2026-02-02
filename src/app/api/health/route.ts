@@ -6,6 +6,9 @@
  *
  * Response shape matches HealthCheckResponse in src/types/api.ts.
  *
+ * Note (M4): Version is hardcoded rather than reading process.env.npm_package_version
+ * to avoid leaking exact version info on a public endpoint.
+ *
  * @module api/health
  */
 
@@ -29,7 +32,7 @@ export async function GET(): Promise<NextResponse<HealthCheckResponse>> {
     {
       status,
       timestamp: new Date().toISOString(),
-      version: process.env.npm_package_version ?? '0.1.0',
+      version: '0.1.0',
       database,
     },
     { status: status === 'healthy' ? 200 : 503 },
