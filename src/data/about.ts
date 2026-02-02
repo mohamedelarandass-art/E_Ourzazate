@@ -67,6 +67,8 @@ export interface Project {
     category: ProjectCategory;
     /** Short description (optional) */
     description?: string;
+    /** Image URLs for carousel (Unsplash placeholders) */
+    images: string[];
 }
 
 /**
@@ -240,12 +242,21 @@ export const projects: Project[] = [
         shortName: 'NOOR',
         category: 'energie',
         description: 'Centrale solaire',
+        images: [
+            'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80',
+            'https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=800&q=80',
+            'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=800&q=80',
+        ],
     },
     {
         id: 'pompage',
         name: 'Station de Pompage NOOR Ouarzazate',
         shortName: 'Station de Pompage',
         category: 'energie',
+        images: [
+            'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80',
+            'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=800&q=80',
+        ],
     },
 
     // Hôtellerie (4 projets)
@@ -254,24 +265,41 @@ export const projects: Project[] = [
         name: 'Hôtel Berber Palace',
         shortName: 'Berber Palace',
         category: 'hotellerie',
+        images: [
+            'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
+            'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80',
+            'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80',
+        ],
     },
     {
         id: 'ibis',
         name: 'Hôtel Ibis Ouarzazate',
         shortName: 'Ibis',
         category: 'hotellerie',
+        images: [
+            'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80',
+            'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&q=80',
+        ],
     },
     {
         id: 'rs-karam',
         name: 'Hôtel RS Karam Ouarzazate',
         shortName: 'RS Karam',
         category: 'hotellerie',
+        images: [
+            'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80',
+            'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800&q=80',
+        ],
     },
     {
         id: 'kenzi-azghor',
         name: 'Hôtel Kenzi Azghor',
         shortName: 'Kenzi Azghor',
         category: 'hotellerie',
+        images: [
+            'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=80',
+            'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
+        ],
     },
 
     // Infrastructure (4 projets)
@@ -280,24 +308,41 @@ export const projects: Project[] = [
         name: 'Pont Ait Ben Haddou',
         shortName: 'Pont Ait Ben Haddou',
         category: 'infrastructure',
+        images: [
+            'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=800&q=80',
+            'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80',
+        ],
     },
     {
         id: 'pont-agdez',
         name: 'Pont Agdez',
         shortName: 'Pont Agdez',
         category: 'infrastructure',
+        images: [
+            'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=800&q=80',
+            'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&q=80',
+        ],
     },
     {
         id: 'col-tichka',
         name: 'Travaux de Renforcement du Col Tichka',
         shortName: 'Col Tichka',
         category: 'infrastructure',
+        images: [
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+            'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80',
+        ],
     },
     {
         id: 'aeroport',
         name: 'Aéroport Ouarzazate',
         shortName: 'Aéroport',
         category: 'infrastructure',
+        images: [
+            'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+            'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+            'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80',
+        ],
     },
 
     // Commerce (2 projets)
@@ -306,12 +351,20 @@ export const projects: Project[] = [
         name: 'Marjane Ouarzazate',
         shortName: 'Marjane',
         category: 'commerce',
+        images: [
+            'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80',
+            'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=800&q=80',
+        ],
     },
     {
         id: 'atacadao',
         name: 'Atacadao Ouarzazate',
         shortName: 'Atacadao',
         category: 'commerce',
+        images: [
+            'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&q=80',
+            'https://images.unsplash.com/photo-1567449303078-57ad995bd828?w=800&q=80',
+        ],
     },
 ];
 
@@ -321,14 +374,14 @@ export const projects: Project[] = [
 
 /**
  * Director information
- * ✅ Confirmé: Brahim Amcassou, 2ème génération
+ * ✅ Confirmé: Brahim Amcassou, 1ère génération
  * Message personnalisé fourni par le client
  * Ton: Chaleureux et familial
  */
 export const director: DirectorInfo = {
     name: 'Brahim Amcassou',
     title: 'Directeur Général',
-    generation: '2ème génération',
+    generation: '1ère génération',
     message: `Chers clients et partenaires,
 
 Depuis 1975, notre famille s'engage à vos côtés pour concrétiser vos projets les plus ambitieux. Ce qui a commencé comme une petite entreprise familiale dans le Quartier 3 Mars est devenu, grâce à votre confiance, un acteur incontournable de la région Drâa-Tafilalet.

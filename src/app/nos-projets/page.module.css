@@ -1,0 +1,479 @@
+/**
+ * Nos Projets Page Styles
+ * 
+ * Clean, professional design based on client reference.
+ * 
+ * Key Features:
+ * - White background
+ * - Category titles with gold underline
+ * - 3-column grid on desktop
+ * - Image carousel with navigation arrows
+ * - Elegant hover effects
+ */
+
+/* ==========================================================================
+   1. PAGE LAYOUT
+   ========================================================================== */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--color-background);
+}
+
+.main {
+    flex: 1;
+    padding-top: var(--header-height, 80px);
+}
+
+/* ==========================================================================
+   2. HERO SECTION
+   ========================================================================== */
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-13) var(--spacing-4) var(--spacing-8);
+    background-color: var(--color-background);
+    position: relative;
+    overflow: hidden;
+}
+
+.heroContent {
+    text-align: center;
+    max-width: 1000px;
+    opacity: 0;
+    transform: translateY(20px);
+    position: relative;
+    z-index: 2;
+}
+
+.heroContent[data-visible="true"] {
+    animation: fadeSlideUp 0.8s ease-out forwards;
+}
+
+.heroTitle {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: var(--font-weight-normal);
+    color: var(--color-text-primary);
+    line-height: 1.1;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.heroSubtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-tertiary);
+    line-height: var(--line-height-relaxed);
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+/* Centerpiece: The "12" */
+.centerpiece {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: var(--spacing-2) 0 var(--spacing-8);
+    position: relative;
+}
+
+.centerpieceNumber {
+    font-family: var(--font-heading);
+    font-size: clamp(8rem, 18vw, 12rem);
+    font-weight: var(--font-weight-bold);
+    line-height: 0.85;
+    background: linear-gradient(180deg,
+            var(--color-wood-light) 10%,
+            var(--color-wood) 50%,
+            var(--color-wood-dark) 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 10px 20px rgba(176, 141, 87, 0.2));
+    margin-bottom: -0.5rem;
+    padding-bottom: 0.5rem;
+    /* Prevent clipper cut-off */
+}
+
+.centerpieceLabel {
+    font-family: var(--font-body);
+    font-size: clamp(0.75rem, 2vw, 1rem);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    margin-top: var(--spacing-4);
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+}
+
+.centerpieceLabel::before,
+.centerpieceLabel::after {
+    content: "";
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-wood-light));
+    opacity: 0.6;
+}
+
+.centerpieceLabel::after {
+    background: linear-gradient(90deg, var(--color-wood-light), transparent);
+}
+
+/* Secondary Stats Row */
+.statsRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-6);
+    margin-top: var(--spacing-10);
+    flex-wrap: wrap;
+    padding: var(--spacing-6) var(--spacing-8);
+    background: var(--color-background-alt);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+}
+
+.statItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-1);
+    padding: 0 var(--spacing-4);
+}
+
+.statValue {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-wood);
+    line-height: 1;
+}
+
+.statLabel {
+    font-family: var(--font-body);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: var(--font-weight-medium);
+}
+
+.statDivider {
+    width: 1px;
+    height: 40px;
+    background-color: var(--color-border);
+    display: none;
+}
+
+@media (min-width: 640px) {
+    .statDivider {
+        display: block;
+    }
+}
+
+/* ==========================================================================
+   3. CATEGORIES CONTAINER
+   ========================================================================== */
+
+.categoriesContainer {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-4) var(--spacing-20);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-16);
+}
+
+@media (min-width: 768px) {
+    .categoriesContainer {
+        padding: 0 var(--spacing-8) var(--spacing-20);
+    }
+}
+
+/* ==========================================================================
+   4. CATEGORY SECTION
+   ========================================================================== */
+
+.categorySection {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.categorySection[data-visible="true"] {
+    animation: fadeSlideUp 0.6s ease-out forwards;
+}
+
+.categoryHeader {
+    text-align: center;
+    margin-bottom: var(--spacing-10);
+}
+
+.categoryTitle {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: var(--font-weight-normal);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--spacing-3);
+    letter-spacing: -0.01em;
+}
+
+.categoryUnderline {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg,
+            var(--color-wood-light) 0%,
+            var(--color-wood) 50%,
+            var(--color-wood-dark) 100%);
+    margin: 0 auto;
+    border-radius: var(--radius-full);
+}
+
+/* ==========================================================================
+   5. PROJECTS GRID
+   ========================================================================== */
+
+.projectsGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+    .projectsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .projectsGrid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-8);
+    }
+}
+
+/* ==========================================================================
+   6. PROJECT CARD
+   ========================================================================== */
+
+.projectCard {
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.projectCard[data-visible="true"] {
+    animation: fadeSlideUp 0.5s ease-out forwards;
+}
+
+/* Image Container */
+.projectImageContainer {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-background-alt);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: box-shadow var(--duration-300) var(--ease-out);
+}
+
+.projectCard:hover .projectImageContainer {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.projectImage {
+    object-fit: cover;
+    transition: transform var(--duration-500) var(--ease-out);
+}
+
+.projectCard:hover .projectImage {
+    transform: scale(1.03);
+}
+
+/* Project Name */
+.projectName {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: var(--spacing-4) 0 0;
+    padding: 0 var(--spacing-2);
+    line-height: var(--line-height-snug);
+}
+
+/* ==========================================================================
+   7. IMAGE CAROUSEL
+   ========================================================================== */
+
+/* Navigation Arrows */
+.carouselArrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: var(--radius-full);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+
+    color: var(--color-text-primary);
+    opacity: 0;
+    transition:
+        opacity var(--duration-200) var(--ease-out),
+        transform var(--duration-200) var(--ease-out),
+        background-color var(--duration-200) var(--ease-out);
+}
+
+.projectCard:hover .carouselArrow {
+    opacity: 1;
+}
+
+.carouselArrow:hover {
+    background: white;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carouselArrow:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.carouselArrowLeft {
+    left: var(--spacing-3);
+}
+
+.carouselArrowRight {
+    right: var(--spacing-3);
+}
+
+/* Dot Indicators */
+.carouselDots {
+    position: absolute;
+    bottom: var(--spacing-3);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+
+    display: flex;
+    gap: var(--spacing-2);
+    padding: var(--spacing-1) var(--spacing-2);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-full);
+    backdrop-filter: blur(4px);
+}
+
+.carouselDot {
+    width: 8px;
+    height: 8px;
+    border: none;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    padding: 0;
+    transition:
+        background-color var(--duration-200) var(--ease-out),
+        transform var(--duration-200) var(--ease-out);
+}
+
+.carouselDot:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+}
+
+.carouselDotActive {
+    background: white;
+}
+
+/* ==========================================================================
+   8. DARK MODE
+   ========================================================================== */
+
+:global([data-theme="dark"]) .categoryUnderline {
+    box-shadow: 0 0 12px rgba(176, 141, 87, 0.3);
+}
+
+:global([data-theme="dark"]) .projectImageContainer {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .projectCard:hover .projectImageContainer {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .carouselArrow {
+    background: rgba(40, 40, 40, 0.9);
+    color: var(--color-text-primary);
+}
+
+:global([data-theme="dark"]) .carouselArrow:hover {
+    background: rgba(50, 50, 50, 1);
+}
+
+/* ==========================================================================
+   9. ANIMATIONS
+   ========================================================================== */
+
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   10. RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .hero {
+        padding: var(--spacing-12) var(--spacing-4);
+    }
+
+    .categoriesContainer {
+        gap: var(--spacing-12);
+    }
+}
+
+@media (max-width: 480px) {
+    .heroTitle {
+        font-size: clamp(1.5rem, 7vw, 2rem);
+    }
+
+    .categoryTitle {
+        font-size: clamp(1.25rem, 6vw, 1.75rem);
+    }
+
+    .projectName {
+        font-size: var(--font-size-xs);
+    }
+
+    .carouselArrow {
+        width: 32px;
+        height: 32px;
+    }
+}

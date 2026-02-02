@@ -9,9 +9,10 @@
  * 3. Director Message - Text-centric message from Brahim Amcassou
  * 4. Differentiation - Nouveau bloc différenciation
  * 5. Values - Core company values (Qualité, Service Client, Innovation)
- * 6. Projects - Nos Réalisations: 12 prestigious projects with CountUp
- * 7. Showroom Gallery - 25 photos du showroom
- * 8. CTA - Call to action for catalogue/contact
+ * 6. Showroom Gallery - 25 photos du showroom
+ * 7. CTA - Call to action for catalogue/contact
+ * 
+ * Note: Projects section moved to dedicated /nos-projets page.
  * 
  * ✅ DONNÉES FINALES — Version 29 janvier 2026
  * 
@@ -31,31 +32,19 @@ import {
     MessageCircle,
     Quote,
     Building2,
-    CheckCircle,
-    Star,
-    Zap,
-    Building,
-    Construction,
-    ShoppingCart,
     LucideIcon,
     Heart,
     Calendar,
     Sparkles,
     MapPin,
-    ChevronLeft,
-    ChevronRight,
 } from 'lucide-react';
-import { Button, SpotlightCard, CountUp } from '@/components/ui';
+import { Button, CountUp } from '@/components/ui';
 import { getWhatsAppLink } from '@/config';
 import {
     timeline,
     timelinePending,
     values,
-    projects,
-    projectCategories,
     director,
-    socialProofStats,
-    certifications,
     heroContent,
     ctaContent,
     differentiationMessage,
@@ -63,8 +52,6 @@ import {
     showroomImages,
     type TimelineItem,
     type Value,
-    type Project,
-    type ProjectCategory,
 } from '@/data';
 import styles from './page.module.css';
 
@@ -77,15 +64,8 @@ const valueIconMap: Record<Value['icon'], LucideIcon> = {
     Users,
     Lightbulb,
     Heart,
-    Star,
+    Star: Award, // Star mapped to Award as fallback
     Shield: Award,
-};
-
-const projectCategoryIconMap: Record<ProjectCategory, LucideIcon> = {
-    energie: Zap,
-    hotellerie: Building,
-    infrastructure: Construction,
-    commerce: ShoppingCart,
 };
 
 /* ==========================================================================
@@ -203,86 +183,6 @@ function ValueCard({ value, index, isVisible }: ValueCardProps) {
     );
 }
 
-/**
- * Spotlight Project Card Component
- * 
- * Uses SpotlightCard for an interactive hover effect.
- * Category-specific spotlight colors for visual grouping.
- */
-interface SpotlightProjectCardProps {
-    project: Project;
-    index: number;
-    isVisible: boolean;
-    featured?: boolean;
-}
-
-// Category-specific spotlight colors (all gold-tinted for cohesion)
-const categorySpotlightColors: Record<ProjectCategory, string> = {
-    energie: 'rgba(255, 193, 7, 0.25)',      // Amber gold (solar energy)
-    hotellerie: 'rgba(176, 141, 87, 0.28)',  // Wood gold (luxury)
-    infrastructure: 'rgba(139, 119, 101, 0.25)', // Earthy gold (construction)
-    commerce: 'rgba(212, 184, 122, 0.25)',   // Light gold (retail)
-};
-
-function SpotlightProjectCard({ project, index, isVisible, featured = false }: SpotlightProjectCardProps) {
-    const categoryInfo = projectCategories[project.category];
-    const Icon = projectCategoryIconMap[project.category];
-    const spotlightColor = categorySpotlightColors[project.category];
-
-    return (
-        <div
-            className={styles.spotlightProjectWrapper}
-            data-visible={isVisible}
-            data-featured={featured}
-            style={{ animationDelay: `${index * 80}ms` }}
-        >
-            <SpotlightCard
-                className={styles.spotlightProjectCard}
-                spotlightColor={spotlightColor}
-                spotlightIntensity={featured ? 0.7 : 0.55}
-                featured={featured}
-                radius={featured ? '2xl' : 'xl'}
-                size={featured ? 'large' : 'default'}
-                glowBorder={featured}
-            >
-                {/* Category Icon */}
-                <div className={styles.spotlightProjectIcon}>
-                    <Icon
-                        size={featured ? 32 : 24}
-                        strokeWidth={1.5}
-                        aria-hidden="true"
-                    />
-                </div>
-
-                {/* Project Name */}
-                <h4 className={styles.spotlightProjectName}>
-                    {project.name}
-                </h4>
-
-                {/* Description (if exists) */}
-                {project.description && (
-                    <p className={styles.spotlightProjectDescription}>
-                        {project.description}
-                    </p>
-                )}
-
-                {/* Category Label */}
-                <span className={styles.spotlightProjectCategory}>
-                    {categoryInfo.label}
-                </span>
-
-                {/* Featured Badge */}
-                {featured && (
-                    <div className={styles.featuredBadge}>
-                        <Star size={12} fill="currentColor" />
-                        <span>Projet Phare</span>
-                    </div>
-                )}
-            </SpotlightCard>
-        </div>
-    );
-}
-
 /* ==========================================================================
    Main Component
    ========================================================================== */
@@ -293,18 +193,8 @@ export function AboutContent() {
     const timelineSection = useScrollAnimation(0.1);
     const directorSection = useScrollAnimation(0.2);
     const valuesSection = useScrollAnimation(0.2);
-    const projectsSection = useScrollAnimation(0.15);
     const showroomSection = useScrollAnimation(0.15);
     const ctaSection = useScrollAnimation(0.3);
-
-    // Group projects by category for display
-    const projectsByCategory = projects.reduce((acc, project) => {
-        if (!acc[project.category]) {
-            acc[project.category] = [];
-        }
-        acc[project.category].push(project);
-        return acc;
-    }, {} as Record<ProjectCategory, Project[]>);
 
     return (
         <>
@@ -483,8 +373,8 @@ export function AboutContent() {
                                     <CountUp
                                         to={companyMetrics.siteSurface}
                                         from={0}
-                                        duration={2.5}
-                                        delay={0.3}
+                                        duration={0.8}
+                                        delay={0}
                                         separator=" "
                                         className={styles.metricNumber}
                                     />
@@ -499,8 +389,8 @@ export function AboutContent() {
                                     <CountUp
                                         to={companyMetrics.showroomSurface}
                                         from={0}
-                                        duration={2}
-                                        delay={0.5}
+                                        duration={0.6}
+                                        delay={0.1}
                                         separator=" "
                                         className={styles.metricNumber}
                                     />
@@ -515,8 +405,8 @@ export function AboutContent() {
                                     <CountUp
                                         to={companyMetrics.collaborators}
                                         from={0}
-                                        duration={2}
-                                        delay={0.7}
+                                        duration={0.5}
+                                        delay={0.15}
                                         className={styles.metricNumber}
                                     />
                                 </span>
@@ -565,198 +455,7 @@ export function AboutContent() {
             </section>
 
             {/* ============================================
-                SECTION 6: NOS RÉALISATIONS (Projects) - WOW EDITION
-            ============================================ */}
-            <section
-                ref={projectsSection.ref as React.RefObject<HTMLElement>}
-                className={styles.projectsSection}
-                aria-labelledby="projects-title"
-            >
-                <div className={styles.container}>
-                    {/* Section Header with Animated Counter */}
-                    <header className={styles.sectionHeaderWow}>
-                        <span className={styles.eyebrow}>Nos Réalisations</span>
-                        <h2 id="projects-title" className={styles.sectionTitleWow}>
-                            <CountUp
-                                to={12}
-                                from={0}
-                                duration={2}
-                                delay={0.3}
-                                className={styles.countUpNumber}
-                                startWhen={projectsSection.isVisible}
-                            />
-                            {' '}projets prestigieux
-                        </h2>
-                        <p className={styles.sectionSubtitleWow}>
-                            De la centrale solaire NOOR aux plus beaux hôtels de la région
-                        </p>
-                    </header>
-
-                    {/* Hero Stats with CountUp */}
-                    <div
-                        className={styles.heroStatsRow}
-                        data-visible={projectsSection.isVisible}
-                    >
-                        <div className={styles.heroStatItem}>
-                            <span className={styles.heroStatValue}>
-                                <CountUp
-                                    to={50}
-                                    from={0}
-                                    duration={2.5}
-                                    delay={0.5}
-                                    suffix="+"
-                                    className={styles.heroStatNumber}
-                                    startWhen={projectsSection.isVisible}
-                                />
-                            </span>
-                            <span className={styles.heroStatLabel}>Ans d&apos;expérience</span>
-                        </div>
-                        <div className={styles.heroStatDivider} aria-hidden="true" />
-                        <div className={styles.heroStatItem}>
-                            <span className={styles.heroStatValue}>
-                                <CountUp
-                                    to={4}
-                                    from={0}
-                                    duration={1.5}
-                                    delay={0.7}
-                                    className={styles.heroStatNumber}
-                                    startWhen={projectsSection.isVisible}
-                                />
-                            </span>
-                            <span className={styles.heroStatLabel}>Secteurs d&apos;activité</span>
-                        </div>
-                        <div className={styles.heroStatDivider} aria-hidden="true" />
-                        <div className={styles.heroStatItem}>
-                            <span className={styles.heroStatValue}>
-                                <CountUp
-                                    to={100}
-                                    from={0}
-                                    duration={2}
-                                    delay={0.9}
-                                    suffix="%"
-                                    className={styles.heroStatNumber}
-                                    startWhen={projectsSection.isVisible}
-                                />
-                            </span>
-                            <span className={styles.heroStatLabel}>Clients satisfaits</span>
-                        </div>
-                    </div>
-
-                    {/* Featured Project - NOOR (Hero Spotlight) */}
-                    <div className={styles.featuredProjectWrapper}>
-                        <SpotlightProjectCard
-                            project={projects.find(p => p.id === 'noor')!}
-                            index={0}
-                            isVisible={projectsSection.isVisible}
-                            featured={true}
-                        />
-                    </div>
-
-                    {/* Projects By Category */}
-                    <div
-                        className={styles.projectsByCategoryWrapper}
-                        data-visible={projectsSection.isVisible}
-                    >
-                        {/* Category: Énergie */}
-                        <div className={styles.categoryGroup} style={{ animationDelay: '0ms' }}>
-                            <div className={styles.categoryHeader}>
-                                <div className={styles.categoryIconBadge}>
-                                    <Zap size={18} strokeWidth={2} />
-                                </div>
-                                <h3 className={styles.categoryTitle}>Énergie</h3>
-                                <span className={styles.categoryCount}>
-                                    {projects.filter(p => p.category === 'energie').length} projets
-                                </span>
-                            </div>
-                            <div className={styles.categoryProjects}>
-                                {projects.filter(p => p.category === 'energie' && p.id !== 'noor').map((project, i) => (
-                                    <span key={project.id} className={styles.projectChip} style={{ animationDelay: `${i * 50}ms` }}>
-                                        {project.name}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Category: Hôtellerie */}
-                        <div className={styles.categoryGroup} style={{ animationDelay: '100ms' }}>
-                            <div className={styles.categoryHeader}>
-                                <div className={styles.categoryIconBadge}>
-                                    <Building size={18} strokeWidth={2} />
-                                </div>
-                                <h3 className={styles.categoryTitle}>Hôtellerie</h3>
-                                <span className={styles.categoryCount}>
-                                    {projects.filter(p => p.category === 'hotellerie').length} projets
-                                </span>
-                            </div>
-                            <div className={styles.categoryProjects}>
-                                {projects.filter(p => p.category === 'hotellerie').map((project, i) => (
-                                    <span key={project.id} className={styles.projectChip} style={{ animationDelay: `${i * 50}ms` }}>
-                                        {project.name}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Category: Infrastructure */}
-                        <div className={styles.categoryGroup} style={{ animationDelay: '200ms' }}>
-                            <div className={styles.categoryHeader}>
-                                <div className={styles.categoryIconBadge}>
-                                    <Construction size={18} strokeWidth={2} />
-                                </div>
-                                <h3 className={styles.categoryTitle}>Infrastructure</h3>
-                                <span className={styles.categoryCount}>
-                                    {projects.filter(p => p.category === 'infrastructure').length} projets
-                                </span>
-                            </div>
-                            <div className={styles.categoryProjects}>
-                                {projects.filter(p => p.category === 'infrastructure').map((project, i) => (
-                                    <span key={project.id} className={styles.projectChip} style={{ animationDelay: `${i * 50}ms` }}>
-                                        {project.name}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Category: Commerce */}
-                        <div className={styles.categoryGroup} style={{ animationDelay: '300ms' }}>
-                            <div className={styles.categoryHeader}>
-                                <div className={styles.categoryIconBadge}>
-                                    <ShoppingCart size={18} strokeWidth={2} />
-                                </div>
-                                <h3 className={styles.categoryTitle}>Commerce</h3>
-                                <span className={styles.categoryCount}>
-                                    {projects.filter(p => p.category === 'commerce').length} projets
-                                </span>
-                            </div>
-                            <div className={styles.categoryProjects}>
-                                {projects.filter(p => p.category === 'commerce').map((project, i) => (
-                                    <span key={project.id} className={styles.projectChip} style={{ animationDelay: `${i * 50}ms` }}>
-                                        {project.name}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Trust Badges */}
-                    <div
-                        className={styles.trustBadges}
-                        data-visible={projectsSection.isVisible}
-                    >
-                        <div className={styles.trustBadge}>
-                            <CheckCircle size={20} />
-                            <span>RC: {certifications.rc}</span>
-                        </div>
-                        <div className={styles.trustBadge}>
-                            <CheckCircle size={20} />
-                            <span>ICE: {certifications.ice}</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ============================================
-                SECTION 7: SHOWROOM GALLERY
+                SECTION 6: SHOWROOM GALLERY
             ============================================ */}
             <section
                 ref={showroomSection.ref as React.RefObject<HTMLElement>}
@@ -797,7 +496,7 @@ export function AboutContent() {
             </section>
 
             {/* ============================================
-                SECTION 8: CTA - PREMIUM DESIGN
+                SECTION 7: CTA - PREMIUM DESIGN
             ============================================ */}
             <section
                 ref={ctaSection.ref as React.RefObject<HTMLElement>}

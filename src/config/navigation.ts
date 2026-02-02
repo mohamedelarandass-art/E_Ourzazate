@@ -100,6 +100,11 @@ export const mainNavItems: NavItem[] = [
         icon: 'Info',
     },
     {
+        label: 'Nos Projets',
+        href: '/nos-projets',
+        icon: 'Building2',
+    },
+    {
         label: 'Contact',
         href: '/contact',
         icon: 'MessageCircle',
@@ -121,6 +126,7 @@ export const footerNavSections = [
             { label: 'Accueil', href: '/' },
             { label: 'Catalogue', href: '/catalogue' },
             { label: 'À Propos', href: '/a-propos' },
+            { label: 'Nos Projets', href: '/nos-projets' },
             { label: 'Contact', href: '/contact' },
             { label: 'FAQ', href: '/faq' },
         ],
@@ -297,6 +303,7 @@ function formatSegmentLabel(segment: string): string {
     // Handle special cases
     const specialLabels: Record<string, string> = {
         'a-propos': 'À Propos',
+        'nos-projets': 'Nos Projets',
         'meubles-sdb': 'Meubles SDB',
         'electromenager': 'Électroménager',
         'produit': 'Produit',
