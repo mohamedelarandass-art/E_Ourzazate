@@ -15,7 +15,12 @@
       "Bash(tasklist:*)",
       "Bash(npm i:*)",
       "Bash(nslookup:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(dir /s /b \"C:\\\\Users\\\\hp\\\\Desktop\\\\equipement-ouarzazate\\\\src\\\\app\\\\api\\\\public\")",
+      "Bash(npx next:*)",
+      "Bash(del \"\\\\?\\\\C:\\\\Users\\\\hp\\\\Desktop\\\\equipement-ouarzazate\\\\nul\")",
+      "Bash(cmd //c \"del \\\\?\\\\C:\\\\Users\\\\hp\\\\Desktop\\\\equipement-ouarzazate\\\\nul\")",
+      "Bash(git add:*)"
     ]
   }
 }

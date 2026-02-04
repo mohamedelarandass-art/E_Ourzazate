@@ -42,6 +42,7 @@ export const products: Product[] = [
         images: [
             { id: 'img-002-1', url: '/images/products/wc-suspendu-1.jpg', alt: 'WC Suspendu Rimless - Vue principale', order: 1, isFeatured: true },
         ],
+        variations: [],
         isNew: false,
         isFeatured: true,
         isPublished: true,
@@ -57,6 +58,7 @@ export const products: Product[] = [
         images: [
             { id: 'img-003-1', url: '/images/products/wc-suspendu-1.webp', alt: 'Lavabo Vasque Rectangulaire', order: 1, isFeatured: true },
         ],
+        variations: [],
         isNew: true,
         isFeatured: false,
         isPublished: true,
@@ -94,6 +96,7 @@ export const products: Product[] = [
         images: [
             { id: 'img-005-1', url: '/images/products/meuble-vasque-chene-1.webp', alt: 'Miroir LED Antibuée', order: 1, isFeatured: true },
         ],
+        variations: [],
         isNew: false,
         isFeatured: true,
         isPublished: true,
@@ -131,6 +134,7 @@ export const products: Product[] = [
         images: [
             { id: 'img-007-1', url: '/images/products/carrelage-bois-1.webp', alt: 'Carrelage Marbre Blanc', order: 1, isFeatured: true },
         ],
+        variations: [],
         isNew: true,
         isFeatured: true,
         isPublished: true,
@@ -148,6 +152,7 @@ export const products: Product[] = [
         images: [
             { id: 'img-008-1', url: '/images/products/lustre-cristal-1.jpg', alt: 'Lustre Cristal Moderne', order: 1, isFeatured: true },
         ],
+        variations: [],
         isNew: false,
         isFeatured: true,
         isPublished: true,
@@ -163,6 +168,7 @@ export const products: Product[] = [
         images: [
             { id: 'img-009-1', url: '/images/products/lustre-cristal-1.webp', alt: 'Spot Encastrable LED', order: 1, isFeatured: true },
         ],
+        variations: [],
         isNew: true,
         isFeatured: false,
         isPublished: true,
@@ -183,6 +189,7 @@ export const products: Product[] = [
         images: [
             { id: 'img-012-1', url: '/images/products/robinet-cascade-1.webp', alt: 'Perceuse Visseuse 18V', order: 1, isFeatured: true },
         ],
+        variations: [],
         isNew: false,
         isFeatured: true,
         isPublished: true,
@@ -198,6 +205,7 @@ export const products: Product[] = [
         images: [
             { id: 'img-013-1', url: '/images/products/robinet-cascade-1.webp', alt: 'Niveau Laser Croix', order: 1, isFeatured: true },
         ],
+        variations: [],
         isNew: true,
         isFeatured: false,
         isPublished: true,

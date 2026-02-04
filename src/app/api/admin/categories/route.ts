@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import { requireRole } from '@/lib/auth-utils';
 import { validateOrigin, getClientIp } from '@/lib/request-utils';
@@ -106,6 +107,9 @@ export async function POST(request: NextRequest) {
         isActive,
       },
     });
+
+    // Bust public category caches so the new category appears immediately.
+    revalidateTag('categories', 'default');
 
     const ip = getClientIp(request);
     await prisma.auditLog.create({

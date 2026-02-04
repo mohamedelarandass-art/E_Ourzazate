@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import { requireRole } from '@/lib/auth-utils';
 import { validateOrigin, getClientIp } from '@/lib/request-utils';
@@ -153,6 +154,9 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       return updated;
     });
 
+    // Bust public product caches so updates appear immediately.
+    revalidateTag('products', 'default');
+
     const ip = getClientIp(request);
     await prisma.auditLog.create({
       data: {
@@ -204,6 +208,9 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
         data: { isPublished: false },
       });
 
+      // Bust public product caches so the unpublished product disappears.
+      revalidateTag('products', 'default');
+
       await prisma.auditLog.create({
         data: {
           userId: user.id,
@@ -223,6 +230,9 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     }
 
     await prisma.product.delete({ where: { id } });
+
+    // Bust public product caches so the deleted product disappears.
+    revalidateTag('products', 'default');
 
     await prisma.auditLog.create({
       data: {

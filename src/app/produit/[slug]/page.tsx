@@ -1,23 +1,35 @@
 /**
  * Product Detail Page
- * 
+ *
  * Individual product page with gallery, full description, variations, and WhatsApp CTA.
  * Features:
- * - Breadcrumb navigation
+ * - Breadcrumb navigation (using Next.js Link for client-side transitions)
  * - Image gallery with thumbnails and zoom
  * - Product badges (New, Featured)
  * - Variation selectors (colors, sizes)
  * - WhatsApp CTA button
  * - Similar products section
- * 
+ *
+ * Performance:
+ * - generateMetadata and ProductPage share a single Prisma round-trip
+ *   via React.cache() on getPublicProductBySlugWithCategory.
+ * - Similar products use a dedicated query with `take` + `NOT` (no over-fetching).
+ * - Similar products fetch is wrapped in try/catch so a transient failure
+ *   only hides the section instead of crashing the entire page.
+ *
  * @module app/produit/[slug]
  */
 
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { unstable_cache } from 'next/cache';
 import { Header, Footer } from '@/components';
-import { products, getProductBySlug, getProductsByCategory } from '@/data/products';
-import { getCategoryById } from '@/data/categories';
+import {
+    getPublishedProductSlugs,
+    getPublicProductBySlugWithCategory,
+    getPublicSimilarProducts,
+} from '@/lib/public-queries';
 import { ProductDetails } from './ProductDetails';
 import { SimilarProducts } from './SimilarProducts';
 import styles from './page.module.css';
@@ -30,25 +42,27 @@ interface PageProps {
  * Generate static params for all published products
  */
 export async function generateStaticParams() {
-    return products
-        .filter((p) => p.isPublished)
-        .map((p) => ({ slug: p.slug }));
+    const slugs = await getPublishedProductSlugs();
+    return slugs.map((slug) => ({ slug }));
 }
 
 /**
- * Generate dynamic metadata for SEO
+ * Generate dynamic metadata for SEO.
+ * Uses the same React.cache()-wrapped function as the page component
+ * so both resolve from a single Prisma query per request.
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params;
-    const product = getProductBySlug(slug);
+    const result = await getPublicProductBySlugWithCategory(slug);
 
-    if (!product) {
+    if (!result) {
         return {
             title: 'Produit non trouvé | Equipement Ouarzazate',
             description: 'Le produit demandé n\'existe pas.',
         };
     }
 
+    const { product } = result;
     const featuredImage = product.images?.find((img) => img.isFeatured) || product.images?.[0];
 
     return {
@@ -64,24 +78,48 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 /**
+ * Cross-request cache for product page data (I4).
+ * Complements React.cache() (per-request dedup) with unstable_cache
+ * (cross-request TTL). Uses the same 60s TTL + tags as the API routes,
+ * so admin mutations bust it instantly via revalidateTag.
+ *
+ * Factory pattern used because the cache key includes the dynamic slug.
+ */
+function getCachedProductPageData(slug: string) {
+    return unstable_cache(
+        async () => {
+            const result = await getPublicProductBySlugWithCategory(slug);
+            if (!result) return null;
+
+            const { product, category } = result;
+
+            let similarProducts: Awaited<ReturnType<typeof getPublicSimilarProducts>> = [];
+            try {
+                similarProducts = await getPublicSimilarProducts(product.categoryId, product.id);
+            } catch (error) {
+                console.error('[produit] Failed to load similar products:', error);
+            }
+
+            return { product, category, similarProducts };
+        },
+        ['product-page', slug],
+        { revalidate: 60, tags: ['products'] },
+    )();
+}
+
+/**
  * Product Detail Page Component
  */
 export default async function ProductPage({ params }: PageProps) {
     const { slug } = await params;
-    const product = getProductBySlug(slug);
+    const result = await getCachedProductPageData(slug);
 
     // 404 if product not found or not published
-    if (!product || !product.isPublished) {
+    if (!result) {
         notFound();
     }
 
-    // Get category info
-    const category = getCategoryById(product.categoryId);
-
-    // Get similar products (same category, excluding current)
-    const similarProducts = getProductsByCategory(product.categoryId)
-        .filter((p) => p.id !== product.id && p.isPublished)
-        .slice(0, 4);
+    const { product, category, similarProducts } = result;
 
     return (
         <div className={styles.page}>
@@ -89,25 +127,25 @@ export default async function ProductPage({ params }: PageProps) {
             <Header />
 
             <main className={styles.main}>
-                {/* Breadcrumb */}
+                {/* Breadcrumb — using Link for client-side navigation (M8) */}
                 <nav className={styles.breadcrumb} aria-label="Fil d'Ariane">
                     <ol className={styles.breadcrumbList}>
                         <li className={styles.breadcrumbItem}>
-                            <a href="/" className={styles.breadcrumbLink}>Accueil</a>
+                            <Link href="/" className={styles.breadcrumbLink}>Accueil</Link>
                             <span className={styles.breadcrumbSeparator}>/</span>
                         </li>
                         <li className={styles.breadcrumbItem}>
-                            <a href="/catalogue" className={styles.breadcrumbLink}>Catalogue</a>
+                            <Link href="/catalogue" className={styles.breadcrumbLink}>Catalogue</Link>
                             <span className={styles.breadcrumbSeparator}>/</span>
                         </li>
                         {category && (
                             <li className={styles.breadcrumbItem}>
-                                <a
-                                    href={`/catalogue?category=${category.slug}`}
+                                <Link
+                                    href={`/catalogue?category=${encodeURIComponent(category.slug)}`}
                                     className={styles.breadcrumbLink}
                                 >
                                     {category.name}
-                                </a>
+                                </Link>
                                 <span className={styles.breadcrumbSeparator}>/</span>
                             </li>
                         )}

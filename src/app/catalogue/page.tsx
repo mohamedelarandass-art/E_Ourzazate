@@ -11,8 +11,9 @@
 
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+import { unstable_cache } from 'next/cache';
 import { Header, Footer } from '@/components';
-import { getActiveCategories, getAllProducts } from '@/data';
+import { getPublicCategories, getPublicProducts } from '@/lib/public-queries';
 import { CatalogueSidebar } from './CatalogueSidebar';
 import { CatalogueContent } from './CatalogueContent';
 import styles from './page.module.css';
@@ -61,10 +62,26 @@ function ProductsSkeleton() {
     );
 }
 
-export default function CataloguePage() {
-    // Get all data server-side
-    const categories = getActiveCategories();
-    const allProducts = getAllProducts();
+/**
+ * Cross-request cache for catalogue page data (I3).
+ * Without this, every catalogue page visit triggers two uncached Prisma queries
+ * to Neon. This cache shares the same 60s TTL and tags as the API routes, so
+ * admin mutations bust it instantly via revalidateTag.
+ */
+const getCachedCatalogueData = unstable_cache(
+    async () => {
+        const [categories, products] = await Promise.all([
+            getPublicCategories(),
+            getPublicProducts(),
+        ]);
+        return { categories, products };
+    },
+    ['catalogue-page-data'],
+    { revalidate: 60, tags: ['products', 'categories'] },
+);
+
+export default async function CataloguePage() {
+    const { categories, products: allProducts } = await getCachedCatalogueData();
 
     return (
         <div className={styles.page}>
@@ -74,6 +91,7 @@ export default function CataloguePage() {
             <main className={styles.main}>
                 <div className={styles.catalogueLayout}>
                     {/* Left Sidebar - Desktop only */}
+                    {/* Suspense required: CatalogueSidebar uses useSearchParams() */}
                     <aside className={styles.sidebarWrapper}>
                         <Suspense fallback={<div className={styles.sidebarSkeleton}>Chargement...</div>}>
                             <CatalogueSidebar categories={categories} />
@@ -81,6 +99,7 @@ export default function CataloguePage() {
                     </aside>
 
                     {/* Main Content */}
+                    {/* Suspense required: CatalogueContent uses useSearchParams() */}
                     <section className={styles.contentWrapper}>
                         <Suspense fallback={<ProductsSkeleton />}>
                             <CatalogueContent

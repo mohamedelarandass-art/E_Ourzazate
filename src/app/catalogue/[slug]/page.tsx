@@ -8,7 +8,7 @@
  */
 
 import { redirect } from 'next/navigation';
-import { getActiveCategories, getCategoryBySlug } from '@/data';
+import { getPublicCategories, getPublicCategoryBySlug } from '@/lib/public-queries';
 
 interface PageProps {
     params: Promise<{ slug: string }>;
@@ -18,7 +18,7 @@ interface PageProps {
  * Generate static paths for all categories
  */
 export async function generateStaticParams() {
-    const categories = getActiveCategories();
+    const categories = await getPublicCategories();
     return categories.map((cat) => ({ slug: cat.slug }));
 }
 
@@ -27,10 +27,10 @@ export async function generateStaticParams() {
  */
 export default async function CategoryRedirectPage({ params }: PageProps) {
     const { slug } = await params;
-    const category = getCategoryBySlug(slug);
+    const category = await getPublicCategoryBySlug(slug);
 
     if (category) {
-        redirect(`/catalogue?category=${slug}`);
+        redirect(`/catalogue?category=${encodeURIComponent(slug)}`);
     } else {
         redirect('/catalogue');
     }

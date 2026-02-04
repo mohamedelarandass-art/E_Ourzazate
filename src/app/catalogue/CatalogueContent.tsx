@@ -58,10 +58,12 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
     const filteredProducts = useMemo(() => {
         let result = [...products];
 
-        // Filter by category
+        // Filter by category — match slug to real category ID via the categories prop
         if (categorySlug) {
-            const catId = `cat-${categorySlug}`;
-            result = result.filter(p => p.categoryId === catId);
+            const matchedCategory = categories.find(c => c.slug === categorySlug);
+            if (matchedCategory) {
+                result = result.filter(p => p.categoryId === matchedCategory.id);
+            }
         }
 
         // Filter by featured
@@ -83,15 +85,18 @@ export function CatalogueContent({ products, categories }: CatalogueContentProps
                 result.sort((a, b) => b.name.localeCompare(a.name, 'fr'));
                 break;
             case 'newest':
-            default:
-                result.sort((a, b) =>
-                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            default: {
+                // Pre-compute timestamps to avoid creating Date objects per comparison (M5).
+                const timestamps = new Map(
+                    result.map(p => [p.id, new Date(p.createdAt).getTime()])
                 );
+                result.sort((a, b) => (timestamps.get(b.id) ?? 0) - (timestamps.get(a.id) ?? 0));
                 break;
+            }
         }
 
         return result;
-    }, [products, categorySlug, showFeatured, showNew, sortBy]);
+    }, [products, categories, categorySlug, showFeatured, showNew, sortBy]);
 
     // Products to display (with Load More)
     const displayedProducts = useMemo(() => {

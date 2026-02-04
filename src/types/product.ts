@@ -83,8 +83,8 @@ export interface Product {
   /** Array of product images for the gallery */
   images: ProductImage[];
   
-  /** Optional array of product variations */
-  variations?: ProductVariation[];
+  /** Array of product variations (always present, may be empty) */
+  variations: ProductVariation[];
   
   /** Flag indicating if this is a new product (shows "Nouveau" badge) */
   isNew: boolean;
@@ -92,14 +92,27 @@ export interface Product {
   /** Flag indicating if this is featured (shown on homepage) */
   isFeatured: boolean;
   
-  /** Flag indicating if the product is visible in the catalogue */
-  isPublished: boolean;
-  
-  /** When the product was added to the catalogue */
-  createdAt: Date;
-  
-  /** When the product was last updated */
-  updatedAt: Date;
+  /**
+   * Flag indicating if the product is visible in the catalogue.
+   * Optional in public contexts — public queries only return published products,
+   * so this field is omitted from public responses to avoid leaking admin state (C2).
+   * Always present in admin contexts.
+   */
+  isPublished?: boolean;
+
+  /**
+   * When the product was added to the catalogue.
+   * Date object in Server Components (direct Prisma), ISO string after RSC
+   * serialization or JSON API responses. Use `new Date(createdAt)` defensively
+   * in Client Components (I4).
+   */
+  createdAt: Date | string;
+
+  /**
+   * When the product was last updated.
+   * Same serialization note as createdAt.
+   */
+  updatedAt: Date | string;
 }
 
 /**

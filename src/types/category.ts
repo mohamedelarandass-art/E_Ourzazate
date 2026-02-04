@@ -44,8 +44,13 @@ export interface Category {
     /** Display order (lower numbers appear first) */
     order: number;
 
-    /** Whether the category is visible in the catalogue */
-    isActive: boolean;
+    /**
+     * Whether the category is visible in the catalogue.
+     * Optional in public contexts — public queries only return active categories,
+     * so this field is omitted from public responses to avoid leaking admin state (C2).
+     * Always present in admin contexts.
+     */
+    isActive?: boolean;
 }
 
 /**

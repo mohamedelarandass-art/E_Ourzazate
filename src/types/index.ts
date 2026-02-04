@@ -68,6 +68,13 @@ export type {
     AdminActionResult,
 } from './admin';
 
+// Public API types
+export type {
+    PublicApiProduct,
+    PublicApiCategory,
+    PublicApiCategoryWithCount,
+} from './public-api';
+
 // API types
 export type {
     ApiResponse,
